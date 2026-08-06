@@ -1,203 +1,172 @@
 from rag import db as db_module
 
 
-class _FakeCursor:
-    def __init__(self, rows=None, description=None):
-        self.executed = []
-        self.executemany_calls = []
-        self._rows = rows or []
-        self.description = description or []
+class _FakeCollection:
+    def __init__(self, query_result=None, count_value=0):
+        self.upsert_calls = []
+        self.query_calls = []
+        self._query_result = query_result or {"ids": [[]], "metadatas": [[]], "documents": [[]], "distances": [[]]}
+        self._count_value = count_value
 
-    def __enter__(self):
-        return self
+    def upsert(self, ids, embeddings, documents, metadatas):
+        self.upsert_calls.append({"ids": ids, "embeddings": embeddings, "documents": documents, "metadatas": metadatas})
 
-    def __exit__(self, *exc):
-        return False
+    def query(self, query_embeddings, n_results, include):
+        self.query_calls.append({"query_embeddings": query_embeddings, "n_results": n_results, "include": include})
+        return self._query_result
 
-    def execute(self, sql, params=None):
-        self.executed.append((sql, params))
-        return self
-
-    def executemany(self, sql, records):
-        self.executemany_calls.append((sql, records))
-
-    def fetchall(self):
-        return self._rows
-
-    def fetchone(self):
-        return self._rows[0] if self._rows else None
+    def count(self):
+        return self._count_value
 
 
-class _FakeConnection:
-    def __init__(self, cursor=None):
-        self.executed = []
-        self._cursor = cursor or _FakeCursor()
-        self.closed = False
+class _FakeClient:
+    def __init__(self, collection=None):
+        self.deleted = []
+        self.get_or_create_calls = []
+        self._collection = collection or _FakeCollection()
 
-    def __enter__(self):
-        return self
+    def get_or_create_collection(self, name, metadata=None, embedding_function=None):
+        self.get_or_create_calls.append({"name": name, "metadata": metadata, "embedding_function": embedding_function})
+        return self._collection
 
-    def __exit__(self, *exc):
-        self.closed = True
-        return False
-
-    def execute(self, sql, params=None):
-        self.executed.append((sql, params))
-        return self
-
-    def cursor(self):
-        return self._cursor
-
-    def fetchone(self):
-        return None
-
-    def close(self):
-        self.closed = True
+    def delete_collection(self, name):
+        self.deleted.append(name)
 
 
-def test_create_schema_never_registers_vector_type(monkeypatch):
-    # Regression test: register_vector() needs `CREATE EXTENSION vector`
-    # to have already run. Calling it during schema creation itself raises
-    # "vector type not found" on a brand-new database -- a real bug from
-    # an earlier build. create_schema() must not call register_vector at all.
-    conn = _FakeConnection()
-    monkeypatch.setattr(db_module.psycopg, "connect", lambda *a, **kw: conn)
-
-    def boom(*a, **kw):
-        raise AssertionError("register_vector must not be called during schema creation")
-
-    monkeypatch.setattr(db_module, "register_vector", boom)
+def test_create_schema_gets_or_creates_the_collection_with_cosine_space(monkeypatch):
+    client = _FakeClient()
+    monkeypatch.setattr(db_module, "_get_client", lambda: client)
 
     db_module.create_schema()
 
-    sqls = [s for s, _ in conn.executed]
-    assert any("CREATE EXTENSION IF NOT EXISTS vector" in s for s in sqls)
-    assert any("CREATE TABLE IF NOT EXISTS chunks" in s for s in sqls)
+    assert len(client.get_or_create_calls) == 1
+    call = client.get_or_create_calls[0]
+    assert call["name"] == db_module.CHROMA_COLLECTION_NAME
+    assert call["metadata"] == {"hnsw:space": "cosine"}
 
 
-def test_get_connection_registers_vector_type(monkeypatch):
-    conn = _FakeConnection()
-    registered = []
-    monkeypatch.setattr(db_module.psycopg, "connect", lambda *a, **kw: conn)
-    monkeypatch.setattr(db_module, "register_vector", lambda c: registered.append(c))
+def test_create_schema_never_uses_chromas_default_embedding_function(monkeypatch):
+    # Embeddings always come from rag/embed.py -- Chroma's own default
+    # embedding function must never silently kick in for a call that
+    # omits an explicit embedding.
+    client = _FakeClient()
+    monkeypatch.setattr(db_module, "_get_client", lambda: client)
 
-    result = db_module.get_connection()
+    db_module.create_schema()
 
-    assert result is conn
-    assert registered == [conn]
+    assert client.get_or_create_calls[0]["embedding_function"] is None
+
+
+def test_clear_chunks_deletes_and_recreates_the_collection(monkeypatch):
+    client = _FakeClient()
+    monkeypatch.setattr(db_module, "_get_client", lambda: client)
+
+    db_module.clear_chunks()
+
+    assert client.deleted == [db_module.CHROMA_COLLECTION_NAME]
+    assert len(client.get_or_create_calls) == 1  # recreated after deleting
+
+
+def test_clear_chunks_does_not_raise_when_collection_does_not_exist_yet(monkeypatch):
+    client = _FakeClient()
+
+    def boom(name):
+        raise Exception("collection does not exist")
+
+    client.delete_collection = boom
+    monkeypatch.setattr(db_module, "_get_client", lambda: client)
+
+    db_module.clear_chunks()  # must not raise
 
 
 def test_insert_chunks_on_empty_list_does_not_touch_the_db(monkeypatch):
-    conn = _FakeConnection()
-    monkeypatch.setattr(db_module, "get_connection", lambda: conn)
+    collection = _FakeCollection()
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
 
     db_module.insert_chunks([])
 
-    assert conn._cursor.executemany_calls == []
+    assert collection.upsert_calls == []
 
 
-def test_insert_chunks_upserts_on_conflict(monkeypatch):
-    conn = _FakeConnection()
-    monkeypatch.setattr(db_module, "get_connection", lambda: conn)
-    records = [{
-        "document_url": "https://example.com/a",
-        "document_title": "A",
-        "chunk_index": 0,
-        "text": "hello",
-        "embedding": [0.1, 0.2],
-    }]
+def test_insert_chunks_upserts_with_ids_derived_from_url_and_chunk_index(monkeypatch):
+    collection = _FakeCollection()
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
+    records = [
+        {"document_url": "https://x/a", "document_title": "A", "chunk_index": 0, "text": "hello", "embedding": [0.1, 0.2]},
+        {"document_url": "https://x/a", "document_title": "A", "chunk_index": 1, "text": "world", "embedding": [0.3, 0.4]},
+    ]
 
     db_module.insert_chunks(records)
 
-    assert len(conn._cursor.executemany_calls) == 1
-    sql, passed_records = conn._cursor.executemany_calls[0]
-    assert "ON CONFLICT (document_url, chunk_index)" in sql
-    assert "DO UPDATE SET" in sql
-    assert passed_records[0]["document_url"] == records[0]["document_url"]
-    assert passed_records[0]["text"] == records[0]["text"]
+    assert len(collection.upsert_calls) == 1
+    call = collection.upsert_calls[0]
+    assert call["ids"] == ["https://x/a::0", "https://x/a::1"]
+    assert call["embeddings"] == [[0.1, 0.2], [0.3, 0.4]]
+    assert call["documents"] == ["hello", "world"]
+    assert call["metadatas"] == [
+        {"document_url": "https://x/a", "document_title": "A", "chunk_index": 0},
+        {"document_url": "https://x/a", "document_title": "A", "chunk_index": 1},
+    ]
 
 
-def test_insert_chunks_wraps_embedding_in_pgvector_vector(monkeypatch):
-    # Regression test: register_vector() only adapts pgvector.Vector (or a
-    # numpy array) into the `vector` type, not a bare Python list. A bare
-    # list still happened to work on INSERT (the column's declared type
-    # gives Postgres a coercion hint), but wrapping explicitly here removes
-    # the reliance on that coercion instead of only fixing it where it
-    # visibly broke (search_similar_chunks, see below).
-    conn = _FakeConnection()
-    monkeypatch.setattr(db_module, "get_connection", lambda: conn)
-    records = [{
-        "document_url": "https://example.com/a", "document_title": "A",
-        "chunk_index": 0, "text": "hello", "embedding": [0.1, 0.2],
-    }]
+def test_insert_chunks_reingesting_the_same_chunk_upserts_not_duplicates(monkeypatch):
+    # Same document_url + chunk_index twice -> same derived id both times,
+    # the same "re-ingest overwrites, doesn't duplicate" guarantee the old
+    # Postgres UNIQUE constraint gave.
+    collection = _FakeCollection()
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
+    record = {"document_url": "https://x/a", "document_title": "A", "chunk_index": 0, "text": "v1", "embedding": [0.1]}
 
-    db_module.insert_chunks(records)
+    db_module.insert_chunks([record])
+    db_module.insert_chunks([{**record, "text": "v2"}])
 
-    _, passed_records = conn._cursor.executemany_calls[0]
-    assert isinstance(passed_records[0]["embedding"], db_module.Vector)
+    ids = [call["ids"][0] for call in collection.upsert_calls]
+    assert ids[0] == ids[1]
 
 
-def test_search_similar_chunks_returns_dicts_with_similarity(monkeypatch):
-    description = [("document_url",), ("document_title",), ("chunk_index",), ("text",), ("similarity",)]
-    rows = [("https://example.com/a", "A", 0, "hello world", 0.87)]
-    cursor = _FakeCursor(rows=rows, description=description)
-    conn = _FakeConnection(cursor=cursor)
-    monkeypatch.setattr(db_module, "get_connection", lambda: conn)
+def test_search_similar_chunks_converts_distance_to_similarity(monkeypatch):
+    result = {
+        "ids": [["https://x/a::0"]],
+        "metadatas": [[{"document_url": "https://x/a", "document_title": "A", "chunk_index": 0}]],
+        "documents": [["hello world"]],
+        "distances": [[0.13]],
+    }
+    collection = _FakeCollection(query_result=result)
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
 
     results = db_module.search_similar_chunks([0.1, 0.2], top_k=5)
 
     assert results == [{
-        "document_url": "https://example.com/a",
+        "document_url": "https://x/a",
         "document_title": "A",
         "chunk_index": 0,
         "text": "hello world",
-        "similarity": 0.87,
+        "similarity": 1 - 0.13,
     }]
 
 
-def test_search_similar_chunks_passes_top_k_as_limit(monkeypatch):
-    cursor = _FakeCursor(rows=[], description=[])
-    conn = _FakeConnection(cursor=cursor)
-    monkeypatch.setattr(db_module, "get_connection", lambda: conn)
+def test_search_similar_chunks_passes_top_k_as_n_results(monkeypatch):
+    collection = _FakeCollection()
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
 
     db_module.search_similar_chunks([0.1, 0.2], top_k=7)
 
-    sql, params = cursor.executed[0]
-    assert params[-1] == 7
-    assert "ORDER BY embedding <=>" in sql
+    assert collection.query_calls[0]["n_results"] == 7
+    assert collection.query_calls[0]["query_embeddings"] == [[0.1, 0.2]]
 
 
-def test_search_similar_chunks_wraps_query_embedding_in_pgvector_vector(monkeypatch):
-    # Regression test: a bare Python list has no target-column type to
-    # hint at, so psycopg dumps it as a plain `double precision[]` --
-    # Postgres has no `<=>` operator between `vector` and that type, so an
-    # unwrapped list fails with "operator does not exist" the first time
-    # this runs against a real database (ingest's INSERTs succeeding
-    # regardless is what made this easy to miss until a real query ran).
-    cursor = _FakeCursor(rows=[], description=[])
-    conn = _FakeConnection(cursor=cursor)
-    monkeypatch.setattr(db_module, "get_connection", lambda: conn)
+def test_search_similar_chunks_returns_empty_list_on_empty_collection(monkeypatch):
+    empty_result = {"ids": [[]], "metadatas": [[]], "documents": [[]], "distances": [[]]}
+    collection = _FakeCollection(query_result=empty_result)
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
 
-    db_module.search_similar_chunks([0.1, 0.2], top_k=5)
+    results = db_module.search_similar_chunks([0.1, 0.2], top_k=5)
 
-    sql, params = cursor.executed[0]
-    assert isinstance(params[0], db_module.Vector)
-    assert isinstance(params[1], db_module.Vector)
+    assert results == []
 
 
-def test_clear_chunks_truncates(monkeypatch):
-    conn = _FakeConnection()
-    monkeypatch.setattr(db_module.psycopg, "connect", lambda *a, **kw: conn)
+def test_count_chunks_returns_collection_count(monkeypatch):
+    collection = _FakeCollection(count_value=1484)
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
 
-    db_module.clear_chunks()
-
-    sqls = [s for s, _ in conn.executed]
-    assert any("TRUNCATE TABLE chunks" in s for s in sqls)
-
-
-def test_count_chunks_returns_scalar(monkeypatch):
-    conn = _FakeConnection()
-    conn.execute = lambda sql, params=None: _FakeCursor(rows=[(42,)])
-    monkeypatch.setattr(db_module.psycopg, "connect", lambda *a, **kw: conn)
-
-    assert db_module.count_chunks() == 42
+    assert db_module.count_chunks() == 1484

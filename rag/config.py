@@ -28,13 +28,11 @@ SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", 0.35))
 # Local, free, no API key -- fastembed runs a small ONNX model entirely on
 # CPU (no torch, unlike sentence-transformers directly -- meaningfully
 # smaller Docker image and faster cold start for the same model weights).
-# The model downloads once, baked into the image. 384-dim output;
-# EMBEDDING_DIM must match whatever model this actually is, since the
-# pgvector column is declared with a fixed dimension at schema-creation
-# time. Changing EMBEDDING_MODEL_NAME to a different-dimension model means
-# also updating EMBEDDING_DIM and rebuilding the vector table from scratch.
+# The model downloads once, baked into the image. 384-dim output --
+# Chroma infers a collection's dimension from the first vector added to
+# it, unlike pgvector's fixed-width column, so there's no separate
+# EMBEDDING_DIM value to keep in sync here.
 EMBEDDING_MODEL_NAME = os.environ.get("EMBEDDING_MODEL_NAME", "sentence-transformers/all-MiniLM-L6-v2")
-EMBEDDING_DIM = int(os.environ.get("EMBEDDING_DIM", 384))
 
 # Fixed, explicit cache path rather than trusting fastembed's own default
 # (which resolves relative to the package/home directory) -- the Dockerfile
@@ -53,11 +51,18 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 # --- Storage ----------------------------------------------------------
-# A separate Postgres from Day 1's -- Day 1's schema has no vector column
-# and Day 3 already established the pattern of talking to Day 1 over HTTP
-# rather than touching its database directly. Default port 5433, not
-# 5432, so both projects' Postgres containers can run at the same time.
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://rag:rag@localhost:5433/rag")
+# ChromaDB, run as its own server container -- separate from Day 1's
+# Postgres entirely (Day 3 already established the pattern of talking to
+# Day 1 over HTTP rather than sharing a database with it). Originally
+# built against Postgres/pgvector, which the brief specifically named;
+# switched to Chroma afterward on the team's call. See README for both
+# the original pgvector notes and the reasoning for the switch.
+CHROMA_HOST = os.environ.get("CHROMA_HOST", "localhost")
+# Host-side default is 8001, not Chroma's own default of 8000, so it
+# doesn't collide with Day 1's API on 8000 when running outside Docker;
+# inside docker-compose this is overridden to the container-internal 8000.
+CHROMA_PORT = int(os.environ.get("CHROMA_PORT", 8001))
+CHROMA_COLLECTION_NAME = os.environ.get("CHROMA_COLLECTION_NAME", "chunks")
 
 # --- Day 1 API (source of the articles to ingest) -------------------------
 DOCUMENTS_API_BASE_URL = os.environ.get("DOCUMENTS_API_BASE_URL", "http://localhost:8000")

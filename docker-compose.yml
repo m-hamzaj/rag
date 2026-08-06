@@ -8,25 +8,35 @@
 #   1) (in documents-api/)  docker compose up -d
 #   2) (in this project)    docker compose up -d db
 #   3) (in this project)    docker compose run --rm ingest
-#   4) (in this project)    docker compose run --rm ask "some question"
-#      or just              docker compose run --rm ask       # interactive
+#   4) (in this project)    docker compose run --rm ask python -m rag.cli "some question"
+#      or just              docker compose run --rm ask python -m rag.cli   # interactive
+#      (the full "python -m rag.cli ..." is required -- `docker compose run`
+#      replaces the service's default command rather than appending to it)
 
 services:
+  # ChromaDB -- originally Postgres/pgvector, per the brief; switched on
+  # the team's call afterward. See README for the reasoning and what
+  # changed. Pinned to the same version as the Python client in
+  # requirements.txt -- client/server version drift is a real source of
+  # API incompatibilities with Chroma.
   db:
-    image: pgvector/pgvector:pg16
+    image: chromadb/chroma:1.5.9
     environment:
-      POSTGRES_USER: rag
-      POSTGRES_PASSWORD: rag
-      POSTGRES_DB: rag
+      IS_PERSISTENT: "TRUE"
+      ANONYMIZED_TELEMETRY: "FALSE"
     ports:
-      # Host port 5433, not 5432 -- Day 1's own Postgres already claims
-      # 5432 on the host, and both projects' databases may be running at
-      # the same time.
-      - "5433:5432"
+      # Host port 8001, not Chroma's own default of 8000 -- Day 1's API
+      # already claims 8000 on the host, and both may run at the same time.
+      - "8001:8000"
     volumes:
-      - rag_db_data:/var/lib/postgresql/data
+      - rag_chroma_data:/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U rag"]
+      # No curl/wget/python in this image -- Chroma's server is a Rust
+      # binary now, not the Python app the old healthcheck assumed. bash
+      # (which IS present) can still open a raw TCP connection via
+      # /dev/tcp, which is a good enough proxy for "the server is up and
+      # listening" without needing a real HTTP client in the container.
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/localhost/8000 && exec 3<&-'"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -35,7 +45,8 @@ services:
     build: .
     command: ["python", "-m", "rag.ingest"]
     environment:
-      DATABASE_URL: postgresql://rag:rag@db:5432/rag
+      CHROMA_HOST: db
+      CHROMA_PORT: "8000"
       DOCUMENTS_API_BASE_URL: ${DOCUMENTS_API_BASE_URL:-http://host.docker.internal:8000}
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -49,7 +60,8 @@ services:
     stdin_open: true
     tty: true
     environment:
-      DATABASE_URL: postgresql://rag:rag@db:5432/rag
+      CHROMA_HOST: db
+      CHROMA_PORT: "8000"
       # Not enforced at the compose-file level (a required-var error here
       # would block every service, including ingest/tests, which don't
       # need a Groq key at all) -- rag/generate.py raises a clear error at
@@ -66,4 +78,4 @@ services:
     command: ["python", "-m", "pytest", "-v"]
 
 volumes:
-  rag_db_data:
+  rag_chroma_data:

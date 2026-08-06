@@ -1,14 +1,27 @@
 # Day 4 — RAG
 
 Question answering over Day 3's 125 scraped nature/wildlife/gardening
-articles. Chunks them, embeds the chunks, stores the vectors in Postgres
-(pgvector). A question comes in, gets embedded, pulls the top matching
-chunks, and gets answered from those chunks only — with citations, or an
-honest refusal when nothing in the corpus is actually relevant.
+articles. Chunks them, embeds the chunks, stores the vectors in ChromaDB.
+A question comes in, gets embedded, pulls the top matching chunks, and
+gets answered from those chunks only — with citations, or an honest
+refusal when nothing in the corpus is actually relevant.
 
 No LangChain, no LlamaIndex. Chunking, embedding, retrieval, and citation
 parsing are all hand-written in `rag/` — see "How retrieval actually
 works" below for the real loop.
+
+**On the storage choice:** the brief that started this project specified
+Postgres with pgvector, and that's what was built and verified first (a
+committed run: 125 documents → 1,484 chunks, real questions answered with
+citations, a real refusal on an out-of-corpus question). It was switched
+to ChromaDB afterward on the team's decision. Functionally either is
+fine for a corpus this size — the tradeoff is pgvector living in the same
+Postgres this project set already runs elsewhere (joins against
+relational data, one less moving part) versus Chroma's simpler standalone
+setup. Both the switch and the reasoning are logged here rather than
+silently overwriting what the brief actually asked for. See "Storage:
+switched from pgvector to Chroma" below for what changed and what was
+found re-verifying it.
 
 ## Prerequisites
 
@@ -25,7 +38,7 @@ Then, from this project:
 
 ```bash
 cp .env.example .env               # fill in GROQ_API_KEY
-docker compose up -d db            # pgvector Postgres
+docker compose up -d db            # ChromaDB
 docker compose run --rm ingest     # chunk + embed + store every Day 1 article
 docker compose run --rm ask python -m rag.cli "your question"
 # or, interactively:
@@ -33,7 +46,9 @@ docker compose run --rm ask python -m rag.cli
 ```
 
 `ingest` and `tests` need no API key at all — only `ask` (answer
-generation) does.
+generation) does. The `python -m rag.cli ...` in the `ask` commands is
+required in full — `docker compose run` replaces a service's default
+command rather than appending to it.
 
 ## How retrieval actually works
 
@@ -52,16 +67,17 @@ loop, in `rag/`:
    sentence-transformers/torch directly — same model weights, no torch
    dependency, smaller image). Free, no API key, no network at query
    time. 384-dim vectors.
-3. **Store** (`db.py`, `ingest.py`) — one row per chunk in a pgvector
-   `chunks` table: the chunk text, its embedding, and which article
-   (URL + title) it came from. `ingest.py` pages through Day 1's
-   `/documents` (100 items/request max), chunks and embeds each one, and
-   upserts on `(document_url, chunk_index)` so re-ingesting doesn't
+3. **Store** (`db.py`, `ingest.py`) — one entry per chunk in a Chroma
+   collection explicitly configured for cosine distance: the chunk text,
+   its embedding, and which article (URL + title) it came from, as
+   metadata. `ingest.py` pages through Day 1's `/documents` (100
+   items/request max), chunks and embeds each one, and upserts by an ID
+   derived from `(document_url, chunk_index)` so re-ingesting doesn't
    duplicate.
 4. **Retrieve** (`retrieve.py`) — embed the question with the same model,
    pull the `TOP_K` most similar chunks by cosine similarity
-   (`db.search_similar_chunks`, brute-force `ORDER BY embedding <=> ...
-   LIMIT`), and keep only the ones clearing `SIMILARITY_THRESHOLD`.
+   (`db.search_similar_chunks`), and keep only the ones clearing
+   `SIMILARITY_THRESHOLD`.
 5. **Refuse, or generate** (`ask.py`, `generate.py`) — if nothing clears
    the threshold, the answer is `"I don't know."` and the LLM is never
    called at all. Otherwise the surviving chunks go to Groq
@@ -83,6 +99,13 @@ is a second, independent check for the case where retrieval finds
 plausible-looking chunks that turn out not to actually answer the
 question.
 
+`db.py` is the only module that knows which storage backend is in use.
+`ingest.py` and `retrieve.py` call `create_schema`/`clear_chunks`/
+`insert_chunks`/`search_similar_chunks`/`count_chunks` by name and don't
+care what's behind them — which is exactly what made switching the
+backend (below) a one-file change plus a test rewrite, not a project-wide
+one.
+
 ## Config values (`rag/config.py`)
 
 | Value | Default | What it controls |
@@ -96,44 +119,56 @@ question.
 
 All env-overridable, none hardcoded into `chunk.py`/`retrieve.py` directly.
 
-## Two real bugs, found by actually running it
+## Storage: switched from pgvector to Chroma
 
-**pgvector's `<=>` operator doesn't accept a bare Python list.**
-`register_vector()` (from `pgvector.psycopg`) teaches psycopg how to
-adapt a `pgvector.Vector` — or a numpy array — into the database's
-`vector` type. It does *not* cover a plain Python `list[float]`. The
-first real query after a real ingest failed outright:
+`db.py` was rewritten against `chromadb`'s `HttpClient`, keeping every
+function name and signature from the pgvector version so nothing above
+it changed. Two real things came up doing this for real, not just editing
+code:
 
-```
-psycopg.errors.UndefinedFunction: operator does not exist: vector <=> double precision[]
-```
+**Chroma's default distance metric isn't cosine.** It's squared L2 unless
+the collection says otherwise, which would have silently made
+`SIMILARITY_THRESHOLD = 0.35` meaningless — a value tuned against real
+cosine similarity scores compared against a completely different scale.
+Fixed by creating the collection with `metadata={"hnsw:space": "cosine"}`
+explicitly (`db.py`'s `_COLLECTION_METADATA`), and by keeping the same
+`1 - distance = similarity` convention the pgvector version used, so
+`retrieve.py`'s threshold comparison needed zero changes.
 
-A bare list got sent as a generic `double precision[]`, and Postgres has
-no `<=>` between that and `vector`. What made this easy to miss: the
-*ingest* step's `INSERT`s had already succeeded with bare lists, because
-the target column's declared type (`VECTOR(384)`) gives Postgres a
-coercion hint an `INSERT` can use that a raw comparison operator can't.
-1,484 chunks went in clean; the very first real question then broke on
-read. Fixed by wrapping every embedding — both on insert and on query —
-in `pgvector.Vector(...)` explicitly in `db.py`, rather than relying on
-an implicit coercion that only worked for one of the two paths. Covered
-by regression tests in `tests/test_db.py` asserting the wrapped type is
-actually what gets sent.
+**The official `chromadb/chroma` server image has no Python, curl, or
+wget in it.** Chroma's server is a Rust binary now, not the Python app an
+initial `docker-compose.yml` healthcheck assumed
+(`python -c "import urllib.request; ..."`) — the container came up but
+Docker reported it `unhealthy` every time, `exec`-ing in and running
+`which curl wget python3` turned up nothing. `bash` *is* present, so the
+healthcheck now opens a raw TCP connection via `bash`'s `/dev/tcp`
+pseudo-device instead of an HTTP request — a good enough proxy for "the
+server is listening" without needing a real HTTP client inside the image.
 
-**Day 1's database had a stray, off-topic document.** Before running the
-real ingest, a document titled *"Claude Code Cost Optimization: Cut Your
-Token Spend"* from `claudedirectory.org` turned up in Day 1 — not from
-any of Day 3's 5 configured nature sources, and not something this
-project's own tooling had pushed. Day 1's API is just a local service on
-`localhost:8000`; anything on the machine can write to it. Caught by
-diffing every stored document's `source` field against the 5 known
-domains before ingesting, rather than trusting the row count alone.
-Removed via Day 1's own `DELETE /documents/{id}` before the real ingest
-ran, so the RAG corpus is nature/wildlife/gardening content only.
+**Re-verification, not just re-running tests:** after the switch, the
+full real pipeline was re-run end to end — ingest again produced 125
+documents → 1,484 chunks (identical to the pgvector run), and both real
+questions from "Real verification" below were asked again against the
+Chroma-backed index. The answers and citations came back identical, and
+the similarity scores in the threshold table below are byte-for-byte the
+same as the pgvector run — expected, since both compute exact cosine
+similarity over the same embeddings; neither backend approximates at
+this corpus size.
+
+Historical note, kept for anyone who ends up back on pgvector: the
+original build hit a real bug where pgvector's `<=>` operator rejected a
+bare Python list (`psycopg.errors.UndefinedFunction: operator does not
+exist: vector <=> double precision[]`) — `register_vector()` only adapts
+a `pgvector.Vector` or numpy array into the `vector` type, not a plain
+list, and a bare list happened to still work on `INSERT` because the
+target column's declared type gave Postgres a coercion hint a raw
+comparison doesn't get. Not relevant to the current Chroma-backed code,
+but a real trap if this ever moves back.
 
 ## Real verification
 
-125 documents → **1,484 chunks** on the committed ingest run.
+125 documents → **1,484 chunks**, on both the original pgvector run and
+the re-verified Chroma run.
 
 **A real question, answered correctly with a citation:**
 
@@ -186,21 +221,21 @@ looks like.
 ## Tests
 
 ```bash
-docker compose --profile tools run --rm tests    # 60 tests, fully offline
+docker compose --profile tools run --rm tests    # 61 tests, fully offline
 ```
 
 Chunking (boundaries, overlap, no dropped words, config validation),
 embedding (batch/single, empty input, lazy model loading — the ONNX model
-itself is mocked, no real inference in the test suite), pgvector storage
-(schema creation never touches `register_vector` — the chicken-and-egg
-regression from an earlier build — insert/search both wrap embeddings in
-`Vector`, upsert-on-conflict), ingest (pagination through Day 1, chunk↔
-embedding zipping, full-rebuild wipe), retrieval (threshold filtering,
-top-k passthrough), generation (prompt building, `[N]`-marker parsing
-including out-of-range and no-marker fallback, the real Groq request
-shape), and `ask()`'s two refusal paths (no chunks retrieved; LLM
-refusing on its own) — all via monkeypatched HTTP/DB/model, no real
-network call, no API key needed to run the suite.
+itself is mocked, no real inference in the test suite), Chroma storage
+(cosine-space collection creation, upsert-by-derived-id, distance→
+similarity conversion, empty-result handling — all against a mocked
+client/collection, no real Chroma server needed to run the suite),
+ingest (pagination through Day 1, chunk↔embedding zipping, full-rebuild
+wipe), retrieval (threshold filtering, top-k passthrough), generation
+(prompt building, `[N]`-marker parsing including out-of-range and
+no-marker fallback, the real Groq request shape), and `ask()`'s two
+refusal paths (no chunks retrieved; LLM refusing on its own) — all via
+monkeypatched HTTP/DB/model, no real network call, no API key needed.
 
 ## Project layout
 
@@ -209,7 +244,7 @@ rag/
   config.py     chunk size, top-k, similarity threshold, model names -- all env-overridable
   chunk.py      word-based sliding-window chunker
   embed.py      fastembed wrapper (local, no API key)
-  db.py         pgvector schema + insert + similarity search
+  db.py         ChromaDB schema + insert + similarity search -- the only storage-aware module
   ingest.py     pulls every Day 1 document, chunks + embeds + stores it
   retrieve.py   embed question -> top-k search -> threshold filter
   generate.py   Groq call + [N]-citation-marker parsing
