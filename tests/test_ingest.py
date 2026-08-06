@@ -116,3 +116,52 @@ def test_ingest_quiet_mode_prints_nothing(monkeypatch, capsys):
     ingest_module.ingest(quiet=True)
 
     assert capsys.readouterr().out == ""
+
+
+# --- ingest_new_documents: the dashboard's "Index new articles" button --
+# only chunks/embeds documents not already indexed, instead of
+# reprocessing the whole corpus the way a full ingest() does.
+
+def test_ingest_new_documents_skips_already_indexed_urls(monkeypatch):
+    docs = [
+        {"url": "https://x/1", "title": "Old", "text": "t"},
+        {"url": "https://x/2", "title": "New", "text": "t"},
+    ]
+    monkeypatch.setattr(ingest_module, "create_schema", lambda: None)
+    monkeypatch.setattr(ingest_module, "list_documents", lambda: [{"title": "Old", "url": "https://x/1"}])
+    monkeypatch.setattr(ingest_module, "fetch_all_documents", lambda: docs)
+    processed = []
+    monkeypatch.setattr(ingest_module, "_chunks_for_document", lambda d: processed.append(d) or [{"fake": "r"}])
+    monkeypatch.setattr(ingest_module, "insert_chunks", lambda records: None)
+
+    result = ingest_module.ingest_new_documents(quiet=True)
+
+    assert [d["url"] for d in processed] == ["https://x/2"]
+    assert result == {"documents": 1, "chunks": 1}
+
+
+def test_ingest_new_documents_never_wipes_existing_chunks(monkeypatch):
+    # No clear_chunks reference at all in this path -- patch it to raise
+    # so any accidental call fails the test loudly.
+    def boom():
+        raise AssertionError("ingest_new_documents must never wipe anything")
+
+    monkeypatch.setattr(ingest_module, "create_schema", lambda: None)
+    monkeypatch.setattr(ingest_module, "clear_chunks", boom)
+    monkeypatch.setattr(ingest_module, "list_documents", lambda: [])
+    monkeypatch.setattr(ingest_module, "fetch_all_documents", lambda: [])
+    monkeypatch.setattr(ingest_module, "insert_chunks", lambda records: None)
+
+    ingest_module.ingest_new_documents(quiet=True)  # must not raise
+
+
+def test_ingest_new_documents_returns_zero_when_nothing_new(monkeypatch):
+    docs = [{"url": "https://x/1", "title": "Old", "text": "t"}]
+    monkeypatch.setattr(ingest_module, "create_schema", lambda: None)
+    monkeypatch.setattr(ingest_module, "list_documents", lambda: [{"title": "Old", "url": "https://x/1"}])
+    monkeypatch.setattr(ingest_module, "fetch_all_documents", lambda: docs)
+    monkeypatch.setattr(ingest_module, "insert_chunks", lambda records: None)
+
+    result = ingest_module.ingest_new_documents(quiet=True)
+
+    assert result == {"documents": 0, "chunks": 0}

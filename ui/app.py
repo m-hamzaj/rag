@@ -11,6 +11,7 @@ file only calls it and renders the result.
 
 import os
 import sys
+from urllib.parse import urlparse
 
 # `streamlit run ui/app.py` adds this script's own folder (ui/) to
 # sys.path, not the project root -- unlike `python -m rag.cli`, which adds
@@ -21,7 +22,8 @@ import streamlit as st
 
 from rag.ask import ask
 from rag.config import GROQ_API_KEY, SIMILARITY_THRESHOLD, TOP_K
-from rag.db import count_chunks
+from rag.db import count_chunks, list_documents
+from rag.ingest import ingest_new_documents
 from rag.retrieve import retrieve
 
 st.set_page_config(page_title="Day 4 RAG", page_icon="🌿", layout="wide")
@@ -38,6 +40,49 @@ try:
 except Exception as exc:
     st.error(f"Could not reach the vector database: {exc}")
     st.stop()
+
+with st.expander("Add new articles to ask about"):
+    st.markdown(
+        "Two steps, since this project only *answers* questions -- it doesn't scrape:\n\n"
+        "1. Add the article to Day 1 first, via Day 3's crawler dashboard "
+        "([localhost:8080](http://localhost:8080), \"Crawl a URL\") or "
+        "`docker compose run --rm crawler` in `day3-crawler/`.\n"
+        "2. Click below to index whatever's new in Day 1 -- only articles not "
+        "already indexed here get chunked and embedded, so this stays fast "
+        "regardless of how large the corpus already is."
+    )
+    if st.button("Index new articles"):
+        with st.spinner("Checking Day 1 for articles not yet indexed..."):
+            result = ingest_new_documents(quiet=True)
+        if result["documents"]:
+            st.success(f"Indexed {result['documents']} new article(s) into {result['chunks']} chunks.")
+            st.rerun()  # refresh the chunk count and sidebar list above
+        else:
+            st.info("Nothing new -- every Day 1 article is already indexed.")
+
+with st.sidebar:
+    st.header("What's in the corpus?")
+    st.caption(
+        "Answers only come from these articles -- questions about anything else "
+        "get refused. Browse or search before asking."
+    )
+    try:
+        documents = list_documents()
+    except Exception as exc:
+        documents = []
+        st.error(f"Could not list documents: {exc}")
+
+    search = st.text_input("Filter by title", placeholder="tiger, hummingbird, kale...")
+    filtered = [d for d in documents if search.lower() in d["title"].lower()] if search else documents
+    st.caption(f"{len(filtered)} of {len(documents)} articles shown")
+
+    by_source = {}
+    for d in filtered:
+        by_source.setdefault(urlparse(d["url"]).netloc, []).append(d)
+    for source in sorted(by_source):
+        with st.expander(f"{source} ({len(by_source[source])})"):
+            for d in sorted(by_source[source], key=lambda x: x["title"]):
+                st.markdown(f"- [{d['title']}]({d['url']})")
 
 if not GROQ_API_KEY:
     st.warning(

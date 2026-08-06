@@ -2,11 +2,12 @@ from rag import db as db_module
 
 
 class _FakeCollection:
-    def __init__(self, query_result=None, count_value=0):
+    def __init__(self, query_result=None, count_value=0, get_result=None):
         self.upsert_calls = []
         self.query_calls = []
         self._query_result = query_result or {"ids": [[]], "metadatas": [[]], "documents": [[]], "distances": [[]]}
         self._count_value = count_value
+        self._get_result = get_result or {"metadatas": []}
 
     def upsert(self, ids, embeddings, documents, metadatas):
         self.upsert_calls.append({"ids": ids, "embeddings": embeddings, "documents": documents, "metadatas": metadatas})
@@ -14,6 +15,9 @@ class _FakeCollection:
     def query(self, query_embeddings, n_results, include):
         self.query_calls.append({"query_embeddings": query_embeddings, "n_results": n_results, "include": include})
         return self._query_result
+
+    def get(self, include=None):
+        return self._get_result
 
     def count(self):
         return self._count_value
@@ -170,3 +174,29 @@ def test_count_chunks_returns_collection_count(monkeypatch):
     monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
 
     assert db_module.count_chunks() == 1484
+
+
+def test_list_documents_dedupes_multiple_chunks_from_the_same_article(monkeypatch):
+    get_result = {
+        "metadatas": [
+            {"document_url": "https://x/a", "document_title": "A", "chunk_index": 0},
+            {"document_url": "https://x/a", "document_title": "A", "chunk_index": 1},
+            {"document_url": "https://x/b", "document_title": "B", "chunk_index": 0},
+        ]
+    }
+    collection = _FakeCollection(get_result=get_result)
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
+
+    docs = db_module.list_documents()
+
+    assert sorted(docs, key=lambda d: d["url"]) == [
+        {"title": "A", "url": "https://x/a"},
+        {"title": "B", "url": "https://x/b"},
+    ]
+
+
+def test_list_documents_returns_empty_list_for_empty_collection(monkeypatch):
+    collection = _FakeCollection(get_result={"metadatas": []})
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
+
+    assert db_module.list_documents() == []

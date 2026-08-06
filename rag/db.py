@@ -121,3 +121,19 @@ def search_similar_chunks(query_embedding: list[float], top_k: int) -> list[dict
 
 def count_chunks() -> int:
     return _get_collection().count()
+
+
+def list_documents() -> list[dict]:
+    """Returns one entry per distinct source article currently indexed:
+    {"title": ..., "url": ...}. Deduped from chunk metadata rather than
+    re-fetching Day 1 -- the corpus this answers questions from is
+    whatever's actually indexed, which is what a user deciding what to
+    ask needs to see, not a live Day 1 document count that could drift
+    from it between ingest runs.
+    """
+    collection = _get_collection()
+    result = collection.get(include=["metadatas"])
+    seen = {}
+    for metadata in result["metadatas"]:
+        seen[metadata["document_url"]] = metadata["document_title"]
+    return [{"title": title, "url": url} for url, title in seen.items()]

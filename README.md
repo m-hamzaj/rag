@@ -73,6 +73,33 @@ correct answer, correct citation, and the retrieved-chunks panel showing
 the same similarity scores as the CLI and the standalone verification
 below.
 
+**Two more things on the page**, both there because "I don't know what to
+ask" turned out to be the real usability problem, not a retrieval bug:
+
+- **A sidebar corpus browser** — every indexed article's title, grouped
+  by source, with a filter box. Answers only ever come from what's
+  actually indexed; a refusal on a question about something genuinely
+  absent (jaguars in Brazil, say — checked for real, the corpus has zero
+  articles on it, only a passing citation-list mention and an unrelated
+  "not a jaguar, it's a jaguarundi" aside) is correct behavior, not a bug,
+  but a user has no way to know that without seeing what's actually
+  there. Backed by a new `db.list_documents()`, deduped from chunk
+  metadata.
+- **An "Add new articles to ask about" panel** — this project only
+  *answers* questions, it doesn't scrape (that's Day 3's job). Adding an
+  article is still two steps — push it into Day 1 via Day 3's crawler
+  dashboard (`localhost:8080`, "Crawl a URL") or `docker compose run --rm
+  crawler`, then click "Index new articles" here — but the second step no
+  longer needs a terminal, and it no longer means waiting on a full
+  corpus rebuild for one new article. `rag/ingest.py`'s new
+  `ingest_new_documents()` fetches Day 1's documents, diffs against
+  `list_documents()`'s URLs, and only chunks/embeds what's actually new.
+  Verified live end to end: pushed one real, previously-unindexed Audubon
+  article through Day 3's `crawl_urls()`, clicked "Index new articles"
+  (reported "Indexed 1 new article(s) into 1 chunks" — not 125), then
+  asked a question about that specific article and got a correct,
+  correctly-cited answer.
+
 ## How retrieval actually works
 
 No framework retriever, no vector-store abstraction — this is the whole
@@ -244,7 +271,7 @@ looks like.
 ## Tests
 
 ```bash
-docker compose --profile tools run --rm tests    # 61 tests, fully offline
+docker compose --profile tools run --rm tests    # 66 tests, fully offline
 ```
 
 Chunking (boundaries, overlap, no dropped words, config validation),
@@ -267,13 +294,13 @@ rag/
   config.py     chunk size, top-k, similarity threshold, model names -- all env-overridable
   chunk.py      word-based sliding-window chunker
   embed.py      fastembed wrapper (local, no API key)
-  db.py         ChromaDB schema + insert + similarity search -- the only storage-aware module
-  ingest.py     pulls every Day 1 document, chunks + embeds + stores it
+  db.py         ChromaDB schema + insert + similarity search + list_documents -- the only storage-aware module
+  ingest.py     ingest() = full rebuild; ingest_new_documents() = index only what's not indexed yet
   retrieve.py   embed question -> top-k search -> threshold filter
   generate.py   Groq call + [N]-citation-marker parsing
   ask.py        ties retrieve + generate together, handles both refusal paths
   cli.py        single-question and interactive modes
 ui/
   app.py        Streamlit dashboard -- thin wrapper around rag/ask.py, same logic as the CLI
-tests/          61 offline tests
+tests/          66 offline tests
 ```
