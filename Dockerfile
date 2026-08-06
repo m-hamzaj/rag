@@ -16,6 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --retries 10 --timeout 30 -r requirements.txt
 
 COPY rag/ ./rag/
+COPY ui/ ./ui/
 COPY tests/ ./tests/
 COPY pytest.ini .
 

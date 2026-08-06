@@ -12,6 +12,7 @@
 #      or just              docker compose run --rm ask python -m rag.cli   # interactive
 #      (the full "python -m rag.cli ..." is required -- `docker compose run`
 #      replaces the service's default command rather than appending to it)
+#   5) (in this project)    docker compose up -d ui   # dashboard at http://localhost:8082
 
 services:
   # ChromaDB -- originally Postgres/pgvector, per the brief; switched on
@@ -66,6 +67,23 @@ services:
       # would block every service, including ingest/tests, which don't
       # need a Groq key at all) -- rag/generate.py raises a clear error at
       # call time instead, only when an answer is actually being generated.
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_MODEL: ${GROQ_MODEL:-llama-3.3-70b-versatile}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  ui:
+    build: .
+    command: ["streamlit", "run", "ui/app.py", "--server.port=8080", "--server.address=0.0.0.0", "--server.headless=true"]
+    ports:
+      # Host port 8082 -- Day 1's API has 8000, this project's own Chroma
+      # has 8001, and Day 3's dashboard already claims 8080, so this one
+      # needs its own free slot to run alongside all three.
+      - "8082:8080"
+    environment:
+      CHROMA_HOST: db
+      CHROMA_PORT: "8000"
       GROQ_API_KEY: ${GROQ_API_KEY:-}
       GROQ_MODEL: ${GROQ_MODEL:-llama-3.3-70b-versatile}
     depends_on:

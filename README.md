@@ -43,12 +43,35 @@ docker compose run --rm ingest     # chunk + embed + store every Day 1 article
 docker compose run --rm ask python -m rag.cli "your question"
 # or, interactively:
 docker compose run --rm ask python -m rag.cli
+# or, a browser dashboard instead of the CLI:
+docker compose up -d ui             # http://localhost:8082
 ```
 
-`ingest` and `tests` need no API key at all — only `ask` (answer
-generation) does. The `python -m rag.cli ...` in the `ask` commands is
+`ingest` and `tests` need no API key at all — only `ask`/`ui` (answer
+generation) do. The `python -m rag.cli ...` in the `ask` commands is
 required in full — `docker compose run` replaces a service's default
 command rather than appending to it.
+
+## The interface (`docker compose up -d ui`)
+
+A small Streamlit page at `:8082` for asking questions without a
+terminal: a text box, an Ask button, the answer, and its source links.
+It's a thin wrapper around `rag/ask.py` — the same function the CLI
+calls — not a second implementation of retrieval; `ui/app.py` only calls
+into `rag/` and renders what comes back.
+
+The one thing it adds beyond the CLI: a "Why this answer" panel showing
+the actual chunks retrieval pulled back and their real similarity scores,
+so a refusal (or a shaky answer) is inspectable instead of a black box —
+directly useful given `SIMILARITY_THRESHOLD` is the real refusal
+mechanism (see "How retrieval actually works" below), not something to
+take on faith.
+
+Verified live: real question, real Chroma retrieval, real Groq call, via
+Streamlit's own `AppTest` harness against the actual running index —
+correct answer, correct citation, and the retrieved-chunks panel showing
+the same similarity scores as the CLI and the standalone verification
+below.
 
 ## How retrieval actually works
 
@@ -250,5 +273,7 @@ rag/
   generate.py   Groq call + [N]-citation-marker parsing
   ask.py        ties retrieve + generate together, handles both refusal paths
   cli.py        single-question and interactive modes
-tests/          60 offline tests
+ui/
+  app.py        Streamlit dashboard -- thin wrapper around rag/ask.py, same logic as the CLI
+tests/          61 offline tests
 ```
