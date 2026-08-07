@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run unit tests
+        # Entirely offline: Chroma and the embedding model are monkeypatched
+        # (fake client/collection classes, fake embed vectors), Groq calls
+        # are exercised through httpx.MockTransport. No corpus, no live
+        # Chroma server, no API key, no model download needed.
+        run: pytest -v
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t day4-rag .

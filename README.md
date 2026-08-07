@@ -1,5 +1,7 @@
 # Day 4 — RAG
 
+![CI](https://github.com/m-hamzaj/rag/actions/workflows/ci.yml/badge.svg)
+
 Question answering over Day 3's 125 scraped nature/wildlife/gardening
 articles. Chunks them, embeds the chunks, stores the vectors in ChromaDB.
 A question comes in, gets embedded, pulls the top matching chunks, and
