@@ -18,11 +18,22 @@ CHUNK_OVERLAP_WORDS = int(os.environ.get("CHUNK_OVERLAP_WORDS", 40))
 TOP_K = int(os.environ.get("TOP_K", 5))
 
 # Cosine similarity floor a chunk must clear to be considered "good
-# enough" evidence. Below this, the question gets refused with "I don't
-# know" instead of being answered from weak/irrelevant matches -- this is
-# the mechanism, not the LLM's judgment, that makes the refusal real
-# rather than a prompt-engineering suggestion the model can ignore.
+# enough" evidence for a DIRECT answer. Below this, the question isn't
+# answered as if the corpus covers it -- this is the mechanism, not the
+# LLM's judgment, that makes the refusal real rather than a
+# prompt-engineering suggestion the model can ignore.
 SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", 0.35))
+
+# A second, lower floor for "topically related, but not a direct match."
+# Below SIMILARITY_THRESHOLD but at or above this, a chunk isn't treated
+# as answering the question -- it's treated as background worth offering,
+# clearly labeled as such, instead of an outright refusal. Below THIS
+# floor, nothing in the corpus is even topically close, and that's the
+# only case that still gets a flat "I don't know." with no LLM call at
+# all. Calibrated against the same corpus SIMILARITY_THRESHOLD was: real
+# off-topic questions score up to ~0.2-0.3, on-topic ones 0.6+, so this
+# sits below the off-topic ceiling rather than inside it.
+RELATED_SIMILARITY_THRESHOLD = float(os.environ.get("RELATED_SIMILARITY_THRESHOLD", 0.20))
 
 # --- Embedding ------------------------------------------------------------
 # Local, free, no API key -- fastembed runs a small ONNX model entirely on

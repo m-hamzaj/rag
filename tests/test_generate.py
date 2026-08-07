@@ -2,7 +2,7 @@ import httpx
 import pytest
 
 from rag import generate as generate_module
-from rag.generate import _build_prompt, _cited_indices, generate_answer
+from rag.generate import _build_prompt, _build_related_prompt, _cited_indices, generate_answer
 
 _CHUNKS = [
     {"document_url": "https://x/1", "document_title": "Article One", "chunk_index": 0, "text": "chunk one text"},
@@ -16,6 +16,106 @@ def test_build_prompt_numbers_excerpts_from_one():
     assert "[2] (from \"Article Two\")" in prompt
     assert "chunk one text" in prompt
     assert "Question: What?" in prompt
+
+
+def test_system_prompt_tells_the_model_excerpts_are_untrusted_not_instructions():
+    prompt = generate_module._SYSTEM_PROMPT.lower()
+    assert "untrusted" in prompt
+    assert "never" in prompt and "instructions" in prompt
+
+
+def test_system_prompt_names_the_injection_pattern_it_must_refuse():
+    # Not just a vague "be careful" -- names the actual attack shape
+    # (a scraped article claiming to be a system/developer message) so the
+    # model has a concrete pattern to recognize, not just a mood.
+    prompt = generate_module._SYSTEM_PROMPT.lower()
+    assert "ignore previous instructions" in prompt or "role-play" in prompt
+
+
+def test_build_prompt_wraps_each_excerpt_in_delimiters():
+    prompt = _build_prompt("What?", _CHUNKS)
+    # </excerpt> is unambiguous (only the closing tags -- the trailing
+    # reminder sentence only mentions the opening form in prose).
+    assert prompt.count("</excerpt>") == len(_CHUNKS)
+    # The chunk text must be INSIDE the tags, not just present somewhere.
+    start = prompt.index("<excerpt>")
+    end = prompt.index("</excerpt>")
+    assert "chunk one text" in prompt[start:end]
+
+
+def test_build_prompt_reminds_the_model_excerpts_are_untrusted_right_before_the_question():
+    prompt = _build_prompt("What?", _CHUNKS)
+    reminder_pos = prompt.lower().index("untrusted reference material")
+    question_pos = prompt.index("Question: What?")
+    last_excerpt_pos = prompt.rindex("</excerpt>")
+    # Sandwiched: after the last excerpt, before the question -- not just
+    # present anywhere in the prompt.
+    assert last_excerpt_pos < reminder_pos < question_pos
+
+
+# --- The related-tier prompt: caveated background answer, used when
+# retrieval found nothing that clears SIMILARITY_THRESHOLD but something
+# clears RELATED_SIMILARITY_THRESHOLD.
+
+def test_related_system_prompt_requires_the_caveat_and_forbids_inventing_specifics():
+    prompt = generate_module._RELATED_SYSTEM_PROMPT.lower()
+    assert "does not directly answer" in prompt or "doesn't directly" in prompt
+    assert "invent" in prompt or "do not invent" in prompt
+
+
+def test_related_system_prompt_still_carries_the_injection_guard():
+    # Hardening against embedded instructions must not be dropped just
+    # because this is the "softer" prompt.
+    prompt = generate_module._RELATED_SYSTEM_PROMPT.lower()
+    assert "untrusted" in prompt
+    assert "ignore previous instructions" in prompt or "role-play" in prompt
+
+
+def test_related_system_prompt_still_allows_a_refusal_if_truly_nothing_useful():
+    prompt = generate_module._RELATED_SYSTEM_PROMPT.lower()
+    assert "i don't know" in prompt
+
+
+def test_build_related_prompt_labels_excerpts_as_not_a_direct_match():
+    prompt = _build_related_prompt("What?", _CHUNKS)
+    assert "not a direct match" in prompt.lower()
+    assert "chunk one text" in prompt
+    assert "Question: What?" in prompt
+
+
+def test_generate_answer_uses_the_related_prompt_and_system_message_when_flagged(monkeypatch):
+    monkeypatch.setattr(generate_module, "GROQ_API_KEY", "fake-key")
+    captured = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        import json
+        captured["body"] = json.loads(request.content)
+        return httpx.Response(200, json={"choices": [{"message": {"content": "not directly, but [1]"}}]})
+
+    _patch_groq_response(monkeypatch, handler)
+
+    generate_answer("q?", _CHUNKS, related=True)
+
+    system_msg = captured["body"]["messages"][0]["content"]
+    user_msg = captured["body"]["messages"][1]["content"]
+    assert system_msg == generate_module._RELATED_SYSTEM_PROMPT
+    assert "not a direct match" in user_msg.lower()
+
+
+def test_generate_answer_uses_the_direct_prompt_by_default(monkeypatch):
+    monkeypatch.setattr(generate_module, "GROQ_API_KEY", "fake-key")
+    captured = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        import json
+        captured["body"] = json.loads(request.content)
+        return httpx.Response(200, json={"choices": [{"message": {"content": "X [1]"}}]})
+
+    _patch_groq_response(monkeypatch, handler)
+
+    generate_answer("q?", _CHUNKS)  # related not passed -> defaults False
+
+    assert captured["body"]["messages"][0]["content"] == generate_module._SYSTEM_PROMPT
 
 
 def test_cited_indices_parses_bracket_markers():

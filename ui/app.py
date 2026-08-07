@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import streamlit as st
 
 from rag.ask import ask
-from rag.config import GROQ_API_KEY, SIMILARITY_THRESHOLD, TOP_K
+from rag.config import GROQ_API_KEY, RELATED_SIMILARITY_THRESHOLD, SIMILARITY_THRESHOLD, TOP_K
 from rag.db import count_chunks, list_documents
 from rag.ingest import ingest_new_documents
 from rag.retrieve import retrieve
@@ -109,15 +109,23 @@ if ask_clicked and question.strip():
 
     with st.expander("Why this answer -- retrieved chunks and similarity scores"):
         st.caption(
-            f"TOP_K={TOP_K}, SIMILARITY_THRESHOLD={SIMILARITY_THRESHOLD} -- chunks below "
-            "the threshold are dropped before the LLM ever sees them (the refusal mechanism)."
+            f"TOP_K={TOP_K}, SIMILARITY_THRESHOLD={SIMILARITY_THRESHOLD}, "
+            f"RELATED_SIMILARITY_THRESHOLD={RELATED_SIMILARITY_THRESHOLD} -- chunks below the "
+            "related floor never reach the LLM at all; chunks between the two floors get a "
+            "caveated related-background answer instead of a direct one."
         )
-        chunks = retrieve(question)
-        if not chunks:
-            st.write("Nothing cleared the similarity threshold -- this is why it refused, if it did.")
-        else:
-            for c in chunks:
+        retrieved = retrieve(question)
+        if retrieved["accepted"]:
+            st.markdown("**Accepted -- used for a direct answer:**")
+            for c in retrieved["accepted"]:
                 st.markdown(f"**{c['similarity']:.3f}** — {c['document_title']}")
                 st.text(c["text"][:300] + ("..." if len(c["text"]) > 300 else ""))
+        if retrieved["related"]:
+            st.markdown("**Related -- used for a caveated background answer, if accepted was empty:**")
+            for c in retrieved["related"]:
+                st.markdown(f"**{c['similarity']:.3f}** — {c['document_title']}")
+                st.text(c["text"][:300] + ("..." if len(c["text"]) > 300 else ""))
+        if not retrieved["accepted"] and not retrieved["related"]:
+            st.write("Nothing cleared even the related-topic floor -- this is why it refused, if it did.")
 elif ask_clicked:
     st.warning("Enter a question first.")

@@ -7,6 +7,12 @@ from rag.retrieve import retrieve
 
 NO_ANSWER = "I don't know."
 
+# Prepended to a related-tier answer so it's unmistakable at a glance --
+# not just relying on the model remembering its own instruction to say so
+# in prose. Same reasoning as SIMILARITY_THRESHOLD itself: don't leave a
+# thing this important to a prompt instruction alone.
+_RELATED_PREFIX = "*Related, not a direct answer:* "
+
 
 def _is_refusal(answer: str) -> bool:
     normalized = answer.strip().rstrip(".").lower()
@@ -31,21 +37,36 @@ def _dedupe_citations(chunks: list[dict]) -> list[dict]:
 def ask(question: str) -> dict:
     """Returns {"answer": str, "citations": [{"title", "url"}, ...]}.
 
-    Refuses in two different ways, both landing on the same "I don't
-    know." with no citations:
-      1. Nothing retrieved clears the similarity threshold -- refused
-         before the LLM is ever called. This is the primary mechanism:
-         the refusal is enforced by retrieval, not left to the model's
-         judgment on a prompt instruction it could ignore.
-      2. Retrieval found plausible-looking chunks, but the LLM itself
-         decided they don't actually answer the question, and said so.
+    Three tiers, checked in order:
+      1. ACCEPTED chunks (clear SIMILARITY_THRESHOLD) -- answer directly.
+         Still refuses ("I don't know.") if the LLM itself decides these
+         plausible-looking chunks don't actually answer the question.
+      2. No accepted chunks, but RELATED ones (clear the lower
+         RELATED_SIMILARITY_THRESHOLD) -- topically close but not a
+         direct match. Answered with a caveated background reply
+         (prefixed so the distinction is visible, not just stated in
+         prose the model could omit), grounded only in those chunks.
+         Still refuses if even the related chunks turn out useless.
+      3. Neither -- nothing in the corpus is even topically close.
+         Refused before the LLM is ever called at all. This is the only
+         remaining case where the refusal is enforced by retrieval
+         rather than left to the model's judgment.
     """
     chunks = retrieve(question)
-    if not chunks:
-        return {"answer": NO_ANSWER, "citations": []}
 
-    result = generate_answer(question, chunks)
-    if _is_refusal(result["answer"]):
-        return {"answer": result["answer"], "citations": []}
+    if chunks["accepted"]:
+        result = generate_answer(question, chunks["accepted"])
+        if _is_refusal(result["answer"]):
+            return {"answer": result["answer"], "citations": []}
+        return {"answer": result["answer"], "citations": _dedupe_citations(result["citations"])}
 
-    return {"answer": result["answer"], "citations": _dedupe_citations(result["citations"])}
+    if chunks["related"]:
+        result = generate_answer(question, chunks["related"], related=True)
+        if _is_refusal(result["answer"]):
+            return {"answer": result["answer"], "citations": []}
+        return {
+            "answer": _RELATED_PREFIX + result["answer"],
+            "citations": _dedupe_citations(result["citations"]),
+        }
+
+    return {"answer": NO_ANSWER, "citations": []}
