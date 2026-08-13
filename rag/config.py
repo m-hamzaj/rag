@@ -30,10 +30,20 @@ SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", 0.35))
 # clearly labeled as such, instead of an outright refusal. Below THIS
 # floor, nothing in the corpus is even topically close, and that's the
 # only case that still gets a flat "I don't know." with no LLM call at
-# all. Calibrated against the same corpus SIMILARITY_THRESHOLD was: real
-# off-topic questions score up to ~0.2-0.3, on-topic ones 0.6+, so this
-# sits below the off-topic ceiling rather than inside it.
-RELATED_SIMILARITY_THRESHOLD = float(os.environ.get("RELATED_SIMILARITY_THRESHOLD", 0.20))
+# all.
+#
+# 0.20 -> 0.33, MEASURED against the Day 5 eval set (data/eval_set.json),
+# not guessed. The original 0.20 was calibrated from a handful of ad-hoc
+# probes; the real eval set showed it was too permissive -- 3 completely
+# off-topic questions (F1's current champion, Lebanon's capital, Travis
+# Scott's music: 0.230-0.317) all cleared it and got a rambling "related,
+# not a direct answer" reply instead of a clean refusal. 0.33 is the
+# smallest change that pushes all three below the floor while still
+# preserving a real (if narrow, 0.33-0.35) related-answer band -- raising
+# it all the way to SIMILARITY_THRESHOLD would have "fixed" this by
+# deleting the related tier entirely, defeating the reason it exists.
+# Re-verify against RESULTS.md after any corpus or embedding-model change.
+RELATED_SIMILARITY_THRESHOLD = float(os.environ.get("RELATED_SIMILARITY_THRESHOLD", 0.33))
 
 # --- Embedding ------------------------------------------------------------
 # Local, free, no API key -- fastembed runs a small ONNX model entirely on
