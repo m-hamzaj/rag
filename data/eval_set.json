@@ -1,0 +1,163 @@
+[
+  {
+    "id": 1,
+    "question": "What exactly is a yeti carab?",
+    "expect_article_ids": ["https://blog.nature.org/2024/05/29/7-strange-species-from-the-oceans-depths"],
+    "must_contain": ["Kiwa"],
+    "type": "single"
+  },
+  {
+    "id": 2,
+    "question": "What does a Greenland shark look like?",
+    "expect_article_ids": ["https://blog.nature.org/2024/05/29/7-strange-species-from-the-oceans-depths"],
+    "must_contain": ["zombie"],
+    "type": "single"
+  },
+  {
+    "id": 3,
+    "question": "How to identify a Beaver?",
+    "expect_article_ids": ["https://blog.nature.org/2021/04/12/beaver-otter-muskrat-a-field-guide-to-freshwater-mammals"],
+    "must_contain": ["paddle-shaped"],
+    "type": "single"
+  },
+  {
+    "id": 4,
+    "question": "American mink belongs to which family?",
+    "expect_article_ids": ["https://blog.nature.org/2021/04/12/beaver-otter-muskrat-a-field-guide-to-freshwater-mammals"],
+    "must_contain": ["weasel family"],
+    "type": "single"
+  },
+  {
+    "id": 5,
+    "question": "who's the Jemima Sánchez?",
+    "expect_article_ids": ["https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve"],
+    "must_contain": ["park ranger"],
+    "type": "single"
+  },
+  {
+    "id": 6,
+    "question": "what it does mean by biodiversity?",
+    "expect_article_ids": ["https://blog.nature.org/2024/08/25/backyard-bioblitz-how-to-be-a-citizen-scientist-in-your-backyard"],
+    "must_contain": ["variety of life"],
+    "type": "vague"
+  },
+  {
+    "id": 7,
+    "question": "what are the 2 myths about the Grizzly bear",
+    "expect_article_ids": ["https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted"],
+    "must_contain": ["2,000"],
+    "type": "single"
+  },
+  {
+    "id": 8,
+    "question": "Approximately how many of rice whales are present on planet today?",
+    "expect_article_ids": [
+      "https://defenders.org/blog/2026/03/opinion-unprecedented-god-squad-meeting-could-push-gulf-species-toward-extinction",
+      "https://defenders.org/blog/2026/05/opinion-playing-god-gulf-and-rare-whales-right-exist"
+    ],
+    "must_contain": ["51"],
+    "type": "single"
+  },
+  {
+    "id": 9,
+    "question": "do you happen to know who’s holding the F1 world title right now?",
+    "expect_article_ids": [],
+    "must_contain": [],
+    "type": "unanswerable"
+  },
+  {
+    "id": 10,
+    "question": "could you remind me what city is the heart of Lebanon?",
+    "expect_article_ids": [],
+    "must_contain": [],
+    "type": "unanswerable"
+  },
+  {
+    "id": 11,
+    "question": "what kind of vibes does Travis Scott put into his music?",
+    "expect_article_ids": [],
+    "must_contain": [],
+    "type": "unanswerable"
+  },
+  {
+    "id": 12,
+    "question": "What is current price of crude oil?",
+    "expect_article_ids": [],
+    "must_contain": [],
+    "type": "unanswerable"
+  },
+  {
+    "id": 13,
+    "question": "what is best way to make hummingbird syrup at home?",
+    "expect_article_ids": ["https://www.audubon.org/news/how-make-hummingbird-nectar"],
+    "must_contain": ["1/4 cup"],
+    "type": "vague"
+  },
+  {
+    "id": 14,
+    "question": "How I can start tomatoes early if i lives somewhere cold?",
+    "expect_article_ids": [
+      "https://www.epicgardening.com/tomato-grow-faster",
+      "https://www.epicgardening.com/vegetable-garden-mistakes"
+    ],
+    "must_contain": ["harden off", "frost blankets"],
+    "type": "multi"
+  },
+  {
+    "id": 15,
+    "question": "what are the benefits of raised bed and what kind of flowers we can grow in it?",
+    "expect_article_ids": [
+      "https://www.epicgardening.com/raised-bed-benefits",
+      "https://www.epicgardening.com/flowers-for-raised-beds"
+    ],
+    "must_contain": ["soil health", "Snapdragon"],
+    "type": "multi"
+  },
+  {
+    "id": 16,
+    "question": "How india is rising the number of tigers? And How we can reintroduce tigers to the Cambodia?",
+    "expect_article_ids": [
+      "https://news.mongabay.com/2026/07/indias-tiger-numbers-are-rising-protecting-their-pathways-is-next",
+      "https://news.mongabay.com/2026/06/bengal-tigers-in-cambodia-reintroduction-plan-raises-questions"
+    ],
+    "must_contain": ["wildlife underpasses", "Cardamom Mountains"],
+    "type": "multi"
+  },
+  {
+    "id": 17,
+    "question": "How national park in nepal raised questions and how often an harpy eagle attacks on humans?",
+    "expect_article_ids": [
+      "https://news.mongabay.com/2026/08/nepals-newest-national-parks-drive-tiger-recovery-but-new-concerns-arise",
+      "https://news.mongabay.com/2026/07/can-harpy-eagles-attack-humans-amazon-case-rekindles-scientific-debate"
+    ],
+    "must_contain": ["429", "rare"],
+    "type": "multi"
+  },
+  {
+    "id": 18,
+    "question": "How did wolves in the Northwest go extinct and how are they tracked today?",
+    "expect_article_ids": [
+      "https://defenders.org/blog/2026/04/history-of-wolves-northwest",
+      "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
+    ],
+    "must_contain": ["trapping", "breeding pairs"],
+    "type": "multi"
+  },
+  {
+    "id": 19,
+    "question": "What is being done to help the sage grouse and what other animals depend on sagebrush?",
+    "expect_article_ids": [
+      "https://www.audubon.org/news/whats-next-greater-sage-grouse",
+      "https://defenders.org/blog/2026/05/sagebrush-sea-disappearing-science-shows-potential-path-forward"
+    ],
+    "must_contain": ["Resource Management Plans", "pygmy rabbit"],
+    "type": "multi"
+  },
+  {
+    "id": 20,
+    "question": "how tell raven from crow tail",
+    "expect_article_ids": ["https://www.audubon.org/news/how-tell-raven-crow"],
+    "must_contain": ["wedge-shaped"],
+    "type": "vague"
+  }
+]
