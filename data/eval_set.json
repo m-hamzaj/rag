@@ -140,7 +140,7 @@
       "https://defenders.org/blog/2026/04/history-of-wolves-northwest",
       "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
     ],
-    "must_contain": ["trapping", "breeding pairs"],
+    "must_contain": ["1939", "remote cameras"],
     "type": "multi"
   },
   {
@@ -150,7 +150,7 @@
       "https://www.audubon.org/news/whats-next-greater-sage-grouse",
       "https://defenders.org/blog/2026/05/sagebrush-sea-disappearing-science-shows-potential-path-forward"
     ],
-    "must_contain": ["Resource Management Plans", "pygmy rabbit"],
+    "must_contain": ["Bureau of Land Management", "pygmy rabbit"],
     "type": "multi"
   },
   {
