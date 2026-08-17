@@ -100,7 +100,7 @@
       "https://www.epicgardening.com/tomato-grow-faster",
       "https://www.epicgardening.com/vegetable-garden-mistakes"
     ],
-    "must_contain": ["harden off", "frost blankets"],
+    "must_contain": ["4-6 weeks", "harden off"],
     "type": "multi"
   },
   {
@@ -110,7 +110,7 @@
       "https://www.epicgardening.com/raised-bed-benefits",
       "https://www.epicgardening.com/flowers-for-raised-beds"
     ],
-    "must_contain": ["soil health", "Snapdragon"],
+    "must_contain": ["Snapdragon", "drainage"],
     "type": "multi"
   },
   {
@@ -120,7 +120,7 @@
       "https://news.mongabay.com/2026/07/indias-tiger-numbers-are-rising-protecting-their-pathways-is-next",
       "https://news.mongabay.com/2026/06/bengal-tigers-in-cambodia-reintroduction-plan-raises-questions"
     ],
-    "must_contain": ["wildlife underpasses", "Cardamom Mountains"],
+    "must_contain": ["1973", "Cardamom Mountains"],
     "type": "multi"
   },
   {
@@ -130,7 +130,7 @@
       "https://news.mongabay.com/2026/08/nepals-newest-national-parks-drive-tiger-recovery-but-new-concerns-arise",
       "https://news.mongabay.com/2026/07/can-harpy-eagles-attack-humans-amazon-case-rekindles-scientific-debate"
     ],
-    "must_contain": ["429", "rare"],
+    "must_contain": ["leopards", "rare"],
     "type": "multi"
   },
   {
