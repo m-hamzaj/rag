@@ -62,6 +62,19 @@ generation) do. The `python -m rag.cli ...` in the `ask` commands is
 required in full — `docker compose run` replaces a service's default
 command rather than appending to it.
 
+**After changing anything under `rag/`, rebuild before trusting a live
+run.** `docker compose build tests` (or `up`/`run` on any single service)
+only rebuilds *that* service's image — `ingest`, `ask`, `ui`, and `tests`
+each get their own image from the same `Dockerfile`, and Compose does not
+rebuild one because another changed. Found the hard way during Day 5:
+`tests` was rebuilt after a citation-parsing fix, `ask`/`ui` weren't, and
+the CLI kept silently running the pre-fix code for an entire session —
+answers looked fine, but every citation list quietly included every
+retrieved chunk instead of just the ones the model actually cited. Nothing
+in Compose surfaces that mismatch; it only shows up as behavior that's
+subtly wrong. If in doubt, `docker compose build` (no service name)
+rebuilds all of them.
+
 ## The interface (`docker compose up -d ui`)
 
 A small Streamlit page at `:8082` for asking questions without a
