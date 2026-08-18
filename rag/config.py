@@ -69,7 +69,7 @@ FASTEMBED_CACHE_DIR = os.environ.get("FASTEMBED_CACHE_DIR", "/app/.fastembed_cac
 # but generating fluent prose from retrieved chunks is a job for an LLM,
 # not something worth reimplementing.
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
 
 # --- Storage ----------------------------------------------------------
 # ChromaDB, run as its own server container -- separate from Day 1's

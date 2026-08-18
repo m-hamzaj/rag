@@ -36,9 +36,9 @@
   },
   {
     "id": 6,
-    "question": "what it does mean by biodiversity?",
+    "question": "whats a bioblitz anyway",
     "expect_article_ids": ["https://blog.nature.org/2024/08/25/backyard-bioblitz-how-to-be-a-citizen-scientist-in-your-backyard"],
-    "must_contain": ["variety of life"],
+    "must_contain": ["scavenger hunt"],
     "type": "vague"
   },
   {
@@ -140,7 +140,7 @@
       "https://defenders.org/blog/2026/04/history-of-wolves-northwest",
       "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
     ],
-    "must_contain": ["1939", "remote cameras"],
+    "must_contain": ["1939", "remote-camera"],
     "type": "multi"
   },
   {

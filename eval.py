@@ -93,12 +93,42 @@ def _top_ranked_articles(question: str, limit: int = 5) -> list[str]:
     return seen
 
 
+# Punctuation variants observed live from real model output that are
+# semantically identical to their ASCII form but fail a literal substring
+# match against it -- found the hard way: "paddle-shaped" (ASCII hyphen,
+# U+002D) in must_contain never matched "paddle‑shaped" (non-breaking
+# hyphen, U+2011) in an otherwise-correct answer from openai/gpt-oss-120b.
+# Different models make different typographic choices (this one alone was
+# enough to silently fail a question), so this is normalized on BOTH sides
+# of the comparison rather than special-cased per must_contain phrase --
+# the same fix covers any future phrase, not just the one that caught it.
+_PUNCTUATION_NORMALIZATION = str.maketrans({
+    "‐": "-", "‑": "-", "‒": "-", "–": "-", "—": "-",  # hyphens/dashes
+    "‘": "'", "’": "'",  # single curly quotes
+    "“": '"', "”": '"',  # double curly quotes
+    "¼": "1/4", "½": "1/2", "¾": "3/4",  # vulgar fractions -- "1/4 cup"
+    "⅓": "1/3", "⅔": "2/3",              # never matched "¼ cup" otherwise,
+    "⅛": "1/8", "⅜": "3/8", "⅝": "5/8", "⅞": "7/8",  # same class of bug.
+    " ": " ",  # non-breaking space
+    " ": " ",  # narrow no-break space -- openai/gpt-oss-120b's
+    # preferred separator between a number and its unit ("4-6 weeks",
+    # "1/4 cup"), distinct from U+00A0 above and missed by it: found via
+    # Q13/Q14 both failing must_contain on an answer that was actually
+    # correct, same failure mode the rest of this table exists to close.
+})
+
+
+def _normalize(text: str) -> str:
+    return text.translate(_PUNCTUATION_NORMALIZATION).lower()
+
+
 def _answer_is_correct(entry: dict, answer: str) -> bool:
     """See the module docstring for why unanswerable questions are scored
     against refusal rather than must_contain (which is empty for them)."""
     if entry["type"] == "unanswerable":
         return _is_refusal(answer)
-    return all(phrase.lower() in answer.lower() for phrase in entry["must_contain"])
+    normalized_answer = _normalize(answer)
+    return all(_normalize(phrase) in normalized_answer for phrase in entry["must_contain"])
 
 
 def run_eval() -> None:

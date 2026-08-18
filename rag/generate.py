@@ -95,14 +95,24 @@ def _build_related_prompt(question: str, chunks: list[dict]) -> str:
     )
 
 
+# Citation markers actually observed from GROQ_MODEL, not just the [N] form
+# the prompt asks for: 【1】 and 【1†L1-L4】 (CJK brackets, sometimes with a
+# trailing line-range) show up even when the prompt explicitly requests
+# ASCII brackets -- confirmed live on openai/gpt-oss-120b. Matching only
+# "[N]" silently drops every citation on an otherwise-correct answer,
+# which falls back to citing every chunk instead of just the ones used --
+# a real bug, not a hypothetical, so both forms are matched here.
+_CITATION_PATTERN = re.compile(r"[\[【]\s*(\d+)\s*(?:†[^\]】]*)?[\]】]")
+
+
 def _cited_indices(answer: str, n_chunks: int) -> set[int]:
-    """Parses [N] markers from the answer text, keeping only ones that
+    """Parses citation markers from the answer text, keeping only ones that
     correspond to a real, provided chunk (1-indexed). An answer with no
     markers at all falls back to citing every retrieved chunk -- silently
     dropping attribution the reader has no way to recover is worse than
     over-citing.
     """
-    found = {int(n) for n in re.findall(r"\[(\d+)\]", answer)}
+    found = {int(n) for n in _CITATION_PATTERN.findall(answer)}
     valid = {n for n in found if 1 <= n <= n_chunks}
     if not valid:
         return set(range(1, n_chunks + 1))

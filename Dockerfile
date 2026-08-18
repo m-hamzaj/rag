@@ -19,6 +19,8 @@ COPY rag/ ./rag/
 COPY ui/ ./ui/
 COPY tests/ ./tests/
 COPY pytest.ini .
+COPY eval.py .
+COPY data/ ./data/
 
 # Downloads the embedding model's ONNX weights into FASTEMBED_CACHE_DIR at
 # build time (as root, before the chown below) rather than on first real

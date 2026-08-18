@@ -127,6 +127,24 @@ def test_cited_indices_ignores_out_of_range_markers():
     assert _cited_indices("See [1] and [99].", n_chunks=2) == {1}
 
 
+def test_cited_indices_parses_cjk_bracket_markers():
+    # Observed live from openai/gpt-oss-120b: it emits 【N】 even when the
+    # prompt explicitly asks for [N]. Missing this form doesn't error --
+    # it silently falls back to "cite everything", which is why this is
+    # a real regression test, not a hypothetical.
+    assert _cited_indices("The tail is paddle-shaped【2】.", n_chunks=3) == {2}
+
+
+def test_cited_indices_parses_cjk_bracket_markers_with_line_range_suffix():
+    # Also observed live: 【1†L1-L4】, a CJK marker with a trailing
+    # line-range annotation the model sometimes adds.
+    assert _cited_indices("See the source【1†L1-L4】 for details.", n_chunks=2) == {1}
+
+
+def test_cited_indices_handles_mixed_ascii_and_cjk_markers_in_one_answer():
+    assert _cited_indices("First [1], then 【2】.", n_chunks=2) == {1, 2}
+
+
 def test_cited_indices_falls_back_to_all_chunks_when_no_markers_found():
     assert _cited_indices("An answer with no citation markers at all.", n_chunks=3) == {1, 2, 3}
 

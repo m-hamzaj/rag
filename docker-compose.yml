@@ -68,7 +68,7 @@ services:
       # need a Groq key at all) -- rag/generate.py raises a clear error at
       # call time instead, only when an answer is actually being generated.
       GROQ_API_KEY: ${GROQ_API_KEY:-}
-      GROQ_MODEL: ${GROQ_MODEL:-llama-3.3-70b-versatile}
+      GROQ_MODEL: ${GROQ_MODEL:-openai/gpt-oss-120b}
     depends_on:
       db:
         condition: service_healthy
@@ -85,7 +85,7 @@ services:
       CHROMA_HOST: db
       CHROMA_PORT: "8000"
       GROQ_API_KEY: ${GROQ_API_KEY:-}
-      GROQ_MODEL: ${GROQ_MODEL:-llama-3.3-70b-versatile}
+      GROQ_MODEL: ${GROQ_MODEL:-openai/gpt-oss-120b}
     depends_on:
       db:
         condition: service_healthy
