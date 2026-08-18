@@ -1,6 +1,14 @@
-# Day 4 — RAG
+# Day 4–5 — RAG, then evaluating it
 
 ![CI](https://github.com/m-hamzaj/rag/actions/workflows/ci.yml/badge.svg)
+
+**Day 4** builds a RAG pipeline over Day 3's 125 scraped
+nature/wildlife/gardening articles. **Day 5** measures it against a
+hand-written 20-question eval set instead of guessing at quality — see
+"Day 5 — Evaluation" below and `RESULTS.md` for the numbers. Both live in
+this one project because Day 5 tests Day 4's code directly (`eval.py`
+imports `rag/` the same way the CLI and UI do); it was never a standalone
+system the way Day 1's API or Day 3's crawler are.
 
 Question answering over Day 3's 125 scraped nature/wildlife/gardening
 articles. Chunks them, embeds the chunks, stores the vectors in ChromaDB.
@@ -250,9 +258,9 @@ only produce a bad *answer*, not an action.
 | `CHUNK_OVERLAP_WORDS` | 40 | shared words between consecutive chunks |
 | `TOP_K` | 5 | chunks pulled per query |
 | `SIMILARITY_THRESHOLD` | 0.35 | minimum cosine similarity to count as a direct answer |
-| `RELATED_SIMILARITY_THRESHOLD` | 0.20 | minimum cosine similarity to count as topically related background |
+| `RELATED_SIMILARITY_THRESHOLD` | 0.33 | minimum cosine similarity to count as topically related background |
 | `EMBEDDING_MODEL_NAME` | `sentence-transformers/all-MiniLM-L6-v2` | fastembed model |
-| `GROQ_MODEL` | `llama-3.3-70b-versatile` | generation model |
+| `GROQ_MODEL` | `openai/gpt-oss-120b` | generation model — `llama-3.3-70b-versatile` was removed from Groq's catalog entirely; see `RESULTS.md` for what the switch broke and how it was fixed |
 
 All env-overridable, none hardcoded into `chunk.py`/`retrieve.py` directly.
 
@@ -355,10 +363,30 @@ value worth re-checking if `TOP_K` or the chunking config change later
 this week, since a different chunk size shifts what "typical" similarity
 looks like.
 
+## Day 5 — Evaluation
+
+`eval.py` runs a hand-written 20-question set (`data/eval_set.json`)
+against the live corpus and grades real retrieval + real generation, not
+mocks — the same measurement discipline as "Real verification" above, but
+repeatable and diffable run to run instead of a handful of one-off
+examples.
+
+```bash
+docker compose up -d db
+cp .env.example .env               # fill in GROQ_API_KEY
+docker compose run --rm -e CHROMA_HOST=db -e CHROMA_PORT=8000 tests python eval.py
+```
+
+Current confirmed baseline: **18/20 (90%) Answer correct**, 15/16 (94%)
+Top-1 and Top-5. Full tuning history, what each fix actually changed, and
+why two remaining gaps are left as principled behavior rather than forced
+passes — all in `RESULTS.md`, not summarized here since it changes with
+every re-run.
+
 ## Tests
 
 ```bash
-docker compose --profile tools run --rm tests    # 80 tests, fully offline
+docker compose --profile tools run --rm tests    # 94 tests, fully offline
 ```
 
 Chunking (boundaries, overlap, no dropped words, config validation),
@@ -389,5 +417,6 @@ rag/
   cli.py        single-question and interactive modes
 ui/
   app.py        Streamlit dashboard -- thin wrapper around rag/ask.py, same logic as the CLI
-tests/          66 offline tests
+tests/          94 offline tests
+eval.py         Day 5 -- live eval against the real corpus, see RESULTS.md
 ```
