@@ -45,6 +45,13 @@ SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", 0.35))
 # Re-verify against RESULTS.md after any corpus or embedding-model change.
 RELATED_SIMILARITY_THRESHOLD = float(os.environ.get("RELATED_SIMILARITY_THRESHOLD", 0.33))
 
+# Day 6 -- which ranking strategy retrieve() uses. "vector" is the only
+# mode Day 4/5 ever measured; "keyword" and "hybrid" are new. Regardless of
+# mode, accepted/related gating below still runs on real cosine similarity
+# (see rag/retrieve.py) so SIMILARITY_THRESHOLD/RELATED_SIMILARITY_THRESHOLD
+# stay meaningful across all three -- only the *ranking order* changes.
+RETRIEVAL_MODE = os.environ.get("RETRIEVAL_MODE", "vector")
+
 # --- Embedding ------------------------------------------------------------
 # Local, free, no API key -- fastembed runs a small ONNX model entirely on
 # CPU (no torch, unlike sentence-transformers directly -- meaningfully

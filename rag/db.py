@@ -123,6 +123,33 @@ def count_chunks() -> int:
     return _get_collection().count()
 
 
+def get_all_chunks() -> list[dict]:
+    """Returns every stored chunk, embedding included:
+    [{"document_url", "document_title", "chunk_index", "text", "embedding"}, ...].
+
+    Day 6 -- keyword search (rag/keyword_search.py) needs the full corpus's
+    text in memory once to build a BM25 index, and hybrid retrieval needs
+    real embeddings on hand to compute exact cosine similarity for a
+    keyword-only hit that vector search's own top-k never surfaced (see
+    rag/retrieve.py's threshold gating). One full-corpus fetch per process,
+    not a per-query round trip either way.
+    """
+    collection = _get_collection()
+    result = collection.get(include=["metadatas", "documents", "embeddings"])
+    chunks = []
+    for metadata, text, embedding in zip(result["metadatas"], result["documents"], result["embeddings"]):
+        chunks.append(
+            {
+                "document_url": metadata["document_url"],
+                "document_title": metadata["document_title"],
+                "chunk_index": metadata["chunk_index"],
+                "text": text,
+                "embedding": embedding,
+            }
+        )
+    return chunks
+
+
 def list_documents() -> list[dict]:
     """Returns one entry per distinct source article currently indexed:
     {"title": ..., "url": ...}. Deduped from chunk metadata rather than

@@ -7,6 +7,12 @@ from rag.retrieve import retrieve
 
 NO_ANSWER = "I don't know."
 
+# Every ask() return dict carries "usage" now (Day 6 -- eval.py needs real
+# token counts for $/run cost tracking). The two fast-refusal paths below
+# never call the LLM, so their usage is genuinely zero, not "unknown" --
+# this is that zero, not a placeholder.
+_ZERO_USAGE = {"prompt_tokens": 0, "completion_tokens": 0}
+
 # Prepended to a related-tier answer so it's unmistakable at a glance --
 # not just relying on the model remembering its own instruction to say so
 # in prose. Same reasoning as SIMILARITY_THRESHOLD itself: don't leave a
@@ -35,7 +41,7 @@ def _dedupe_citations(chunks: list[dict]) -> list[dict]:
 
 
 def ask(question: str) -> dict:
-    """Returns {"answer": str, "citations": [{"title", "url"}, ...]}.
+    """Returns {"answer": str, "citations": [{"title", "url"}, ...], "usage": {"prompt_tokens", "completion_tokens"}}.
 
     Three tiers, checked in order:
       1. ACCEPTED chunks (clear SIMILARITY_THRESHOLD) -- answer directly.
@@ -57,16 +63,21 @@ def ask(question: str) -> dict:
     if chunks["accepted"]:
         result = generate_answer(question, chunks["accepted"])
         if _is_refusal(result["answer"]):
-            return {"answer": result["answer"], "citations": []}
-        return {"answer": result["answer"], "citations": _dedupe_citations(result["citations"])}
+            return {"answer": result["answer"], "citations": [], "usage": result["usage"]}
+        return {
+            "answer": result["answer"],
+            "citations": _dedupe_citations(result["citations"]),
+            "usage": result["usage"],
+        }
 
     if chunks["related"]:
         result = generate_answer(question, chunks["related"], related=True)
         if _is_refusal(result["answer"]):
-            return {"answer": result["answer"], "citations": []}
+            return {"answer": result["answer"], "citations": [], "usage": result["usage"]}
         return {
             "answer": _RELATED_PREFIX + result["answer"],
             "citations": _dedupe_citations(result["citations"]),
+            "usage": result["usage"],
         }
 
-    return {"answer": NO_ANSWER, "citations": []}
+    return {"answer": NO_ANSWER, "citations": [], "usage": dict(_ZERO_USAGE)}

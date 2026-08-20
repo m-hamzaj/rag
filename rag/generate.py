@@ -120,9 +120,13 @@ def _cited_indices(answer: str, n_chunks: int) -> set[int]:
 
 
 def generate_answer(question: str, chunks: list[dict], *, related: bool = False) -> dict:
-    """Returns {"answer": str, "citations": [chunk, ...]}. `citations` is
-    the subset of `chunks` (full dicts, with document_title/document_url)
-    that the answer's [N] markers actually point to.
+    """Returns {"answer": str, "citations": [chunk, ...], "usage": {...}}.
+    `citations` is the subset of `chunks` (full dicts, with
+    document_title/document_url) that the answer's [N] markers actually
+    point to. `usage` is {"prompt_tokens", "completion_tokens"} straight
+    from Groq's response -- Day 6's $/run cost tracking (see eval.py)
+    needs real token counts, not an estimate from splitting the prompt on
+    whitespace.
 
     related=True switches to the caveated-background prompt, for chunks
     that only cleared RELATED_SIMILARITY_THRESHOLD, not the direct-answer
@@ -147,8 +151,14 @@ def generate_answer(question: str, chunks: list[dict], *, related: bool = False)
         timeout=30,
     )
     response.raise_for_status()
-    answer = response.json()["choices"][0]["message"]["content"].strip()
+    body = response.json()
+    answer = body["choices"][0]["message"]["content"].strip()
+    raw_usage = body.get("usage") or {}
+    usage = {
+        "prompt_tokens": raw_usage.get("prompt_tokens", 0),
+        "completion_tokens": raw_usage.get("completion_tokens", 0),
+    }
 
     cited = _cited_indices(answer, len(chunks))
     citations = [chunks[i - 1] for i in sorted(cited)]
-    return {"answer": answer, "citations": citations}
+    return {"answer": answer, "citations": citations, "usage": usage}

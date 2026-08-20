@@ -131,12 +131,33 @@ def _answer_is_correct(entry: dict, answer: str) -> bool:
     return all(_normalize(phrase) in normalized_answer for phrase in entry["must_contain"])
 
 
-def run_eval() -> None:
+# Day 6 -- real Groq pricing for the model this project uses, confirmed
+# against Groq's own published rate card (console.groq.com/docs/models,
+# checked 2026-08-20), not estimated from token-counting heuristics.
+# $/run needs this to mean anything -- a wrong price would make the whole
+# cost column decorative.
+_GROQ_PRICE_PER_1M_PROMPT_TOKENS = 0.15
+_GROQ_PRICE_PER_1M_COMPLETION_TOKENS = 0.60
+
+
+def _run_cost_usd(total_prompt_tokens: int, total_completion_tokens: int) -> float:
+    return (
+        total_prompt_tokens / 1_000_000 * _GROQ_PRICE_PER_1M_PROMPT_TOKENS
+        + total_completion_tokens / 1_000_000 * _GROQ_PRICE_PER_1M_COMPLETION_TOKENS
+    )
+
+
+def run_eval() -> dict:
     with open(EVAL_SET_PATH, encoding="utf-8") as f:
         eval_set = json.load(f)
 
     top1_hits = top5_hits = answer_hits = refusal_hits = 0
     retrieval_graded = unanswerable_total = 0
+    total_prompt_tokens = total_completion_tokens = 0
+    # Only ask()'s own wall-clock time -- NOT _INTER_QUESTION_DELAY_SECONDS,
+    # which is rate-limit pacing this harness imposes on itself, not
+    # latency a real caller of the system would ever experience.
+    query_seconds: list[float] = []
 
     for i, entry in enumerate(eval_set):
         if i > 0:
@@ -149,7 +170,12 @@ def run_eval() -> None:
             time.sleep(_INTER_QUESTION_DELAY_SECONDS)
 
         expected = set(entry["expect_article_ids"])
-        answer = _ask_with_retry(entry["question"])["answer"]
+        start = time.perf_counter()
+        result = _ask_with_retry(entry["question"])
+        query_seconds.append(time.perf_counter() - start)
+        answer = result["answer"]
+        total_prompt_tokens += result["usage"]["prompt_tokens"]
+        total_completion_tokens += result["usage"]["completion_tokens"]
 
         if expected:
             retrieval_graded += 1
@@ -168,6 +194,8 @@ def run_eval() -> None:
             answer_hits += 1
 
     total = len(eval_set)
+    cost_usd = _run_cost_usd(total_prompt_tokens, total_completion_tokens)
+    avg_seconds = sum(query_seconds) / len(query_seconds) if query_seconds else 0.0
 
     def _pct(n: int, d: int) -> str:
         return f"({round(100 * n / d)}%)" if d else "(n/a)"
@@ -177,6 +205,20 @@ def run_eval() -> None:
     print(f"Top-5 correct:     {top5_hits}/{retrieval_graded}  {_pct(top5_hits, retrieval_graded)}")
     print(f"Answer correct:    {answer_hits}/{total}  {_pct(answer_hits, total)}")
     print(f"Refused correctly: {refusal_hits}/{unanswerable_total}")
+    print(f"Cost:              ${cost_usd:.4f} total, ${cost_usd/total:.5f}/query")
+    print(f"Latency:           {avg_seconds:.2f} sec/query (avg, excludes self-imposed rate-limit pacing)")
+
+    return {
+        "total": total,
+        "top1_hits": top1_hits,
+        "top5_hits": top5_hits,
+        "retrieval_graded": retrieval_graded,
+        "answer_hits": answer_hits,
+        "refusal_hits": refusal_hits,
+        "unanswerable_total": unanswerable_total,
+        "cost_usd": cost_usd,
+        "avg_seconds_per_query": avg_seconds,
+    }
 
 
 if __name__ == "__main__":

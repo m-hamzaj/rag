@@ -2,7 +2,7 @@
 suite since eval.py lives at the project root, not in the rag package.
 """
 
-from eval import _answer_is_correct, _normalize, _top_ranked_articles
+from eval import _answer_is_correct, _normalize, _run_cost_usd, _top_ranked_articles
 
 
 def test_normalize_maps_unicode_hyphens_to_ascii():
@@ -54,6 +54,16 @@ def test_answer_is_correct_normalizes_both_the_answer_and_must_contain():
     # hand-written must_contain phrase) happens to use the ASCII form.
     entry = {"type": "single", "must_contain": ["paddle-shaped"]}
     assert _answer_is_correct(entry, "A paddle‑shaped tail.") is True
+
+
+def test_run_cost_usd_uses_real_groq_rates():
+    # 1M prompt tokens @ $0.15 + 1M completion tokens @ $0.60, confirmed
+    # against console.groq.com/docs/models for openai/gpt-oss-120b.
+    assert _run_cost_usd(1_000_000, 1_000_000) == 0.75
+
+
+def test_run_cost_usd_zero_tokens_is_zero_cost():
+    assert _run_cost_usd(0, 0) == 0.0
 
 
 def test_top_ranked_articles_dedupes_multiple_chunks_from_one_article(monkeypatch):

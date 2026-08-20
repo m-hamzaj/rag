@@ -185,6 +185,36 @@ def test_generate_answer_returns_answer_and_mapped_citations(monkeypatch):
     assert result["citations"] == [_CHUNKS[0]]
 
 
+def test_generate_answer_returns_real_usage_from_groq_response(monkeypatch):
+    monkeypatch.setattr(generate_module, "GROQ_API_KEY", "fake-key")
+    _patch_groq_response(
+        monkeypatch,
+        lambda request: httpx.Response(
+            200,
+            json={
+                "choices": [{"message": {"content": "It is X [1]."}}],
+                "usage": {"prompt_tokens": 456, "completion_tokens": 12, "total_tokens": 468},
+            },
+        ),
+    )
+
+    result = generate_answer("What is X?", _CHUNKS)
+
+    assert result["usage"] == {"prompt_tokens": 456, "completion_tokens": 12}
+
+
+def test_generate_answer_usage_defaults_to_zero_when_groq_omits_it(monkeypatch):
+    monkeypatch.setattr(generate_module, "GROQ_API_KEY", "fake-key")
+    _patch_groq_response(
+        monkeypatch,
+        lambda request: httpx.Response(200, json={"choices": [{"message": {"content": "X [1]."}}]}),
+    )
+
+    result = generate_answer("What is X?", _CHUNKS)
+
+    assert result["usage"] == {"prompt_tokens": 0, "completion_tokens": 0}
+
+
 def test_generate_answer_sends_expected_request_body(monkeypatch):
     monkeypatch.setattr(generate_module, "GROQ_API_KEY", "fake-key")
     monkeypatch.setattr(generate_module, "GROQ_MODEL", "some-model")
