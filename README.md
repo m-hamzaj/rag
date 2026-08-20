@@ -1,14 +1,18 @@
-# Day 4–5 — RAG, then evaluating it
+# Day 4–6 — RAG, evaluating it, then tuning retrieval
 
 ![CI](https://github.com/m-hamzaj/rag/actions/workflows/ci.yml/badge.svg)
 
 **Day 4** builds a RAG pipeline over Day 3's 125 scraped
 nature/wildlife/gardening articles. **Day 5** measures it against a
-hand-written 20-question eval set instead of guessing at quality — see
-"Day 5 — Evaluation" below and `RESULTS.md` for the numbers. Both live in
-this one project because Day 5 tests Day 4's code directly (`eval.py`
-imports `rag/` the same way the CLI and UI do); it was never a standalone
-system the way Day 1's API or Day 3's crawler are.
+hand-written 20-question eval set instead of guessing at quality. **Day
+6** adds keyword and hybrid retrieval alongside the original vector
+search, sweeps chunk size and retrieval mode against that same eval set,
+and picks a winner with evidence — see "Day 5 — Evaluation" and "Day 6 —
+Retrieval mode and chunk size" below, and `RESULTS.md` for the full
+numbers and reasoning. All three live in this one project because Day 5
+and Day 6 both test Day 4's code directly (`eval.py` imports `rag/` the
+same way the CLI and UI do); it was never a standalone system the way Day
+1's API or Day 3's crawler are.
 
 Question answering over Day 3's 125 scraped nature/wildlife/gardening
 articles. Chunks them, embeds the chunks, stores the vectors in ChromaDB.
@@ -128,13 +132,23 @@ ask" turned out to be the real usability problem, not a retrieval bug:
 No framework retriever, no vector-store abstraction — this is the whole
 loop, in `rag/`:
 
-1. **Chunk** (`chunk.py`) — a word-based sliding window over each
-   article's text: `CHUNK_SIZE_WORDS` words per chunk, advancing by
-   `CHUNK_SIZE_WORDS - CHUNK_OVERLAP_WORDS` each step, so consecutive
-   chunks share `CHUNK_OVERLAP_WORDS` words of context. Both are config
-   values (`rag/config.py`), not literals — the brief calls this out
-   specifically, since they're the first things worth sweeping once real
-   retrieval quality is in front of you.
+1. **Chunk** (`chunk.py`) — packs each article's text along its own
+   paragraph and markdown-header boundaries, up to `CHUNK_SIZE_WORDS`
+   words per chunk, with `CHUNK_OVERLAP_WORDS` words of shared context
+   seeded into the next chunk when it still fits. A paragraph (or a
+   header plus its own paragraphs) is never split across two chunks
+   unless it alone exceeds `CHUNK_SIZE_WORDS`, in which case it falls
+   back to a plain word-count slide for just that one paragraph — the
+   original Day 4 algorithm, still used, just no longer the default for
+   everything. Rewritten on Day 6 after a real bug: pure word-count
+   slicing was scattering a short numbered list's items across chunk
+   boundaries by where the Nth word happened to fall, not because any
+   item was too long — see `RESULTS.md`'s Q7 chunking-fix section for
+   the full before/after evidence. Both `CHUNK_SIZE_WORDS` and
+   `CHUNK_OVERLAP_WORDS` are config values (`rag/config.py`), not
+   literals — the brief calls this out specifically, since they're the
+   first things worth sweeping once real retrieval quality is in front
+   of you (Day 6 did exactly that sweep; see below).
 2. **Embed** (`embed.py`) — `fastembed` running
    `sentence-transformers/all-MiniLM-L6-v2` locally over ONNX (not
    sentence-transformers/torch directly — same model weights, no torch
@@ -148,11 +162,21 @@ loop, in `rag/`:
    derived from `(document_url, chunk_index)` so re-ingesting doesn't
    duplicate.
 4. **Retrieve** (`retrieve.py`) — embed the question with the same model,
-   pull the `TOP_K` most similar chunks by cosine similarity
-   (`db.search_similar_chunks`), and sort them into two tiers:
-   `accepted` (clears `SIMILARITY_THRESHOLD` — strong enough to answer
-   directly) and `related` (below that but at or above the lower
-   `RELATED_SIMILARITY_THRESHOLD` — topically close, not a direct match).
+   pull the `TOP_K` most similar chunks (`db.search_similar_chunks`), and
+   sort them into two tiers: `accepted` (clears `SIMILARITY_THRESHOLD` —
+   strong enough to answer directly) and `related` (below that but at or
+   above the lower `RELATED_SIMILARITY_THRESHOLD` — topically close, not
+   a direct match). Day 6 added `RETRIEVAL_MODE` (`vector` | `keyword` |
+   `hybrid`): `keyword` ranks by a hand-rolled BM25 index
+   (`rag/keyword_search.py`, no external library) over the same chunk
+   store; `hybrid` fuses vector and keyword rankings by Reciprocal Rank
+   Fusion (k=60). Whichever mode ranks the candidates, accepted/related
+   gating always runs on real cosine similarity, computed directly for
+   any keyword-only hit vector search didn't already rank — a raw BM25
+   score isn't on `SIMILARITY_THRESHOLD`'s scale, so hybrid never invents
+   a second, uncalibrated threshold system. Full reasoning in
+   `rag/retrieve.py`'s module docstring; which mode actually won is in
+   `RESULTS.md`'s Day 6 section.
 5. **Answer, answer with a caveat, or refuse** (`ask.py`, `generate.py`):
    - `accepted` chunks exist → answered directly, citing `[N]` markers,
      via the normal prompt.
@@ -274,6 +298,7 @@ only produce a bad *answer*, not an action.
 | `RELATED_SIMILARITY_THRESHOLD` | 0.33 | minimum cosine similarity to count as topically related background |
 | `EMBEDDING_MODEL_NAME` | `sentence-transformers/all-MiniLM-L6-v2` | fastembed model |
 | `GROQ_MODEL` | `openai/gpt-oss-120b` | generation model — `llama-3.3-70b-versatile` was removed from Groq's catalog entirely; see `RESULTS.md` for what the switch broke and how it was fixed |
+| `RETRIEVAL_MODE` | `vector` | `vector` \| `keyword` \| `hybrid` — see "How retrieval actually works" above; `RESULTS.md`'s Day 6 section has the evidence behind the default |
 
 All env-overridable, none hardcoded into `chunk.py`/`retrieve.py` directly.
 
@@ -390,16 +415,36 @@ cp .env.example .env               # fill in GROQ_API_KEY
 docker compose run --rm -e CHROMA_HOST=db -e CHROMA_PORT=8000 tests python eval.py
 ```
 
-Current confirmed baseline: **18/20 (90%) Answer correct**, 15/16 (94%)
-Top-1 and Top-5. Full tuning history, what each fix actually changed, and
-why two remaining gaps are left as principled behavior rather than forced
-passes — all in `RESULTS.md`, not summarized here since it changes with
-every re-run.
+Confirmed baseline as of Day 5: **18/20 (90%) Answer correct**, 15/16
+(94%) Top-1 and Top-5, against the original word-count chunker. Full
+tuning history and what each fix actually changed are in `RESULTS.md`,
+not summarized here since it changes with every re-run. Read those
+numbers at their real precision — n=20 for Answer correct, n=16 for
+Top-1/Top-5, so a single question flipping moves the score 5-6 points;
+`RESULTS.md` covers this explicitly next to the headline numbers rather
+than presenting them as more precise than they are.
+
+## Day 6 — Retrieval mode and chunk size
+
+Same eval set, frozen (no edits to `data/eval_set.json` this round).
+Swept 3 chunk sizes × vector/hybrid retrieval — 6 real runs, real Groq
+calls, real cost and latency measured per run. Winner: `chunk=200`,
+`vector` — matches Day 5's baseline exactly, and it's also cheaper and
+faster than the larger chunk size while scoring higher than hybrid at
+every chunk size tested but one. Whether that margin is real or noise on
+20 questions, why keyword-only isn't in the table, and what actually
+drives cost vs. latency (chunk size, not retrieval mode) are all argued
+with evidence in `RESULTS.md`'s Day 6 section — not just asserted.
+
+That same round also went back and actually fixed Day 5's Q7 finding
+(previously written up as "flicker, not a bug") after an external review
+correctly pushed back — see `RESULTS.md`'s Q7 chunking-fix section for
+the root cause, the fix, and the honest tradeoff it introduced.
 
 ## Tests
 
 ```bash
-docker compose --profile tools run --rm tests    # 94 tests, fully offline
+docker compose --profile tools run --rm tests    # 120 tests, fully offline
 ```
 
 Chunking (boundaries, overlap, no dropped words, config validation),
@@ -409,27 +454,30 @@ itself is mocked, no real inference in the test suite), Chroma storage
 similarity conversion, empty-result handling — all against a mocked
 client/collection, no real Chroma server needed to run the suite),
 ingest (pagination through Day 1, chunk↔embedding zipping, full-rebuild
-wipe), retrieval (threshold filtering, top-k passthrough), generation
-(prompt building, `[N]`-marker parsing including out-of-range and
-no-marker fallback, the real Groq request shape), and `ask()`'s two
-refusal paths (no chunks retrieved; LLM refusing on its own) — all via
-monkeypatched HTTP/DB/model, no real network call, no API key needed.
+wipe), retrieval (threshold filtering, top-k passthrough, vector/keyword/
+hybrid mode dispatch, RRF fusion), keyword search (BM25 scoring against a
+mocked chunk store), generation (prompt building, `[N]`-marker parsing
+including out-of-range and no-marker fallback, the real Groq request
+shape, token usage parsing), and `ask()`'s two refusal paths (no chunks
+retrieved; LLM refusing on its own) — all via monkeypatched HTTP/DB/
+model, no real network call, no API key needed.
 
 ## Project layout
 
 ```
 rag/
-  config.py     chunk size, top-k, similarity threshold, model names -- all env-overridable
-  chunk.py      word-based sliding-window chunker
-  embed.py      fastembed wrapper (local, no API key)
-  db.py         ChromaDB schema + insert + similarity search + list_documents -- the only storage-aware module
-  ingest.py     ingest() = full rebuild; ingest_new_documents() = index only what's not indexed yet
-  retrieve.py   embed question -> top-k search -> threshold filter
-  generate.py   Groq call + [N]-citation-marker parsing
-  ask.py        ties retrieve + generate together, handles both refusal paths
-  cli.py        single-question and interactive modes
+  config.py        chunk size, top-k, similarity threshold, retrieval mode, model names -- all env-overridable
+  chunk.py         paragraph/markdown-section-aware chunker (word-count slide as fallback)
+  embed.py         fastembed wrapper (local, no API key)
+  db.py            ChromaDB schema + insert + similarity search + list_documents -- the only storage-aware module
+  ingest.py        ingest() = full rebuild; ingest_new_documents() = index only what's not indexed yet
+  keyword_search.py  hand-rolled BM25 index over the chunk store, no external library
+  retrieve.py      embed question -> vector/keyword/hybrid ranking -> threshold filter
+  generate.py      Groq call + [N]-citation-marker parsing + token usage
+  ask.py           ties retrieve + generate together, handles both refusal paths
+  cli.py           single-question and interactive modes
 ui/
   app.py        Streamlit dashboard -- thin wrapper around rag/ask.py, same logic as the CLI
-tests/          94 offline tests
-eval.py         Day 5 -- live eval against the real corpus, see RESULTS.md
+tests/          120 offline tests
+eval.py         Day 5/6 -- live eval against the real corpus, see RESULTS.md
 ```
