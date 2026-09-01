@@ -3,3 +3,13 @@ chromadb==1.5.9
 fastembed==0.8.0
 pytest==9.1.1
 streamlit>=1.38
+
+# Day 7 -- LangChain-based agent (rag/agent.py). langchain-groq pulls in
+# langchain-core and the Groq SDK; langchain provides the tool-calling
+# agent executor. Minimum-bound, not exact-pinned like the packages above
+# -- unlike those, exact current patch versions weren't independently
+# confirmed available, so pip resolves to whatever satisfies these rather
+# than risking a build failure on a guessed version that doesn't exist.
+langchain>=0.3
+langchain-groq>=0.2
+langchain-core>=0.3

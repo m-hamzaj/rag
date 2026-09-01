@@ -1,0 +1,104 @@
+[
+  {
+    "id": 1,
+    "question": "How many grizzly bears live in the lower 48 according to the corpus, and how many weeks before the last frost does it recommend starting tomato seeds indoors?",
+    "expect_article_ids": [
+      "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted",
+      "https://www.epicgardening.com/tomato-grow-faster"
+    ],
+    "must_contain": ["2,000", "4-6 weeks"],
+    "type": "find-then-find"
+  },
+  {
+    "id": 2,
+    "question": "What method does the Northwest wolf article say biologists use to count today's wolf population, and how many grizzly bears does the corpus say live in the lower 48?",
+    "expect_article_ids": [
+      "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest",
+      "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted"
+    ],
+    "must_contain": ["remote-camera", "2,000"],
+    "type": "find-then-find"
+  },
+  {
+    "id": 3,
+    "question": "What specific cause of wolf mortality does the Northwest wolves article say biologists track, and what does India's tiger numbers article say is happening to forest land even as habitat connectivity improves?",
+    "expect_article_ids": [
+      "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest",
+      "https://news.mongabay.com/2026/07/indias-tiger-numbers-are-rising-protecting-their-pathways-is-next"
+    ],
+    "must_contain": ["poaching", "road infrastructure"],
+    "type": "find-then-find"
+  },
+  {
+    "id": 4,
+    "question": "What federal agency oversees most Greater Sage-Grouse habitat and how many acres does it oversee? Separately, what has India built more of than any other country in Asia for wildlife?",
+    "expect_article_ids": [
+      "https://www.audubon.org/news/whats-next-greater-sage-grouse",
+      "https://news.mongabay.com/2026/07/indias-tiger-numbers-are-rising-protecting-their-pathways-is-next"
+    ],
+    "must_contain": ["Bureau of Land Management", "67 million", "underpasses"],
+    "type": "find-then-find"
+  },
+  {
+    "id": 5,
+    "question": "Which organization investigated Cambodia's illegal wildlife trade, and what specific type of wolf mortality does the Northwest wolf article track as one of several causes?",
+    "expect_article_ids": [
+      "https://news.mongabay.com/2026/07/report-reveals-cambodias-appetite-for-tigers-rhinos-and-other-endangered-wildlife",
+      "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
+    ],
+    "must_contain": ["Earth League International", "poaching"],
+    "type": "find-then-find"
+  },
+  {
+    "id": 6,
+    "question": "Across the rice's whale, grizzly bear, and Greater Sage-Grouse articles, what specific numeric figure does each one give -- a population count or an acreage?",
+    "expect_article_ids": [
+      "https://defenders.org/blog/2026/05/opinion-playing-god-gulf-and-rare-whales-right-exist",
+      "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted",
+      "https://www.audubon.org/news/whats-next-greater-sage-grouse"
+    ],
+    "must_contain": ["51", "2,000", "67 million"],
+    "type": "counting"
+  },
+  {
+    "id": 7,
+    "question": "How many acres of sagebrush habitat does the corpus say are lost annually, in what year does it say grizzly bears were listed under the Endangered Species Act, and what's one benefit of a raised garden bed mentioned in the corpus?",
+    "expect_article_ids": [
+      "https://www.audubon.org/news/whats-next-greater-sage-grouse",
+      "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted",
+      "https://www.epicgardening.com/raised-bed-benefits"
+    ],
+    "must_contain": ["1.3 million", "1975", "drainage"],
+    "type": "counting"
+  },
+  {
+    "id": 8,
+    "question": "According to the corpus's report on Cambodia's illegal wildlife trade, which country's demand is described as primarily fueling it? And in what year was Chile's Valdivian Coastal Reserve established?",
+    "expect_article_ids": [
+      "https://news.mongabay.com/2026/07/report-reveals-cambodias-appetite-for-tigers-rhinos-and-other-endangered-wildlife",
+      "https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve"
+    ],
+    "must_contain": ["Chinese", "2003"],
+    "type": "find-then-find"
+  },
+  {
+    "id": 9,
+    "question": "What is the world's smallest deer according to the corpus's article on Chile's Valdivian Coastal Reserve, and what's one flower the corpus recommends for a raised garden bed?",
+    "expect_article_ids": [
+      "https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve",
+      "https://www.epicgardening.com/flowers-for-raised-beds"
+    ],
+    "must_contain": ["pudú", "Snapdragon"],
+    "type": "find-then-find"
+  },
+  {
+    "id": 10,
+    "question": "How many total protected hectares do the Valdivian Coastal Reserve and the adjacent Alerce Costero National Park in Chile encompass together, and what's the maximum length given for a cookiecutter shark, in inches?",
+    "expect_article_ids": [
+      "https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve",
+      "https://blog.nature.org/2024/05/29/7-strange-species-from-the-oceans-depths"
+    ],
+    "must_contain": ["75,000", "17"],
+    "type": "find-then-find"
+  }
+]

@@ -150,6 +150,26 @@ def get_all_chunks() -> list[dict]:
     return chunks
 
 
+def get_chunks_by_document(document_url: str) -> list[dict]:
+    """Every stored chunk for one article, in chunk_index order:
+    [{"chunk_index", "text", "document_title"}, ...] (document_title
+    repeated on every chunk, same value each time, for a caller that only
+    wants the title and doesn't want a second lookup). Day 7 -- the
+    agent's read_article tool needs one article's full text, not just its
+    best-matching chunk; a metadata `where` filter fetches only that
+    article's chunks rather than pulling the whole corpus
+    (get_all_chunks()) and filtering client-side.
+    """
+    collection = _get_collection()
+    result = collection.get(where={"document_url": document_url}, include=["metadatas", "documents"])
+    chunks = [
+        {"chunk_index": metadata["chunk_index"], "text": text, "document_title": metadata["document_title"]}
+        for metadata, text in zip(result["metadatas"], result["documents"])
+    ]
+    chunks.sort(key=lambda c: c["chunk_index"])
+    return chunks
+
+
 def list_documents() -> list[dict]:
     """Returns one entry per distinct source article currently indexed:
     {"title": ..., "url": ...}. Deduped from chunk metadata rather than

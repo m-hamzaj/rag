@@ -78,6 +78,13 @@ FASTEMBED_CACHE_DIR = os.environ.get("FASTEMBED_CACHE_DIR", "/app/.fastembed_cac
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
 
+# Real Groq pricing for the model above (console.groq.com/docs/models,
+# confirmed 2026-08-20) -- shared by eval.py's $/run tracking and Day 7's
+# agent cost enforcement, rather than each keeping its own private copy of
+# the same two numbers.
+GROQ_PRICE_PER_1M_PROMPT_TOKENS = 0.15
+GROQ_PRICE_PER_1M_COMPLETION_TOKENS = 0.60
+
 # --- Storage ----------------------------------------------------------
 # ChromaDB, run as its own server container -- separate from Day 1's
 # Postgres entirely (Day 3 already established the pattern of talking to

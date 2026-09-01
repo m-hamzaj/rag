@@ -146,3 +146,95 @@ That's not a contradiction, and it isn't a sign the individual checks are wrong 
 **Bottom line: the chunking fix's one confirmed, reproducible, causally-explained cost is Q7.** Q5 is the separate, pre-existing, unrelated retrieval miss. The 17-vs-18 gap between one full run and twenty individual checks is consistent with — not separately proven beyond — the flicker this project already measured and documented before touching chunking at all.
 
 **Conclusion.** The chunking fix did what it was supposed to do: it replaced non-deterministic, structurally-caused flicker with deterministic, explainable behavior, verified against the real article and real repeated calls, not just a synthetic test case. It did not raise the eval score — it lowered it by one question, because the eval set's `must_contain` check was itself written against the old chunker's lucky-guess failure mode, not the article's actual content. Both facts are true at once, and reporting only the score without this explanation would have been the same mistake the external review correctly flagged in the first place.
+
+# Day 7 — Build an agent
+
+Plain RAG (everything above) does one search, then answers from whatever came back. It can't answer a question that genuinely needs evidence from more than one article — a comparison, a count, or a fact that only shows up once you read a specific article in full, not just its best-matching snippet. This section builds a tool-calling agent loop on top of the same corpus, measures where it actually helps, and — per the brief — measures where it doesn't, since an agent is a trade, not an upgrade.
+
+## The agent (`rag/agent.py`)
+
+Three tools, given to the model each turn: `search_articles` (query the corpus, get back matching articles with titles/similarity/snippets, not full text), `read_article` (get one article's full text by id), `finish` (give the final answer and stop). The loop calls the model, executes whichever tool it picked, feeds the result back, and repeats until `finish` is called or a hard limit stops it.
+
+**Built on LangChain** (`ChatGroq` + `StructuredTool` + `bind_tools`) — not the project's usual no-framework stance, and not the first version either: the first pass was a hand-rolled loop calling Groq's API directly with raw `httpx`, matching every other module in `rag/`. It was rebuilt on LangChain partway through this work on explicit instruction, keeping the same three tools, the same system prompt, and the same hard-limit logic — the loop itself is still hand-written (not LangChain's own `AgentExecutor`), since the limits below need to check real token usage and stop *before* another paid call happens, which needs tighter control over the loop than a framework's own agent executor gives up easily.
+
+**Three hard limits, enforced in code, not hoped for:**
+- **Max 8 steps** (5 for the eval runs below, after discovering 8 gave heavy questions too much rope to rack up rate-limit exposure — see below) — the loop simply does not iterate past this.
+- **Max $0.25/question** — checked after every real LLM call using actual token usage from the response, not an estimate. Once crossed, no further calls are made; the answer is synthesized in plain Python from whatever was already gathered, specifically so enforcement can never itself blow the budget paying for one more "let me wrap up" call.
+- **Duplicate-call detection** — a `(tool, sorted-args)` signature is recorded per call; an identical repeat means the model is stuck (asking the corpus the same thing twice won't produce a new answer) and stops the loop the same way, no extra paid call.
+
+All three stop conditions produce an answer via a plain-Python fallback (raw evidence gathered so far, honestly labeled "stopped before finishing, here's what was found") rather than nothing — consistent with this whole project's stance that a partial, explained result beats a silent failure.
+
+## Real infrastructure findings, discovered live, not hypothetical
+
+Getting a trustworthy measurement out of this took longer than building the agent did, and surfaced enough real, fixed bugs that they're worth documenting as findings in their own right — this is exactly the kind of "more places to go wrong" the brief warned an agent would introduce.
+
+**Article length caused a hard request-size limit.** Every tool result stays in the conversation for every later step (the model needs the full history to decide what to do next), so a run that read two or three full articles could push a single request past Groq's per-request size limit — observed live as a real `413 Request too large` error, not a theoretical concern. Fixed by capping `read_article`'s output at 1,200 words (`_READ_ARTICLE_MAX_WORDS`) — this corpus is short blog-style pieces where the facts these questions need show up early, so the trade (a small chance of missing something buried very late in one article, for a much larger chance of the run actually finishing) was a clear one.
+
+**One vague question triggered a real model failure mode.** On an ambiguous test question, the model generated malformed tool-call JSON that Groq's own parser rejected server-side (`400`, `code: "tool_use_failed"`). Not a bug in this code — the same request shape succeeds on every well-posed question — and not something a blind retry fixes at `temperature=0` (deterministic → same malformed output again). Given its own `stopped_reason` (`malformed_tool_call`) and handled as a clean stop, same as the other three.
+
+**`tool_choice="required" broke the step that mattered most.** The first version forced the model to call a tool on every turn. Groq rejected the whole request the moment the model tried to just *write* its concluding answer instead of formally calling `finish()` — exactly the step where it mattered most. Switched to `tool_choice="auto"`, and treated a plain-text reply as a valid answer (a real, expected path now, not defensive dead code).
+
+**Two more failure classes got conflated into one misleading label before being split apart.** A sustained `429` that survives every retry (external rate-limiting) and a `400` malformed tool call (the model's own generation glitching) were briefly lumped into one `"model_error"` label — which meant a batch run that was actually just rate-limited got reported as "the model is broken." Split into `rate_limited` and `malformed_tool_call`. A third class surfaced the same way later: a raw `groq.APIConnectionError` (no HTTP response at all — a dropped connection, not a rejected request) propagated completely uncaught the first time, crashing an entire 20-question batch run and losing 18 questions' worth of already-paid-for progress to one transient network hiccup. Given its own label, `connection_error`, retried the same way as a 429.
+
+**A stray, expired API key produced a convincing but wrong signal.** A full 20-question run scored 0/20 with every single question costing exactly $0.00 and finishing in under two seconds — which looked like a code regression but was Groq rejecting the (expired) key on the very first call of every question, before any retry logic even had a chance to run (`401`, not a `429`, so the retry loop correctly didn't bother). Caught by checking the raw response body directly rather than assuming the code was broken. Worth naming plainly: this is the same discipline as Day 5's curly-apostrophe catch — verify the actual failure before writing a fix for the failure you assumed.
+
+**A fallback answer was silently discarding evidence the agent actually had.** The three hard-limit fallbacks build their answer from whatever was gathered before the stop — but `read_article`'s result was only being kept as a 200-character preview in that gathered evidence, not the full text. On several runs, the agent had already read the exact article containing the needed fact, but the fact happened to fall past character 200, so a stop-condition fallback answered from a truncated snippet that no longer contained it — silently losing evidence the run had genuinely already found. Fixed by carrying the full `read_article` text into the fallback's evidence pool (the 200-character version stays in the human-readable step log, which is a different, narrower job).
+
+**Live testing repeatedly hit real, variable rate-limiting on Groq's shared tier** — the same question sometimes completing in under a minute, sometimes taking 8–16 minutes waiting out `429` backoffs, with no code change in between. Confirmed via direct API pings mid-run that this wasn't a self-inflicted burst (isolated calls succeeded instantly while a running batch kept stalling) — it's contention on a shared `service_tier: "on_demand"` pool, outside this project's control. Practical consequence: multi-step questions that read several full articles are measurably more exposed to this than plain RAG's single small request, and this pattern recurred across three separate live attempts at the 10-question set below, concentrated on the later, evidence-heavier questions each time.
+
+## The 10 questions plain RAG genuinely can't answer
+
+Ten multi-step questions — comparisons, counts, and "find X then look up Y" chains — written against real, verified corpus content (each fact confirmed by directly reading the source article via `read_article`, not guessed), in `data/agent_eval_set.json`. Four of the first ten drafted turned out answerable by plain RAG anyway (the two needed articles happened to both land in one embedding search's top-5) — swapped for cross-domain pairings (an animal fact paired with an unrelated gardening fact) specifically chosen so a single query embedding can't cover both topics at once, then re-verified at zero cost (a direct retrieval check, no LLM call) that each swap genuinely leaves a gap: only 1 of the 2–3 needed articles lands in the top-5 for every replacement question.
+
+```
+python eval_agent.py plain data/agent_eval_set.json
+Correct:  0/10  (0%)
+Cost:     $0.0042 total, $0.00042/query
+Latency:  3.15 sec/query (avg)
+```
+
+Confirmed: plain RAG fails all 10, exactly as intended — this is the set the agent exists to answer.
+
+## Agent vs. plain RAG on the 10 hard questions
+
+Three separate live attempts at this set, because the rate-limiting described above kept interrupting runs before they could finish — worth reporting honestly rather than cherry-picking the best one. The cleanest attempt (fresh API key, no self-inflicted concurrent traffic):
+
+```
+python eval_agent.py agent data/agent_eval_set.json 5 --full
+Correct:  3/10  (30%)
+Cost:     $0.0122 total, $0.00122/query
+Latency:  421.76 sec/query (avg -- dominated by rate-limit backoff, see below)
+Stopped:  {'max_steps': 3, 'finished': 1, 'rate_limited': 6}
+```
+
+Q1–Q4 ran with no rate-limit interference at all: 2/4 correct (50%, $0.00885 total / $0.00221/query for just these four) on real, uninterrupted attempts. Q5–Q10 all hit `rate_limited` — six questions where the honest answer is "inconclusive," not "the agent failed," since the run was cut off before it could finish gathering evidence, not because it reasoned poorly. One of the six (Q5) still landed on the correct answer anyway, entirely because of the fallback-evidence fix above — the article it had already read before the cutoff happened to contain both required facts, and this time the fallback actually carried that text forward instead of a truncated preview.
+
+Where genuine attempts happened, the agent worked as designed. On the question that failed (Q1, `max_steps`), the transcript shows real evidence-gathering going wrong, not infrastructure: 4 straight `search_articles` calls, each one correctly surfacing the right article as the top hit (similarity 0.33–0.57), and the model never once called `read_article` on it — it kept rewording the search query instead of reading the article it had already found. A genuine agent reasoning gap, not a tooling failure.
+
+## Agent vs. plain RAG on the original 20 questions
+
+This run had zero rate-limit interference — a clean, directly comparable measurement.
+
+```
+python eval_agent.py agent data/eval_set.json 5 --full
+Correct:  13/20  (65%)
+Cost:     $0.0301 total, $0.00150/query
+Latency:  31.62 sec/query (avg)
+Steps:    3.9 avg, max 5
+Stopped:  {'duplicate_call': 3, 'finished': 10, 'max_steps': 5, 'malformed_tool_call': 2}
+```
+
+```
+                  plain RAG        agent
+Answer correct    18/20 (90%)      13/20 (65%)
+Cost/query        $0.00034         $0.00150   (4.4x)
+Latency/query     3.56 sec         31.62 sec  (8.9x)
+```
+
+**The agent loses on the 20, exactly as the brief predicted.** Slower (9x), pricier (4.4x), and wrong more often on questions plain RAG already answers reliably in one pass. Two of its seven misses are the same structural/flicker cases plain RAG also can't cleanly resolve (Q5's named-entity retrieval miss, Q9's off-topic refusal colliding with a `malformed_tool_call` on the finish step) — not new failures, the same known edges. The rest are genuine new failure modes single-shot RAG doesn't have at all: `duplicate_call` (3 runs got stuck re-asking the corpus the same thing and had the loop-detector correctly cut them off), and `max_steps` exhaustion on questions a single retrieval pass would have answered in one shot. More steps, more chances for the loop to go somewhere plain RAG's single pass never could.
+
+**One real surprise: Q7 passed.** The grizzly-bear "2 myths" question — Day 6's whole chunking-fix story — passed under the agent, where plain RAG deterministically refuses post-fix (see that section above). The agent can `read_article` the full piece directly rather than depend on which 5 chunks a single embedding search happened to rank highest, so it saw all four myths together and, on this run, picked two rather than refusing. Consistent with everything already established about this question (the source article's mismatch with "2 myths" makes it genuinely ambiguous, and this project's own non-determinism finding means either outcome is plausible run to run) — not a contradiction of the Day 6 finding, a second, independent illustration of it.
+
+## Done
+
+Built as instructed (LangChain, not hand-rolled), all three hard limits are real code checked against actual usage, and the step log is a plain, readable trace of what was tried, in what order, at what cost. Both comparisons are written down with real numbers, not estimated: the agent wins on the 10 questions plain RAG structurally cannot answer (where genuine, uninterrupted attempts happened), and loses on the 20 plain RAG already handles well — slower, pricier, and with new failure modes (`duplicate_call`, `max_steps` exhaustion, occasional malformed tool-call generation) that a single retrieval pass never has the chance to hit. An agent is a trade, not an upgrade, and the numbers here say exactly that.

@@ -36,6 +36,7 @@ import time
 import httpx
 
 from rag.ask import _is_refusal, ask
+from rag.config import GROQ_PRICE_PER_1M_COMPLETION_TOKENS, GROQ_PRICE_PER_1M_PROMPT_TOKENS
 from rag.db import search_similar_chunks
 from rag.embed import embed_query
 
@@ -131,19 +132,10 @@ def _answer_is_correct(entry: dict, answer: str) -> bool:
     return all(_normalize(phrase) in normalized_answer for phrase in entry["must_contain"])
 
 
-# Day 6 -- real Groq pricing for the model this project uses, confirmed
-# against Groq's own published rate card (console.groq.com/docs/models,
-# checked 2026-08-20), not estimated from token-counting heuristics.
-# $/run needs this to mean anything -- a wrong price would make the whole
-# cost column decorative.
-_GROQ_PRICE_PER_1M_PROMPT_TOKENS = 0.15
-_GROQ_PRICE_PER_1M_COMPLETION_TOKENS = 0.60
-
-
 def _run_cost_usd(total_prompt_tokens: int, total_completion_tokens: int) -> float:
     return (
-        total_prompt_tokens / 1_000_000 * _GROQ_PRICE_PER_1M_PROMPT_TOKENS
-        + total_completion_tokens / 1_000_000 * _GROQ_PRICE_PER_1M_COMPLETION_TOKENS
+        total_prompt_tokens / 1_000_000 * GROQ_PRICE_PER_1M_PROMPT_TOKENS
+        + total_completion_tokens / 1_000_000 * GROQ_PRICE_PER_1M_COMPLETION_TOKENS
     )
 
 

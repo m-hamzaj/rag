@@ -5,9 +5,10 @@ class _FakeCollection:
     def __init__(self, query_result=None, count_value=0, get_result=None):
         self.upsert_calls = []
         self.query_calls = []
+        self.get_calls = []
         self._query_result = query_result or {"ids": [[]], "metadatas": [[]], "documents": [[]], "distances": [[]]}
         self._count_value = count_value
-        self._get_result = get_result or {"metadatas": []}
+        self._get_result = get_result or {"metadatas": [], "documents": []}
 
     def upsert(self, ids, embeddings, documents, metadatas):
         self.upsert_calls.append({"ids": ids, "embeddings": embeddings, "documents": documents, "metadatas": metadatas})
@@ -16,7 +17,8 @@ class _FakeCollection:
         self.query_calls.append({"query_embeddings": query_embeddings, "n_results": n_results, "include": include})
         return self._query_result
 
-    def get(self, include=None):
+    def get(self, include=None, where=None):
+        self.get_calls.append({"include": include, "where": where})
         return self._get_result
 
     def count(self):
@@ -200,3 +202,50 @@ def test_list_documents_returns_empty_list_for_empty_collection(monkeypatch):
     monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
 
     assert db_module.list_documents() == []
+
+
+def test_get_chunks_by_document_filters_by_document_url(monkeypatch):
+    collection = _FakeCollection()
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
+
+    db_module.get_chunks_by_document("https://x/a")
+
+    assert collection.get_calls[0]["where"] == {"document_url": "https://x/a"}
+
+
+def test_get_chunks_by_document_sorts_by_chunk_index(monkeypatch):
+    get_result = {
+        "metadatas": [
+            {"document_url": "https://x/a", "document_title": "A", "chunk_index": 2},
+            {"document_url": "https://x/a", "document_title": "A", "chunk_index": 0},
+            {"document_url": "https://x/a", "document_title": "A", "chunk_index": 1},
+        ],
+        "documents": ["third", "first", "second"],
+    }
+    collection = _FakeCollection(get_result=get_result)
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
+
+    chunks = db_module.get_chunks_by_document("https://x/a")
+
+    assert [c["text"] for c in chunks] == ["first", "second", "third"]
+    assert [c["chunk_index"] for c in chunks] == [0, 1, 2]
+
+
+def test_get_chunks_by_document_includes_the_title_on_every_chunk(monkeypatch):
+    get_result = {
+        "metadatas": [{"document_url": "https://x/a", "document_title": "A Title", "chunk_index": 0}],
+        "documents": ["text"],
+    }
+    collection = _FakeCollection(get_result=get_result)
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
+
+    chunks = db_module.get_chunks_by_document("https://x/a")
+
+    assert chunks[0]["document_title"] == "A Title"
+
+
+def test_get_chunks_by_document_returns_empty_list_when_url_not_found(monkeypatch):
+    collection = _FakeCollection(get_result={"metadatas": [], "documents": []})
+    monkeypatch.setattr(db_module, "_get_collection", lambda client=None: collection)
+
+    assert db_module.get_chunks_by_document("https://x/missing") == []
