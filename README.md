@@ -1,10 +1,12 @@
-# Day 4–6 — RAG, evaluating it, then tuning retrieval
+# Day 4–7 — RAG, evaluating it, tuning retrieval, then an agent
 
 ![CI](https://github.com/m-hamzaj/rag/actions/workflows/ci.yml/badge.svg)
 
 Question answering over Day 3's 125 scraped nature/wildlife/gardening
-articles. No LangChain, no LlamaIndex — chunking, embedding, retrieval,
-and citation parsing are all hand-written in `rag/`.
+articles. Day 4–6 are framework-free — chunking, embedding, retrieval,
+and citation parsing are all hand-written in `rag/`. Day 7's agent is the
+one deliberate exception (LangChain, per updated requirements) — see
+below for why.
 
 - **Day 4** builds the pipeline: chunk → embed → store in ChromaDB →
   retrieve top matches → answer with citations, or refuse honestly when
@@ -14,11 +16,14 @@ and citation parsing are all hand-written in `rag/`.
 - **Day 6** adds keyword and hybrid retrieval alongside vector search,
   sweeps chunk size and retrieval mode against that same eval set, and
   picks a winner with evidence.
+- **Day 7** builds a tool-calling agent for questions one retrieval pass
+  can't answer, and measures where it actually helps — and where it's
+  worse than Day 4–6's plain pipeline.
 
-All three live in one project because Day 5/6 test Day 4's code directly
-(`eval.py` imports `rag/`, same as the CLI and UI). Full eval numbers and
-reasoning: **`RESULTS.md`**. Deep dives, bug stories, and verification
-transcripts: **`NOTES.md`**.
+All four live in one project because Day 5–7 test Day 4's code directly
+(`eval.py`/`eval_agent.py` import `rag/`, same as the CLI and UI). Full
+eval numbers and reasoning: **`RESULTS.md`**. Deep dives, bug stories,
+and verification transcripts: **`NOTES.md`**.
 
 ## Running it
 
@@ -69,6 +74,27 @@ this caused once.
 Full walkthrough with the reasoning behind each choice, plus the prompt-
 injection defense and the pgvector→Chroma migration story: `NOTES.md`.
 
+## The agent (`rag/agent.py`)
+
+Plain RAG above does one search, then answers. For questions that need
+evidence from more than one article — a comparison, a count, a "find X
+then look up Y" chain — `rag/agent.py` gives the model three tools
+(`search_articles`, `read_article`, `finish`) and loops: call the model,
+run whichever tool it picked, feed the result back, repeat until
+`finish` or a hard limit stops it. Three hard limits, enforced in code:
+max steps, max cost (checked against real token usage after every call),
+and duplicate-call loop detection — all three produce an honest,
+evidence-based fallback answer instead of nothing.
+
+Built on LangChain (`ChatGroq` + tool-calling), the one place this
+project uses a framework — a deliberate, later change from an initial
+hand-rolled version, not the project's default stance. `eval_agent.py`
+measures it against plain RAG on both the original 20 questions and 10
+new ones written specifically to need multiple retrieval hops. Full
+numbers, and several real infrastructure bugs found running it live
+(a request-size limit, a misconfigured `tool_choice`, rate-limit
+mislabeling): `RESULTS.md`'s Day 7 section.
+
 ## Config values (`rag/config.py`)
 
 | Value | Default | What it controls |
@@ -92,21 +118,31 @@ All env-overridable, none hardcoded.
   baseline, confirmed against 6 real runs (3 chunk sizes × vector/hybrid)
   as the most accurate, and cheaper/faster than the alternative that beat
   it in neither cost nor speed.
+- **Day 7 agent vs. plain RAG:** on the original 20 questions (a clean,
+  rate-limit-free run), the agent scores 13/20 (65%) vs. plain RAG's
+  18/20 (90%), at 4.4x the cost and 9x the latency — it loses on the easy
+  set, as expected. On 10 new questions written specifically to need
+  multiple retrieval hops, plain RAG fails all 10; the agent succeeds
+  where live testing let it run uninterrupted.
 
-Both numbers carry real uncertainty at n=20 questions (a single flipped
-question moves the score 5 points) — `RESULTS.md` covers this precisely,
-next to the numbers themselves, along with the full tuning history, the
-Day 6 sweep, and a chunking fix made in response to external review.
+Both the Day 5/6 numbers and the Day 7 comparison carry real uncertainty
+at n=20/n=10 questions (a single flipped question moves the score 5–10
+points) — `RESULTS.md` covers this precisely, next to the numbers
+themselves, along with the full tuning history, the Day 6 sweep, a
+chunking fix made in response to external review, and the Day 7 agent
+build.
 
 ## Tests
 
 ```bash
-docker compose --profile tools run --rm tests    # 120 tests, fully offline
+docker compose --profile tools run --rm tests    # 144 tests, fully offline
 ```
 
 Covers chunking, embedding, storage, ingest, retrieval (vector/keyword/
-hybrid), generation, citations, and both refusal paths — all against
-mocked HTTP/DB/model, no real network call or API key needed.
+hybrid), generation, citations, both refusal paths, and the Day 7 agent
+loop (tool dispatch, all three hard limits, duplicate-call detection,
+error-type handling) — all against mocked HTTP/DB/model, no real network
+call or API key needed.
 
 ## Project layout
 
@@ -121,9 +157,12 @@ rag/
   retrieve.py         embed question -> vector/keyword/hybrid ranking -> threshold filter
   generate.py         Groq call + [N]-citation-marker parsing + token usage
   ask.py              ties retrieve + generate together, handles both refusal paths
+  agent.py            Day 7 -- LangChain tool-calling agent loop, hard limits enforced in code
   cli.py              single-question and interactive modes
 ui/
   app.py              Streamlit dashboard -- thin wrapper around rag/ask.py
-tests/                120 offline tests
+tests/                144 offline tests
 eval.py                Day 5/6 -- live eval against the real corpus, see RESULTS.md
+eval_agent.py          Day 7 -- agent vs. plain RAG comparison harness, see RESULTS.md
+data/agent_eval_set.json  Day 7 -- 10 multi-step questions plain RAG can't answer
 ```
