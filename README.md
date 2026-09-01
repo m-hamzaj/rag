@@ -1,5 +1,7 @@
 # Day 4–7 — RAG, evaluating it, tuning retrieval, then an agent
 
+<img src="art/banner.svg" alt="rag">
+
 ![CI](https://github.com/m-hamzaj/rag/actions/workflows/ci.yml/badge.svg)
 
 Question answering over Day 3's 125 scraped nature/wildlife/gardening
