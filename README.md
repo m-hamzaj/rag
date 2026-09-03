@@ -1,4 +1,4 @@
-# Day 4–7 — RAG, evaluating it, tuning retrieval, then an agent
+# Day 4–8 — RAG, evaluating it, tuning retrieval, an agent, then multi-agent
 
 <img src="art/banner.svg" alt="rag">
 
@@ -6,9 +6,9 @@
 
 Question answering over Day 3's 125 scraped nature/wildlife/gardening
 articles. Day 4–6 are framework-free — chunking, embedding, retrieval,
-and citation parsing are all hand-written in `rag/`. Day 7's agent is the
-one deliberate exception (LangChain, per updated requirements) — see
-below for why.
+and citation parsing are all hand-written in `rag/`. Day 7's agent and
+Day 8's multi-agent extension are the deliberate exceptions (LangChain,
+then LangGraph, per updated requirements) — see below for why.
 
 - **Day 4** builds the pipeline: chunk → embed → store in ChromaDB →
   retrieve top matches → answer with citations, or refuse honestly when
@@ -21,11 +21,20 @@ below for why.
 - **Day 7** builds a tool-calling agent for questions one retrieval pass
   can't answer, and measures where it actually helps — and where it's
   worse than Day 4–6's plain pipeline.
+- **Day 8** (`day8-multiagent/`) splits that one agent into three
+  specialized roles — researcher, writer, critic — orchestrated with
+  LangGraph, and measures it against Day 7's single agent. Its own
+  environment, tests, and results: `day8-multiagent/RESULTS.md`.
 
-All four live in one project because Day 5–7 test Day 4's code directly
-(`eval.py`/`eval_agent.py` import `rag/`, same as the CLI and UI). Full
-eval numbers and reasoning: **`RESULTS.md`**. Deep dives, bug stories,
-and verification transcripts: **`NOTES.md`**.
+All of Day 4–7 live in one Python project because Day 5–7 test Day 4's
+code directly (`eval.py`/`eval_agent.py` import `rag/`, same as the CLI
+and UI). Day 8 is a separate deployable unit (own `Dockerfile`,
+`docker-compose.yml`, `requirements.txt`) nested in this same repo rather
+than importing `rag/` directly — see `day8-multiagent/agents/db.py`'s
+module docstring for why duplication was chosen over a cross-project
+import even within one repo. Full eval numbers and reasoning: Day 4–7 in
+**`RESULTS.md`**, Day 8 in **`day8-multiagent/RESULTS.md`**. Deep dives,
+bug stories, and verification transcripts: **`NOTES.md`**.
 
 ## Running it
 
@@ -97,6 +106,35 @@ numbers, and several real infrastructure bugs found running it live
 (a request-size limit, a misconfigured `tool_choice`, rate-limit
 mislabeling): `RESULTS.md`'s Day 7 section.
 
+## The multi-agent extension (`day8-multiagent/`)
+
+Day 7's single agent does its own searching, reading, and answering in one
+loop. Day 8 splits that into three specialized roles instead — a
+**researcher** (search_articles/read_article, no `finish` tool), a
+**writer** (drafts an answer from the researcher's notes), and a
+**critic** (checks the draft against those notes, sends it back to the
+writer or approves it) — wired together with LangGraph. Reuses this
+project's already-running ChromaDB corpus read-only; never modifies it.
+Its own offline test suite (58 tests), `Dockerfile`, and
+`docker-compose.yml` live inside `day8-multiagent/` — see that folder's
+own `docker-compose.yml` header for how to run it against this project's
+`db` service.
+
+Measured against a frozen copy of Day 7's agent on identical
+infrastructure: a genuinely clean run (after diagnosing and fixing a real
+retry-timing bug, and a real Unicode-whitespace grading bug) gave the
+single agent a real 3/8 (37.5%) correct on the questions that completed,
+while the multi-agent system hit Groq's free-tier rate limit on every
+single question under the same conditions — a real, structural finding
+about tool-calling agents' rate-limit exposure, not a bug: splitting one
+agent into three roles multiplies the number of Groq calls per question,
+and each call resends the whole growing conversation, so the same
+per-minute token budget that the single agent mostly survives, the
+multi-agent system categorically cannot. Full story, including the
+retry-logic fix that initially backfired before working, and why
+switching to a different Groq model couldn't route around it either:
+`day8-multiagent/RESULTS.md`.
+
 ## Config values (`rag/config.py`)
 
 | Value | Default | What it controls |
@@ -167,4 +205,6 @@ tests/                144 offline tests
 eval.py                Day 5/6 -- live eval against the real corpus, see RESULTS.md
 eval_agent.py          Day 7 -- agent vs. plain RAG comparison harness, see RESULTS.md
 data/agent_eval_set.json  Day 7 -- 10 multi-step questions plain RAG can't answer
+day8-multiagent/       Day 8 -- LangGraph multi-agent (researcher/writer/critic), own
+                        Dockerfile/compose/requirements, own RESULTS.md and tests
 ```

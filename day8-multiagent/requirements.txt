@@ -1,0 +1,21 @@
+chromadb==1.5.9
+fastembed==0.8.0
+pytest==9.1.1
+
+# Exact-pinned above, not just min-bound: agents/db.py talks to day4-rag's
+# already-running Chroma server (see docker-compose.yml's header comment),
+# and agents/embed.py must produce vectors in the exact same space as the
+# ones already stored there -- a different chromadb client version risks
+# wire-protocol drift against that pinned server image, and a different
+# fastembed/ONNX version could silently shift the embedding space itself.
+# Both versions copied verbatim from day4-rag/requirements.txt.
+
+# LangGraph orchestrates researcher/writer/critic -- this project's own
+# deliberate framework use (Day 8, following Day 7's same break from the
+# "no framework" default). Min-bound like day4-rag's own LangChain pins,
+# for the same reason: exact current patch versions weren't independently
+# confirmed available, so pip resolves to whatever satisfies these.
+langgraph>=0.2
+langchain>=0.3
+langchain-groq>=0.2
+langchain-core>=0.3

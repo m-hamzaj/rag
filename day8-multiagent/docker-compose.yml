@@ -1,0 +1,51 @@
+# Precondition: the day4-rag root's `db` (ChromaDB) service must already be
+# running with the corpus already ingested -- this project (nested one
+# level inside day4-rag/) reuses that instance read-only, it never ingests
+# or runs its own Chroma. There is deliberately no `db` service below (see
+# agents/db.py's module docstring for why).
+#
+# Run:
+#   1) (in day4-rag/, one directory up from here)  docker compose up -d db   # must already have the corpus ingested
+#   2) (in this directory)  docker compose build
+#   3) (in this directory)  docker compose run --rm ask python -m agents.cli "some multi-hop question"
+#      or just               docker compose run --rm ask python -m agents.cli   # interactive
+#   4) (in this directory)  docker compose --profile tools run --rm tests
+#   5) (in this directory)  docker compose --profile tools run --rm eval python eval_multiagent.py data/multiagent_eval_set.json
+
+services:
+  ask:
+    build: .
+    command: ["python", "-m", "agents.cli"]
+    stdin_open: true
+    tty: true
+    environment:
+      # host.docker.internal:8001 -- day4-rag's `db` service already
+      # publishes host port 8001, the same way day4-rag's own `ingest`
+      # service reaches Day 1's separately-running API. Not `db:8000`
+      # (that name only resolves inside day4-rag's own compose network,
+      # which this project is not part of).
+      CHROMA_HOST: host.docker.internal
+      CHROMA_PORT: "8001"
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_MODEL: ${GROQ_MODEL:-openai/gpt-oss-120b}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  eval:
+    build: .
+    profiles: ["tools"]
+    command: ["python", "eval_multiagent.py", "data/multiagent_eval_set.json"]
+    environment:
+      CHROMA_HOST: host.docker.internal
+      CHROMA_PORT: "8001"
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_MODEL: ${GROQ_MODEL:-openai/gpt-oss-120b}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  tests:
+    build: .
+    profiles: ["tools"]
+    # Fully offline -- mocks _call_llm and the corpus (see tests/), no
+    # Chroma connection and no GROQ_API_KEY needed at all.
+    command: ["python", "-m", "pytest", "-v"]

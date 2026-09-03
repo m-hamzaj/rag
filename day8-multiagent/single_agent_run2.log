@@ -1,0 +1,330 @@
+Q 1 [FAIL] steps=4 cost=$0.00085 45.30s :: How many grizzly bears live in the lower 48 according to the corpus, a
+Q 2 [FAIL] steps=3 cost=$0.00042 41.78s :: What method does the Northwest wolf article say biologists use to coun
+Q 3 [FAIL] steps=1 cost=$0.00000 4.23s :: What specific cause of wolf mortality does the Northwest wolves articl
+Q 4 [FAIL] steps=1 cost=$0.00000 3.15s :: What federal agency oversees most Greater Sage-Grouse habitat and how 
+Q 5 [FAIL] steps=1 cost=$0.00000 3.16s :: Which organization investigated Cambodia's illegal wildlife trade, and
+Q 6 [FAIL] steps=1 cost=$0.00000 3.15s :: Across the rice's whale, grizzly bear, and Greater Sage-Grouse article
+Q 7 [FAIL] steps=1 cost=$0.00000 33.76s :: How many acres of sagebrush habitat does the corpus say are lost annua
+Q 8 [FAIL] steps=1 cost=$0.00000 3.23s :: According to the corpus's report on Cambodia's illegal wildlife trade,
+Q 9 [FAIL] steps=1 cost=$0.00000 3.31s :: What is the world's smallest deer according to the corpus's article on
+Q10 [FAIL] steps=1 cost=$0.00000 3.24s :: How many total protected hectares do the Valdivian Coastal Reserve and
+Q11 [FAIL] steps=1 cost=$0.00000 3.19s :: What method does the Northwest wolf article say biologists use to coun
+Q12 [FAIL] steps=1 cost=$0.00000 3.08s :: According to the corpus, what federal agency oversees most Greater Sag
+
+=== single_agent on data/multiagent_eval_set.json ===
+Correct:  0/12  (0%)
+Cost:     $0.0013 total, $0.00011/query
+Latency:  12.55 sec/query (avg)
+Steps:    1.4 avg, max 4
+Stopped:  {'rate_limited': 12}
+
+=== FULL TRANSCRIPT (JSON) ===
+[
+  {
+    "id": 1,
+    "question": "How many grizzly bears live in the lower 48 according to the corpus, and how many weeks before the last frost does it recommend starting tomato seeds indoors?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('grizzly bears lower 48 number'): Four Myths Around Grizzly Bears in the Lower 48 Busted (0.728); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.467); Exploring Alaska\u2019s Circle of Life From Salmon to Bears to Trees (0.426); The Present and Future of Wolves in the Northwest (0.379); Opinion: U.S. Wildlife Depends on Our Elections. That's the Problem. (0.373); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.369)\n---\nread(https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted): When hiking a trail in the Northern Rocky Mountains, you will be advised to keep your voice loud and bear spray close. While you are far from guaranteed to see a grizzly bear saunter across your path, the chances are also not zero. The advice and odds aren\u2019t just for the Rocky Mountains, but anywhere in grizzly country. Grizzly bears in the lower 48 states once ranged from Canada to Mexico and from the California coast to the plains of Kansas. After facing near eradication at the hands of European settlers, today these bears are on the road to recovery in some areas. Their listing under the Endangered Species Act certainly helps, but grizzlies are still a ways away from full recovery in all recovery areas. There are, unfortunately, some un-bear-lievable myths and misunderstandings around these animals, including how much they have recovered and how we can best live alongside grizzly bears. So, join us in digging up the truth and learning four claw-some facts about grizzly bears in the lower 48. #### 1. Fact: There are a little over 2,000 grizzly bears in the lower 48. When grizzly bears were listed on the ESA in 1975, there were only\n\nand learning four claw-some facts about grizzly bears in the lower 48. #### 1. Fact: There are a little over 2,000 grizzly bears in the lower 48. When grizzly bears were listed on the ESA in 1975, there were only a few hundred bears in less than 2% of their original range. The ESA has been effective in giving these bears a chance to make a comeback. Grizzly bear populations have increased to a little over 2,000 bears located in four of the six recovery zones. Two recovery zones, the Bitterroot and the North Cascades, still have no viable populations of grizzly bears. #### 2. Fact: Grizzly bears use a wide variety of habitats. Grizzly bears like lots of different types of habitats. They need large landscapes that provide secure habitat with plenty of food, water and shelter. While most grizzly bears reside in our vast public lands in the west, they also use private lands to live and navigate between secure core areas. Connectivity between populations is vital to the long-term success of grizzly bears in the lower 48. It is important for communities living with grizzly bears to have resources available to help them minimize human-bear conflicts. Defenders\n\nbetween secure core areas. Connectivity between populations is vital to the long-term success of grizzly bears in the lower 48. It is important for communities living with grizzly bears to have resources available to help them minimize human-bear conflicts. Defenders is invested in helping bears and people find a way forward in our increasingly developed lands. #### 3. Fact: Grizzly Bears prefer to avoid people. Grizzly bears are often portrayed as vicious beasts who are out to get you, but in reality, these animals mostly try to avoid people. Some grizzlies, however, become used to being near people or habituated to human activity. This does not always result in a negative outcome. Grizzly bears can be aggressive when protecting young or a food resource. Bottom line, they are powerful animals who should be viewed at a safe distance. Mother bears raise their young for 2 to 3 years and female cubs often establish a home range adjacent to their moms. These animals have an excellent sense of smell, way better than a bloodhound. And their long claws are excellent for digging up food and flipping logs to eat juicy bugs underneath. Grizzly bears who receive food rewards near people, like\n\nThese animals have an excellent sense of smell, way better than a bloodhound. And their long claws are excellent for digging up food and flipping logs to eat juicy bugs underneath. Grizzly bears who receive food rewards near people, like garbage and birdseed, can become food-conditioned, resulting in escalating behavior like breaking into cabins. This is largely preventable by properly securing attractants like garbage, fruit trees and birdfeeders. #### 4. Fact: You can help grizzly bears continue their recovery! If you live, work or recreate in bear country you can take steps on your property to secure attractants like garbage and bring in birdfeeders when bears are active in your area. If you travel to places where there are bears, make sure you do not leave food unattended. Use a bear-resistant cooler or a provided food locker to store food while you are off exploring. Finally, everyone should know how to use and carry bear spray when in bear country. You can also tell your members of Congress that the ESA is important, and we would have lost many species, like grizzly bears, without it. Grizzly bears are a valuable part of the American heritage and an icon of our\n\nYou can also tell your members of Congress that the ESA is important, and we would have lost many species, like grizzly bears, without it. Grizzly bears are a valuable part of the American heritage and an icon of our western landscapes and deserve a chance to stay that way for future generations.\n---\nsearch('weeks before the last frost start tomato seeds indoors'): 21 Easy to Start Seeds for Beginner Gardeners (0.741); 9 Tips to Make Tomato Plants Grow Faster (0.655); 9 Vegetable Garden Mistakes to Avoid This Year (0.596); 31 Easy-to-Grow Vegetables For Beginners (0.5); Seeds Not Germinating? 12 Reasons Why and How to Fix It (0.49); A Beginner's Guide to Seed-Saving in the Garden (0.47)",
+    "steps": 4,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "grizzly bears lower 48 number"
+        },
+        "result_summary": "Four Myths Around Grizzly Bears in the Lower 48 Busted (0.728); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.467); Exploring Alaska\u2019s Circle of Life From Salmon to Bears to Tr",
+        "prompt_tokens": 605,
+        "completion_tokens": 112,
+        "cumulative_cost_usd": 0.000158
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted"
+        },
+        "result_summary": "When hiking a trail in the Northern Rocky Mountains, you will be advised to keep your voice loud and bear spray close. While you are far from guaranteed to see a grizzly bear saunter across your path,",
+        "prompt_tokens": 1401,
+        "completion_tokens": 66,
+        "cumulative_cost_usd": 0.000408
+      },
+      {
+        "step": 3,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "weeks before the last frost start tomato seeds indoors"
+        },
+        "result_summary": "21 Easy to Start Seeds for Beginner Gardeners (0.741); 9 Tips to Make Tomato Plants Grow Faster (0.655); 9 Vegetable Garden Mistakes to Avoid This Year (0.596); 31 Easy-to-Grow Vegetables For Beginner",
+        "prompt_tokens": 2502,
+        "completion_tokens": 115,
+        "cumulative_cost_usd": 0.000852
+      },
+      {
+        "step": 4,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000852
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000852,
+    "seconds": 45.3
+  },
+  {
+    "id": 2,
+    "question": "What method does the Northwest wolf article say biologists use to count today's wolf population, and how many grizzly bears does the corpus say live in the lower 48?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch(\"Northwest wolf article biologists count today's wolf population method\"): The Present and Future of Wolves in the Northwest (0.704); The History of Wolves in the Northwest (0.669); Mexican Gray Wolves, Born to Roam (0.554); The Swift Fox Makes a Surprise Comeback (0.425); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.422); Five Conservationists You May Not Know But Should (0.406)\n---\nread(https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest): There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonization, these animals are making remarkable progress on their road to recovery in Oregon and Washington. Long-term restoration, however, will take more than increasing numbers of wolves on the landscape. It will take a lot of hard work from everyone to find solutions to reduce wolf-livestock conflict and ensure wolves have the habitat and sufficient human tolerance needed to thrive. #### Counting Today\u2019s Northwest Wolves Every winter, biologists from Oregon and Washington\u2019s departments of fish and wildlife conduct their annual wolf count surveys. Both states track their wolf populations through a minimum population count, which is based on verified, direct evidence of each wolf. This includes observations, remote cameras and tracks. Winter is the ideal time because wolf pups born in the spring are considered to have a good chance of surviving into adulthood if they reach the cold season. Animals are additionally easier to spot with less foliage and tracks are more easily identifiable in the snow. Biologists also track the number of\n\nconsidered to have a good chance of surviving into adulthood if they reach the cold season. Animals are additionally easier to spot with less foliage and tracks are more easily identifiable in the snow. Biologists also track the number of breeding pairs in each state. This is an important indicator of population growth and a core metric for recovery. Additionally, they monitor the number and cause of wolf mortalities. Determining the cause of death within populations is important because it provides insight into types of human-caused mortalities which we can work to reduce, such as poaching (illegal killing or 'take'). Finally, the number of reported livestock depredations are summarized, which reflects the continued efforts needed to support suitable habitat for wolves and help ranchers deter wolves from predating on their cows and other livestock. All this information is then brought together into each state\u2019s Annal Wolf Report, which is released to the public in April. Both Oregon and Washington\u2019s 2025 Wolf Counts paint the same picture we have seen since initial recolonization: populations are growing and expanding west. Conflicts between wolves and livestock producers are not significant statewide in terms of overall livestock losses but are very important in areas\n\nWolf Counts paint the same picture we have seen since initial recolonization: populations are growing and expanding west. Conflicts between wolves and livestock producers are not significant statewide in terms of overall livestock losses but are very important in areas where it is occurring. This conflict can impact certain producers and communities more than others. Wolves have filled out much of the available habitat in the eastern portions of both states. There does remain unoccupied, yet suitable habitat, however, in the central and western portions of Washington and Oregon (as well as further south into California). If recovery trends continue, within the next several years, we should expect wolves to meet recovery goals in both states. But this won\u2019t be the end of the story. Much has changed since both plans were written, so both are in need of updating during a future Wolf Plan revision process. New science and species modeling may also bring new considerations to future management discussions. Regardless of future management decisions, Defenders of Wildlife will remain focused on these animals\u2019 long-term recovery and looks forward to the day when wolf populations are playing out their ecological role throughout the Pacific Northwest. The question is, how\n\ndiscussions. Regardless of future management decisions, Defenders of Wildlife will remain focused on these animals\u2019 long-term recovery and looks forward to the day when wolf populations are playing out their ecological role throughout the Pacific Northwest. The question is, how do we get there? #### A Look Towards the Future What does wolf recovery look like biologically and socially? And how many wolves can Oregon and Washington support to help achieve that recovery? Wolves can live in a variety of habitats as long as they have adequate prey and sufficient human tolerance. In the past 200 years, the amount of available habitat has decreased as human presence has increased. Wolves natural prey \u2014 such as deer, elk and moose \u2014 have also been affected by human presence. Many of these populations have fallen due to habitat loss and fragmentation inhibiting connectivity across the landscape and disrupting migration corridors. Scientists have attempted to make estimates for how many wolves each state could support. Washington is estimated around 76 packs, or just over 450 individuals, while Oregon is estimated around 1,500 individuals. Looking at each state in isolation, however, is probably not the best approach as dispersing wolves move across the landscape\n\ncould support. Washington is estimated around 76 packs, or just over 450 individuals, while Oregon is estimated around 1,500 individuals. Looking at each state in isolation, however, is probably not the best approach as dispersing wolves move across the landscape and cross borders \u2013 into neighboring states and Canadian Provinces \u2013 in search of food or mates. Working towards, and hopefully achieving, target wolf population goals is important, but not sufficient to ensure long-term recovery. We need to make sure wolves have the habitat they need to hunt, mate, raise pups and live out their lives as adults. The habitat needs to be sufficiently connected to allow dispersing wolves to move to new areas and establish new breeding pairs and packs. Local, state and federal authorities need the capacity and tools to minimize negative wolf-livestock interactions. We need to work with landowners and producers to help them implement methods and strategies to address wolf-livestock conflicts. And we need to help educate people of all ages about these fascinating animals and how to live alongside them. Luckily, Defenders is already working alongside partners and with producers to do and support all these efforts. We can find solutions that work for both\n\neducate people of all ages about these fascinating animals and how to live alongside them. Luckily, Defenders is already working alongside partners and with producers to do and support all these efforts. We can find solutions that work for both wolves and those sharing the landscape with them. And who knows? Maybe one day we will find ourselves in a world where humans and wolves coexist. Where people and animals are once again seen as equals, or kin, on the landscape. *In case you missed it, check out the **history of Pacific Northwest wolves**. Curious about wolves in other parts of the country? Read other gray wolf recovery and efforts **here**.*",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Northwest wolf article biologists count today's wolf population method"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.704); The History of Wolves in the Northwest (0.669); Mexican Gray Wolves, Born to Roam (0.554); The Swift Fox Makes a Surprise Comeback (0.425); B",
+        "prompt_tokens": 607,
+        "completion_tokens": 126,
+        "cumulative_cost_usd": 0.000167
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
+        },
+        "result_summary": "There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonizatio",
+        "prompt_tokens": 1374,
+        "completion_tokens": 86,
+        "cumulative_cost_usd": 0.000424
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000424
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000424,
+    "seconds": 41.78
+  },
+  {
+    "id": 3,
+    "question": "What specific cause of wolf mortality does the Northwest wolves article say biologists track, and what does India's tiger numbers article say is happening to forest land even as habitat connectivity improves?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 4.23
+  },
+  {
+    "id": 4,
+    "question": "What federal agency oversees most Greater Sage-Grouse habitat and how many acres does it oversee? Separately, what has India built more of than any other country in Asia for wildlife?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 3.15
+  },
+  {
+    "id": 5,
+    "question": "Which organization investigated Cambodia's illegal wildlife trade, and what specific type of wolf mortality does the Northwest wolf article track as one of several causes?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 3.16
+  },
+  {
+    "id": 6,
+    "question": "Across the rice's whale, grizzly bear, and Greater Sage-Grouse articles, what specific numeric figure does each one give -- a population count or an acreage?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 3.15
+  },
+  {
+    "id": 7,
+    "question": "How many acres of sagebrush habitat does the corpus say are lost annually, in what year does it say grizzly bears were listed under the Endangered Species Act, and what's one benefit of a raised garden bed mentioned in the corpus?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 33.76
+  },
+  {
+    "id": 8,
+    "question": "According to the corpus's report on Cambodia's illegal wildlife trade, which country's demand is described as primarily fueling it? And in what year was Chile's Valdivian Coastal Reserve established?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 3.23
+  },
+  {
+    "id": 9,
+    "question": "What is the world's smallest deer according to the corpus's article on Chile's Valdivian Coastal Reserve, and what's one flower the corpus recommends for a raised garden bed?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 3.31
+  },
+  {
+    "id": 10,
+    "question": "How many total protected hectares do the Valdivian Coastal Reserve and the adjacent Alerce Costero National Park in Chile encompass together, and what's the maximum length given for a cookiecutter shark, in inches?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 3.24
+  },
+  {
+    "id": 11,
+    "question": "What method does the Northwest wolf article say biologists use to count today's wolf population, what specific cause of wolf mortality does that same article track, and how many grizzly bears live in the lower 48 according to the corpus?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 3.19
+  },
+  {
+    "id": 12,
+    "question": "According to the corpus, what federal agency oversees most Greater Sage-Grouse habitat, how many acres does it oversee, and in what year does the corpus say grizzly bears were listed under the Endangered Species Act?",
+    "correct": false,
+    "answer": "I don't know. (Stopped: the API stayed rate-limited through every retry, before finding any relevant evidence.)",
+    "steps": 1,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.0
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.0,
+    "seconds": 3.08
+  }
+]

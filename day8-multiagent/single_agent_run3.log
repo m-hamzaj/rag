@@ -1,0 +1,462 @@
+Q 1 [FAIL] steps=2 cost=$0.00016 372.58s :: How many grizzly bears live in the lower 48 according to the corpus, a
+Q 2 [FAIL] steps=2 cost=$0.00017 357.12s :: What method does the Northwest wolf article say biologists use to coun
+Q 3 [FAIL] steps=3 cost=$0.00044 600.38s :: What specific cause of wolf mortality does the Northwest wolves articl
+Q 4 [FAIL] steps=2 cost=$0.00015 357.82s :: What federal agency oversees most Greater Sage-Grouse habitat and how 
+Q 5 [FAIL] steps=3 cost=$0.00034 368.77s :: Which organization investigated Cambodia's illegal wildlife trade, and
+Q 6 [FAIL] steps=2 cost=$0.00018 358.91s :: Across the rice's whale, grizzly bear, and Greater Sage-Grouse article
+Q 7 [FAIL] steps=2 cost=$0.00016 356.38s :: How many acres of sagebrush habitat does the corpus say are lost annua
+Q 8 [FAIL] steps=3 cost=$0.00036 419.95s :: According to the corpus's report on Cambodia's illegal wildlife trade,
+Q 9 [FAIL] steps=3 cost=$0.00043 677.36s :: What is the world's smallest deer according to the corpus's article on
+Q10 [FAIL] steps=3 cost=$0.00044 1133.66s :: How many total protected hectares do the Valdivian Coastal Reserve and
+Q11 [FAIL] steps=2 cost=$0.00016 356.29s :: What method does the Northwest wolf article say biologists use to coun
+Q12 [FAIL] steps=2 cost=$0.00017 483.43s :: According to the corpus, what federal agency oversees most Greater Sag
+
+=== single_agent on data/multiagent_eval_set.json ===
+Correct:  0/12  (0%)
+Cost:     $0.0031 total, $0.00026/query
+Latency:  486.89 sec/query (avg)
+Steps:    2.4 avg, max 3
+Stopped:  {'rate_limited': 12}
+
+=== FULL TRANSCRIPT (JSON) ===
+[
+  {
+    "id": 1,
+    "question": "How many grizzly bears live in the lower 48 according to the corpus, and how many weeks before the last frost does it recommend starting tomato seeds indoors?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('grizzly bears lower 48 number'): Four Myths Around Grizzly Bears in the Lower 48 Busted (0.728); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.467); Exploring Alaska\u2019s Circle of Life From Salmon to Bears to Trees (0.426); The Present and Future of Wolves in the Northwest (0.379); Opinion: U.S. Wildlife Depends on Our Elections. That's the Problem. (0.373); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.369)",
+    "steps": 2,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "grizzly bears lower 48 number"
+        },
+        "result_summary": "Four Myths Around Grizzly Bears in the Lower 48 Busted (0.728); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.467); Exploring Alaska\u2019s Circle of Life From Salmon to Bears to Tr",
+        "prompt_tokens": 605,
+        "completion_tokens": 112,
+        "cumulative_cost_usd": 0.000158
+      },
+      {
+        "step": 2,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000158
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000158,
+    "seconds": 372.58
+  },
+  {
+    "id": 2,
+    "question": "What method does the Northwest wolf article say biologists use to count today's wolf population, and how many grizzly bears does the corpus say live in the lower 48?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch(\"Northwest wolf article biologists count today's wolf population method\"): The Present and Future of Wolves in the Northwest (0.704); The History of Wolves in the Northwest (0.669); Mexican Gray Wolves, Born to Roam (0.554); The Swift Fox Makes a Surprise Comeback (0.425); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.422); Five Conservationists You May Not Know But Should (0.406)",
+    "steps": 2,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Northwest wolf article biologists count today's wolf population method"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.704); The History of Wolves in the Northwest (0.669); Mexican Gray Wolves, Born to Roam (0.554); The Swift Fox Makes a Surprise Comeback (0.425); B",
+        "prompt_tokens": 607,
+        "completion_tokens": 129,
+        "cumulative_cost_usd": 0.000168
+      },
+      {
+        "step": 2,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000168
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000168,
+    "seconds": 357.12
+  },
+  {
+    "id": 3,
+    "question": "What specific cause of wolf mortality does the Northwest wolves article say biologists track, and what does India's tiger numbers article say is happening to forest land even as habitat connectivity improves?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Northwest wolves biologists track cause of mortality'): The Present and Future of Wolves in the Northwest (0.691); The History of Wolves in the Northwest (0.654); Mexican Gray Wolves, Born to Roam (0.607); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.534); The Swift Fox Makes a Surprise Comeback (0.491); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.452)\n---\nread(https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest): There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonization, these animals are making remarkable progress on their road to recovery in Oregon and Washington. Long-term restoration, however, will take more than increasing numbers of wolves on the landscape. It will take a lot of hard work from everyone to find solutions to reduce wolf-livestock conflict and ensure wolves have the habitat and sufficient human tolerance needed to thrive. #### Counting Today\u2019s Northwest Wolves Every winter, biologists from Oregon and Washington\u2019s departments of fish and wildlife conduct their annual wolf count surveys. Both states track their wolf populations through a minimum population count, which is based on verified, direct evidence of each wolf. This includes observations, remote cameras and tracks. Winter is the ideal time because wolf pups born in the spring are considered to have a good chance of surviving into adulthood if they reach the cold season. Animals are additionally easier to spot with less foliage and tracks are more easily identifiable in the snow. Biologists also track the number of\n\nconsidered to have a good chance of surviving into adulthood if they reach the cold season. Animals are additionally easier to spot with less foliage and tracks are more easily identifiable in the snow. Biologists also track the number of breeding pairs in each state. This is an important indicator of population growth and a core metric for recovery. Additionally, they monitor the number and cause of wolf mortalities. Determining the cause of death within populations is important because it provides insight into types of human-caused mortalities which we can work to reduce, such as poaching (illegal killing or 'take'). Finally, the number of reported livestock depredations are summarized, which reflects the continued efforts needed to support suitable habitat for wolves and help ranchers deter wolves from predating on their cows and other livestock. All this information is then brought together into each state\u2019s Annal Wolf Report, which is released to the public in April. Both Oregon and Washington\u2019s 2025 Wolf Counts paint the same picture we have seen since initial recolonization: populations are growing and expanding west. Conflicts between wolves and livestock producers are not significant statewide in terms of overall livestock losses but are very important in areas\n\nWolf Counts paint the same picture we have seen since initial recolonization: populations are growing and expanding west. Conflicts between wolves and livestock producers are not significant statewide in terms of overall livestock losses but are very important in areas where it is occurring. This conflict can impact certain producers and communities more than others. Wolves have filled out much of the available habitat in the eastern portions of both states. There does remain unoccupied, yet suitable habitat, however, in the central and western portions of Washington and Oregon (as well as further south into California). If recovery trends continue, within the next several years, we should expect wolves to meet recovery goals in both states. But this won\u2019t be the end of the story. Much has changed since both plans were written, so both are in need of updating during a future Wolf Plan revision process. New science and species modeling may also bring new considerations to future management discussions. Regardless of future management decisions, Defenders of Wildlife will remain focused on these animals\u2019 long-term recovery and looks forward to the day when wolf populations are playing out their ecological role throughout the Pacific Northwest. The question is, how\n\ndiscussions. Regardless of future management decisions, Defenders of Wildlife will remain focused on these animals\u2019 long-term recovery and looks forward to the day when wolf populations are playing out their ecological role throughout the Pacific Northwest. The question is, how do we get there? #### A Look Towards the Future What does wolf recovery look like biologically and socially? And how many wolves can Oregon and Washington support to help achieve that recovery? Wolves can live in a variety of habitats as long as they have adequate prey and sufficient human tolerance. In the past 200 years, the amount of available habitat has decreased as human presence has increased. Wolves natural prey \u2014 such as deer, elk and moose \u2014 have also been affected by human presence. Many of these populations have fallen due to habitat loss and fragmentation inhibiting connectivity across the landscape and disrupting migration corridors. Scientists have attempted to make estimates for how many wolves each state could support. Washington is estimated around 76 packs, or just over 450 individuals, while Oregon is estimated around 1,500 individuals. Looking at each state in isolation, however, is probably not the best approach as dispersing wolves move across the landscape\n\ncould support. Washington is estimated around 76 packs, or just over 450 individuals, while Oregon is estimated around 1,500 individuals. Looking at each state in isolation, however, is probably not the best approach as dispersing wolves move across the landscape and cross borders \u2013 into neighboring states and Canadian Provinces \u2013 in search of food or mates. Working towards, and hopefully achieving, target wolf population goals is important, but not sufficient to ensure long-term recovery. We need to make sure wolves have the habitat they need to hunt, mate, raise pups and live out their lives as adults. The habitat needs to be sufficiently connected to allow dispersing wolves to move to new areas and establish new breeding pairs and packs. Local, state and federal authorities need the capacity and tools to minimize negative wolf-livestock interactions. We need to work with landowners and producers to help them implement methods and strategies to address wolf-livestock conflicts. And we need to help educate people of all ages about these fascinating animals and how to live alongside them. Luckily, Defenders is already working alongside partners and with producers to do and support all these efforts. We can find solutions that work for both\n\neducate people of all ages about these fascinating animals and how to live alongside them. Luckily, Defenders is already working alongside partners and with producers to do and support all these efforts. We can find solutions that work for both wolves and those sharing the landscape with them. And who knows? Maybe one day we will find ourselves in a world where humans and wolves coexist. Where people and animals are once again seen as equals, or kin, on the landscape. *In case you missed it, check out the **history of Pacific Northwest wolves**. Curious about wolves in other parts of the country? Read other gray wolf recovery and efforts **here**.*",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Northwest wolves biologists track cause of mortality"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.691); The History of Wolves in the Northwest (0.654); Mexican Gray Wolves, Born to Roam (0.607); Bengal tigers in Cambodia? Reintroduction plan rai",
+        "prompt_tokens": 608,
+        "completion_tokens": 153,
+        "cumulative_cost_usd": 0.000183
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
+        },
+        "result_summary": "There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonizatio",
+        "prompt_tokens": 1365,
+        "completion_tokens": 85,
+        "cumulative_cost_usd": 0.000439
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000439
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000439,
+    "seconds": 600.38
+  },
+  {
+    "id": 4,
+    "question": "What federal agency oversees most Greater Sage-Grouse habitat and how many acres does it oversee? Separately, what has India built more of than any other country in Asia for wildlife?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Greater Sage-Grouse habitat federal agency oversees most acres'): What\u2019s next for the Greater Sage-Grouse? (0.72); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.526); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.521); Advocating for Birds and Working Lands in a Conservation-Forward Farm Bill (0.515); Where Species Shape the Landscape: The Comanche National Grasslands (0.509); What the House Farm Bill Means for Birds, Working Lands, and Conservation (0.504)",
+    "steps": 2,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Greater Sage-Grouse habitat federal agency oversees most acres"
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.72); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.526); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.5",
+        "prompt_tokens": 610,
+        "completion_tokens": 89,
+        "cumulative_cost_usd": 0.000145
+      },
+      {
+        "step": 2,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000145
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000145,
+    "seconds": 357.82
+  },
+  {
+    "id": 5,
+    "question": "Which organization investigated Cambodia's illegal wildlife trade, and what specific type of wolf mortality does the Northwest wolf article track as one of several causes?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Cambodia illegal wildlife trade investigation organization'): Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.848); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.576)\n---\nread(https://news.mongabay.com/2026/07/report-reveals-cambodias-appetite-for-tigers-rhinos-and-other-endangered-wildlife): - *Illegal wildlife trade, primarily catering to Chinese nationals, is thriving in Cambodia, according to a new undercover investigation by Earth League International, a U.S.-based NGO fighting environmental crime.* - *Investigators identified five kingpins allegedly running transnational criminal networks in Cambodia that are involved in wildlife smuggling, human and drug trafficking and operate scam centers that defraud targets of money. ELI also mapped trade networks and gathered information on what species are sold and who buys them.* - *The report found many endangered animals and their parts, including tigers, elephants, rhinos and pangolins, openly sold mostly to high-ranking government officials, Chinese expats, wealthy businessmen and Chinese tourists.* - *The report urges China to act against Chinese scam center owners and corrupt officials who facilitate illegal activity and wildlife trade, along with reducing demand for endangered species within its borders.* Tiger bone wines in exquisite bottles. Tiger cubs sold alive as pets or served as a culinary delicacy alongside pangolin and cobra meat at exclusive restaurants. Rooms filled with rhino horns and elephant ivory, stacks of freshly skinned tiger pelts and bags of pangolin scales. Jewelry made from protected corals and ivory. This is just a glimpse of the thriving illegal cobra meat at exclusive restaurants. Rooms filled with rhino horns and elephant ivory, stacks of freshly skinned tiger pelts and bags of pangolin scales. Jewelry made from protected corals and ivory. This is just a glimpse of the thriving illegal wildlife trade in Cambodia discovered by undercover investigators from Earth League International (ELI), a U.S.-based NGO that probes environmental crime. From 2025-26, ELI investigators mapped out the people involved in this illicit enterprise and identified five main kingpins allegedly running it. They gathered details on how cartels smuggle wildlife and their parts, what they sell and who their main customers are. They also linked this black-market trade with human and drug trafficking networks and scam centers operating out of Cambodia that defraud their targets. The investigators\u2019 findings of this operation \u2014 named *Sandokan* after a fictional 19th-century pirate from Southeast Asia \u2014 are published in a new report. The yearlong investigation revealed a huge demand for wildlife products within Cambodia, fueled by wealthy Chinese and Cambodian buyers. \u201cIt\u2019s a trafficking enterprise, and a good example of what happens when you don\u2019t do anything \u2026 they grow and grow and grow, and at the end, the damage is substantial,\u201d said Andrea fueled by wealthy Chinese and Cambodian buyers. \u201cIt\u2019s a trafficking enterprise, and a good example of what happens when you don\u2019t do anything \u2026 they grow and grow and grow, and at the end, the damage is substantial,\u201d said Andrea Crosta, executive director of ELI. \u201cThe big surprise was the incredible quantity of wildlife in the hands of these people.\u201d Cambodia is a recognized hub of the illegal wildlife trade, with most products destined for China. But little is known about the scale of the domestic trade and, before now, the cartel bosses who allegedly run these criminal networks. \u201cWhat very often you don\u2019t know is who are the biggest players \u2014 who are the \u2018ghosts\u2019 who run the show,\u201d Crosta said. \u201cOur work is to give a name and a face to these \u2018ghosts\u2019 so they\u2019re not invisible anymore, because as long as they are invisible, they can do whatever they want.\u201d \u201cI think it\u2019s an excellent piece of work,\u201d said Debbie Banks. She serves as the tiger and wildlife crime campaign lead at the U.K.-based Environmental Investigation Agency (EIA), which also investigates wildlife crimes in Southeast Asia. Banks was not involved in this operation, but EIA has previously work,\u201d said Debbie Banks. She serves as the tiger and wildlife crime campaign lead at the U.K.-based Environmental Investigation Agency (EIA), which also investigates wildlife crimes in Southeast Asia. Banks was not involved in this operation, but EIA has previously uncovered illegal commerce in tiger parts in Laos and Vietnam in operations that also targeted Chinese nationals. \u201cThere\u2019s a lot of similarities in terms of how these networks are operating, and the role of the Chinese businesses and Chinese criminal enterprises,\u201d Banks said, comparing the current report\u2019s findings to her work. \u201cThat\u2019s interesting.\u201d \u201cThe investigation clearly shows that illegal wildlife trade is linked between Southeast Asian countries and China,\u201d said Russell Gray from the Global Initiative against Transnational Organized Crime, a Swiss organization that didn\u2019t participate in this investigation. He noted that the report reveals a much larger network and a global supply chain. \u201cThis is a wide-ranging international issue,\u201d he said. **A trafficking enterprise allegedly operated by Chinese kingpins** Investigators say they identified five cartel kingpins operating in Cambodia who allegedly run transnational criminal networks that smuggle wildlife from across the world. ELI reported that all are of Chinese descent and are well connected within Cambodia. Two of them Investigators say they identified five cartel kingpins operating in Cambodia who allegedly run transnational criminal networks that smuggle wildlife from across the world. ELI reported that all are of Chinese descent and are well connected within Cambodia. Two of them are believed to be the biggest wildlife traders in the lower Mekong region. The public report leaves them nameless; another version handed over to U.S. authorities identified all involved. \u201cWildlife trafficking in Southeast Asia is in the hands of Chinese nationals by 90%,\u201d Crosta said. He added that they have strong business ties in the region, with investments in real estate and a mix of legal and illegal businesses that include restaurants and clubs as well as scam centers. They are \u201cvery, very prolific\u201d wildlife traffickers, Crosta said. His team found that the two they identified as the largest traffickers own at least nine shops in Cambodia. Investigators saw many endangered wildlife products sold openly in their shops as well as online, sometimes to customers in other countries. Other businesses include a factory that carves rhino horn and ivory and a brewery for making tiger bone wine \u2014 an expensive alcoholic beverage brewed with tiger bones that\u2019s often sold in as online, sometimes to customers in other countries. Other businesses include a factory that carves rhino horn and ivory and a brewery for making tiger bone wine \u2014 an expensive alcoholic beverage brewed with tiger bones that\u2019s often sold in ornate tiger-shaped bottles. Though it\u2019s been used as traditional Chinese medicine for millennia, it\u2019s now become a pricey prestige item. Serving or gifting tiger bone wine is a way to flaunt status or seal a deal. Investigators also identified middlemen and buyers, including restaurant owners, businessmen and traffickers. One individual said he raised lions, tigers and primates on his properties \u2014 and allegedly trafficked primates, birds and bear parts, according to the investigation. Another said he smuggled wildlife products and narcotics to the West. Yet another said his role was logistics, claiming he could help traffic anything because he had close connections to Cambodian customs officials as well as the country\u2019s political, military and business elites. Meanwhile, the kingpins reportedly said they could supply any species that customers wanted: tigers, elephants, rhinos, pangolins, sea turtles, coral, bears, primates and birds of prey \u2014 either alive, dead or in parts. They said they had suppliers across the globe, in Africa, Europe, [...article truncated...]",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Cambodia illegal wildlife trade investigation organization"
+        },
+        "result_summary": "Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.848); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.576)",
+        "prompt_tokens": 601,
+        "completion_tokens": 97,
+        "cumulative_cost_usd": 0.000148
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://news.mongabay.com/2026/07/report-reveals-cambodias-appetite-for-tigers-rhinos-and-other-endangered-wildlife"
+        },
+        "result_summary": "- *Illegal wildlife trade, primarily catering to Chinese nationals, is thriving in Cambodia, according to a new undercover investigation by Earth League International, a U.S.-based NGO fighting enviro",
+        "prompt_tokens": 905,
+        "completion_tokens": 96,
+        "cumulative_cost_usd": 0.000342
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000342
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000342,
+    "seconds": 368.77
+  },
+  {
+    "id": 6,
+    "question": "Across the rice's whale, grizzly bear, and Greater Sage-Grouse articles, what specific numeric figure does each one give -- a population count or an acreage?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch(\"rice's whale population count\"): Opinion: Playing God in the Gulf and a Rare Whale\u2019s Right to Exist (0.594); Opinion: Unprecedented God Squad Meeting Could Push Gulf Species Toward Extinction (0.418); The Present and Future of Wolves in the Northwest (0.373); Dalian Ocean Fishing, subject of Mongabay probe, now sanctioned by U.S. (0.36); The History of Wolves in the Northwest (0.359); Nepal\u2019s newest national parks drive tiger recovery, but new concerns arise (0.347)",
+    "steps": 2,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "rice's whale population count"
+        },
+        "result_summary": "Opinion: Playing God in the Gulf and a Rare Whale\u2019s Right to Exist (0.594); Opinion: Unprecedented God Squad Meeting Could Push Gulf Species Toward Extinction (0.418); The Present and Future of Wolves",
+        "prompt_tokens": 607,
+        "completion_tokens": 151,
+        "cumulative_cost_usd": 0.000182
+      },
+      {
+        "step": 2,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000182
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000182,
+    "seconds": 358.91
+  },
+  {
+    "id": 7,
+    "question": "How many acres of sagebrush habitat does the corpus say are lost annually, in what year does it say grizzly bears were listed under the Endangered Species Act, and what's one benefit of a raised garden bed mentioned in the corpus?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('sagebrush habitat lost annually acres'): What\u2019s next for the Greater Sage-Grouse? (0.615); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.6); Where Species Shape the Landscape: The Comanche National Grasslands (0.514); The Swift Fox Makes a Surprise Comeback (0.494); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.461); What the House Farm Bill Means for Birds, Working Lands, and Conservation (0.457)",
+    "steps": 2,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "sagebrush habitat lost annually acres"
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.615); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.6); Where Species Shape the Landscape: The Comanche National Grasslan",
+        "prompt_tokens": 620,
+        "completion_tokens": 106,
+        "cumulative_cost_usd": 0.000157
+      },
+      {
+        "step": 2,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000157
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000157,
+    "seconds": 356.38
+  },
+  {
+    "id": 8,
+    "question": "According to the corpus's report on Cambodia's illegal wildlife trade, which country's demand is described as primarily fueling it? And in what year was Chile's Valdivian Coastal Reserve established?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Cambodia illegal wildlife trade report demand primarily fueling it country demand'): Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.789); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.582)\n---\nread(https://news.mongabay.com/2026/07/report-reveals-cambodias-appetite-for-tigers-rhinos-and-other-endangered-wildlife): - *Illegal wildlife trade, primarily catering to Chinese nationals, is thriving in Cambodia, according to a new undercover investigation by Earth League International, a U.S.-based NGO fighting environmental crime.* - *Investigators identified five kingpins allegedly running transnational criminal networks in Cambodia that are involved in wildlife smuggling, human and drug trafficking and operate scam centers that defraud targets of money. ELI also mapped trade networks and gathered information on what species are sold and who buys them.* - *The report found many endangered animals and their parts, including tigers, elephants, rhinos and pangolins, openly sold mostly to high-ranking government officials, Chinese expats, wealthy businessmen and Chinese tourists.* - *The report urges China to act against Chinese scam center owners and corrupt officials who facilitate illegal activity and wildlife trade, along with reducing demand for endangered species within its borders.* Tiger bone wines in exquisite bottles. Tiger cubs sold alive as pets or served as a culinary delicacy alongside pangolin and cobra meat at exclusive restaurants. Rooms filled with rhino horns and elephant ivory, stacks of freshly skinned tiger pelts and bags of pangolin scales. Jewelry made from protected corals and ivory. This is just a glimpse of the thriving illegal cobra meat at exclusive restaurants. Rooms filled with rhino horns and elephant ivory, stacks of freshly skinned tiger pelts and bags of pangolin scales. Jewelry made from protected corals and ivory. This is just a glimpse of the thriving illegal wildlife trade in Cambodia discovered by undercover investigators from Earth League International (ELI), a U.S.-based NGO that probes environmental crime. From 2025-26, ELI investigators mapped out the people involved in this illicit enterprise and identified five main kingpins allegedly running it. They gathered details on how cartels smuggle wildlife and their parts, what they sell and who their main customers are. They also linked this black-market trade with human and drug trafficking networks and scam centers operating out of Cambodia that defraud their targets. The investigators\u2019 findings of this operation \u2014 named *Sandokan* after a fictional 19th-century pirate from Southeast Asia \u2014 are published in a new report. The yearlong investigation revealed a huge demand for wildlife products within Cambodia, fueled by wealthy Chinese and Cambodian buyers. \u201cIt\u2019s a trafficking enterprise, and a good example of what happens when you don\u2019t do anything \u2026 they grow and grow and grow, and at the end, the damage is substantial,\u201d said Andrea fueled by wealthy Chinese and Cambodian buyers. \u201cIt\u2019s a trafficking enterprise, and a good example of what happens when you don\u2019t do anything \u2026 they grow and grow and grow, and at the end, the damage is substantial,\u201d said Andrea Crosta, executive director of ELI. \u201cThe big surprise was the incredible quantity of wildlife in the hands of these people.\u201d Cambodia is a recognized hub of the illegal wildlife trade, with most products destined for China. But little is known about the scale of the domestic trade and, before now, the cartel bosses who allegedly run these criminal networks. \u201cWhat very often you don\u2019t know is who are the biggest players \u2014 who are the \u2018ghosts\u2019 who run the show,\u201d Crosta said. \u201cOur work is to give a name and a face to these \u2018ghosts\u2019 so they\u2019re not invisible anymore, because as long as they are invisible, they can do whatever they want.\u201d \u201cI think it\u2019s an excellent piece of work,\u201d said Debbie Banks. She serves as the tiger and wildlife crime campaign lead at the U.K.-based Environmental Investigation Agency (EIA), which also investigates wildlife crimes in Southeast Asia. Banks was not involved in this operation, but EIA has previously work,\u201d said Debbie Banks. She serves as the tiger and wildlife crime campaign lead at the U.K.-based Environmental Investigation Agency (EIA), which also investigates wildlife crimes in Southeast Asia. Banks was not involved in this operation, but EIA has previously uncovered illegal commerce in tiger parts in Laos and Vietnam in operations that also targeted Chinese nationals. \u201cThere\u2019s a lot of similarities in terms of how these networks are operating, and the role of the Chinese businesses and Chinese criminal enterprises,\u201d Banks said, comparing the current report\u2019s findings to her work. \u201cThat\u2019s interesting.\u201d \u201cThe investigation clearly shows that illegal wildlife trade is linked between Southeast Asian countries and China,\u201d said Russell Gray from the Global Initiative against Transnational Organized Crime, a Swiss organization that didn\u2019t participate in this investigation. He noted that the report reveals a much larger network and a global supply chain. \u201cThis is a wide-ranging international issue,\u201d he said. **A trafficking enterprise allegedly operated by Chinese kingpins** Investigators say they identified five cartel kingpins operating in Cambodia who allegedly run transnational criminal networks that smuggle wildlife from across the world. ELI reported that all are of Chinese descent and are well connected within Cambodia. Two of them Investigators say they identified five cartel kingpins operating in Cambodia who allegedly run transnational criminal networks that smuggle wildlife from across the world. ELI reported that all are of Chinese descent and are well connected within Cambodia. Two of them are believed to be the biggest wildlife traders in the lower Mekong region. The public report leaves them nameless; another version handed over to U.S. authorities identified all involved. \u201cWildlife trafficking in Southeast Asia is in the hands of Chinese nationals by 90%,\u201d Crosta said. He added that they have strong business ties in the region, with investments in real estate and a mix of legal and illegal businesses that include restaurants and clubs as well as scam centers. They are \u201cvery, very prolific\u201d wildlife traffickers, Crosta said. His team found that the two they identified as the largest traffickers own at least nine shops in Cambodia. Investigators saw many endangered wildlife products sold openly in their shops as well as online, sometimes to customers in other countries. Other businesses include a factory that carves rhino horn and ivory and a brewery for making tiger bone wine \u2014 an expensive alcoholic beverage brewed with tiger bones that\u2019s often sold in as online, sometimes to customers in other countries. Other businesses include a factory that carves rhino horn and ivory and a brewery for making tiger bone wine \u2014 an expensive alcoholic beverage brewed with tiger bones that\u2019s often sold in ornate tiger-shaped bottles. Though it\u2019s been used as traditional Chinese medicine for millennia, it\u2019s now become a pricey prestige item. Serving or gifting tiger bone wine is a way to flaunt status or seal a deal. Investigators also identified middlemen and buyers, including restaurant owners, businessmen and traffickers. One individual said he raised lions, tigers and primates on his properties \u2014 and allegedly trafficked primates, birds and bear parts, according to the investigation. Another said he smuggled wildlife products and narcotics to the West. Yet another said his role was logistics, claiming he could help traffic anything because he had close connections to Cambodian customs officials as well as the country\u2019s political, military and business elites. Meanwhile, the kingpins reportedly said they could supply any species that customers wanted: tigers, elephants, rhinos, pangolins, sea turtles, coral, bears, primates and birds of prey \u2014 either alive, dead or in parts. They said they had suppliers across the globe, in Africa, Europe, [...article truncated...]",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Cambodia illegal wildlife trade report demand primarily fueling it country demand"
+        },
+        "result_summary": "Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.789); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.582)",
+        "prompt_tokens": 610,
+        "completion_tokens": 136,
+        "cumulative_cost_usd": 0.000173
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://news.mongabay.com/2026/07/report-reveals-cambodias-appetite-for-tigers-rhinos-and-other-endangered-wildlife"
+        },
+        "result_summary": "- *Illegal wildlife trade, primarily catering to Chinese nationals, is thriving in Cambodia, according to a new undercover investigation by Earth League International, a U.S.-based NGO fighting enviro",
+        "prompt_tokens": 909,
+        "completion_tokens": 87,
+        "cumulative_cost_usd": 0.000362
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000362
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000362,
+    "seconds": 419.95
+  },
+  {
+    "id": 9,
+    "question": "What is the world's smallest deer according to the corpus's article on Chile's Valdivian Coastal Reserve, and what's one flower the corpus recommends for a raised garden bed?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Valdivian Coastal Reserve Chile article deer smallest deer'): Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.64); Beaver? Otter? Muskrat? A Field Guide to Freshwater Mammals (0.397); 8 Cool Wild Cats You Probably Don\u2019t Know (0.385); Ten years of Mongabay Latam (0.379); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.352); 8 Great U.S. National Parks for Birding (0.352)\n---\nread(https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve): Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground observation. At the Valdivian Coastal Reserve (VCR)\u2014managed by The Nature Conservancy in southern Chile \u2014nine conservation targets guide that monitoring work, from ancient alerce forests and coastal dunes to three iconic animals: Darwin\u2019s fox, the g\u00fci\u00f1a wildcat and the pud\u00fa, the world\u2019s smallest deer. Tracking the health of these species and habitats has become a model for conservation across the entire country. ## Pioneers of Camera Trapping In 2007, Dr. Jim Sanderson, a North American researcher seeking new populations of Darwin\u2019s fox, visited the Universidad Austral de Chile (UACH) in Valdivia. His visit sparked the first camera trap training sessions ever held in Chile\u2014with the practical field work taking place at the VCR. Among those who attended were Eduardo Silva, now a professor at UACH\u2019s Institute of Conservation, Biodiversity and Territory, and park rangers Danilo Gonz\u00e1lez and Erwin Ovando. ## TNC in Latin America \u201cThat practical workshop was like the beginning of everything,\u201d recalls Gonz\u00e1lez, today the VCR\u2019s Coordinator of Park Rangers. \u201cWe installed the cameras. Jim showed us how to orient them, what\n\nDanilo Gonz\u00e1lez and Erwin Ovando. ## TNC in Latin America \u201cThat practical workshop was like the beginning of everything,\u201d recalls Gonz\u00e1lez, today the VCR\u2019s Coordinator of Park Rangers. \u201cWe installed the cameras. Jim showed us how to orient them, what height to place them at depending on the species we wanted to record. We understood it all through practice.\u201d \u201cThe collaborative work here was the precursor of the current National Camera Trap Program,\u201d confirms Diego Valencia, Manager of protected areas and monitoring expert at CONAF. Today, the monitoring program spans more than 35 protected units, over 2,000 cameras, and 2,000 monitoring points from Arica to Magallanes. ## A Biodiversity Hotspot in Disguise The forests of Chaihu\u00edn made headlines in the late 1990s for all the wrong reasons\u2014the logging of ancient alerce trees and the stripping of native habitat. In 2003, the Valdivian Coastal Reserve was established, and the land\u2019s story changed. Today the VCR and the adjacent Alerce Costero National Park together encompass 75,000 protected hectares, pioneering a model of integrated planning, monitoring and community engagement. \u201cThe VCR is a box of surprises,\u201d says Francisco Font\u00farbel, a professor at the Pontificia Universidad Cat\u00f3lica de Valpara\u00edso known for his research on\n\nPark together encompass 75,000 protected hectares, pioneering a model of integrated planning, monitoring and community engagement. \u201cThe VCR is a box of surprises,\u201d says Francisco Font\u00farbel, a professor at the Pontificia Universidad Cat\u00f3lica de Valpara\u00edso known for his research on the monito del monte\u2014a tiny, ancient marsupial endemic to these southern rainforests. \u201cWhen you arrive and see the eucalyptus, it doesn\u2019t seem very interesting. But with camera traps and wildlife surveys, you find an enormous diversity of species.\u201d Behind the eucalyptus trees that have been interacting with the native forest since the reserve was created, unique and vulnerable species live. In a landmark discovery in 2014, Darwin\u2019s fox (*Lycalopex fulvipes*) were confirmed in the reserve for the first time, a scientific milestone with global significance. Between 2015 and 2022, camera traps at the VCR and the Alerce Costero National Park detected the presence of the long-nosed shrew opossum (*Rhyncholestes raphanarus*)\u2014the only surviving member of the Rhyncholestes genus and a relict species\u2014in evergreen and alerce forests, as well as in eucalyptus plantations. \u201cYou can see the burned larch trees in the higher areas, and in other spots, you can see the replacement process. Twenty-five years ago, the area was the cause\n\nspecies\u2014in evergreen and alerce forests, as well as in eucalyptus plantations. \u201cYou can see the burned larch trees in the higher areas, and in other spots, you can see the replacement process. Twenty-five years ago, the area was the cause of the Chilean forest tragedy, and today, it is one of the main examples of conservation in Chile, a total change of trajectory,\u201d Silva points out. \u201cWhen you talk about unique amphibians or critically endangered populations like Darwin\u2019s fox, the relevance of this reserve becomes planetary,\u201d he says. **\u201cWe Count Life\u201d** Park ranger Jemima S\u00e1nchez, who grew up in the area and now leads the reserve\u2019s amphibian monitoring program, puts it plainly, \u201cMonitoring amphibians is fascinating\u2014it\u2019s not just about recording data on paper. It\u2019s about taking the pulse of a place, a place you come to love, care for, and protect. We don\u2019t just count individuals; we count history, persistence, and resilience. It\u2019s filled with magic. We count life.\u201d The Valdivian Coastal Reserve is home to at least 13 amphibian species, many of them endemic and highly sensitive to environmental change. Among them is Alsodes valdiviensis\u2014the Cordillera Pelada spiny-chested frog\u2014an endangered species found only in Chile\u2019s Los R\u00edos Region. Until\n\nValdivian Coastal Reserve is home to at least 13 amphibian species, many of them endemic and highly sensitive to environmental change. Among them is Alsodes valdiviensis\u2014the Cordillera Pelada spiny-chested frog\u2014an endangered species found only in Chile\u2019s Los R\u00edos Region. Until just over a decade ago, the reserve was the only place where its presence had been documented, underscoring the site\u2019s critical importance for biodiversity conservation. In April 2026, reserve rangers carried out a new amphibian monitoring campaign in the mountainous Lahual sector, adjacent to Alerce Costero National Park. Using a methodology developed by The Nature Conservancy and shared with CONAF, researchers are surveying at three monitoring sites. Despite a landscape heavily altered by forest plantations, remnant ancient alerce forests and native forest regeneration persists\u2014highlighting the long-term value of field monitoring for guiding conservation decisions. Font\u00farbel adds a thought-provoking observation, \u201cThe abandoned eucalyptus plantations with regenerating native undergrowth may be becoming what ecologists call novel ecosystems\u2014 human-altered environments that have found their own self-sustaining dynamics. \u201cI believe the VCR offers an excellent natural laboratory for studying these ecosystems and answering fundamental questions in ecology and evolution.\u201d ## Collaboration and Hope A native forest restoration project is currently underway in the Valdivian\n\ntheir own self-sustaining dynamics. \u201cI believe the VCR offers an excellent natural laboratory for studying these ecosystems and answering fundamental questions in ecology and evolution.\u201d ## Collaboration and Hope A native forest restoration project is currently underway in the Valdivian Coastal Reserve as the result of a long-standing aspiration expressed by local communities. Emerging from a participatory consultation process, the initiative seeks to restore 3,000 hectares previously planted with eucalyptus through low-impact harvesting and the replanting of native species. The restoration work will be carried out using native species, including coih\u00fce, notro, and ulmo, cultivated at the reserve\u2019s nursery. Led by local workers and reinvesting all revenues into restoration, the project reflects a shared commitment to ecological recovery, local livelihoods and the long-term care of this unique landscape. \u00a9 Paula No\u00e9 To learn more about the Valdivian Coastal Reserve and The Nature Conservancy\u2019s work in Chile, visit nature.org. ## Join the Discussion",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Valdivian Coastal Reserve Chile article deer smallest deer"
+        },
+        "result_summary": "Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.64); Beaver? Otter? Muskrat? A Field Guide to Freshwater Mammals (0.397); 8 Cool Wild Cats You ",
+        "prompt_tokens": 607,
+        "completion_tokens": 99,
+        "cumulative_cost_usd": 0.00015
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve"
+        },
+        "result_summary": "Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground",
+        "prompt_tokens": 1454,
+        "completion_tokens": 103,
+        "cumulative_cost_usd": 0.00043
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.00043
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.00043,
+    "seconds": 677.36
+  },
+  {
+    "id": 10,
+    "question": "How many total protected hectares do the Valdivian Coastal Reserve and the adjacent Alerce Costero National Park in Chile encompass together, and what's the maximum length given for a cookiecutter shark, in inches?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Valdivian Coastal Reserve hectares Alerce Costero National Park hectares'): Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.576); Chong\u00f3n-Posorja Transmission Line: Advancing Bird-Friendly Energy Infrastructure (0.468); Mining threat persists in Raja Ampat, Indonesia\u2019s \u2018Amazon of the Seas\u2019 (0.441); Birding the Outer Banks' Hidden Gem: Nags Head Woods Preserve (0.427); The Hunt-Fish Rule Ignores the Crisis Facing Wildlife Refuges (0.419); Nepal\u2019s newest national parks drive tiger recovery, but new concerns arise (0.401)\n---\nread(https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve): Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground observation. At the Valdivian Coastal Reserve (VCR)\u2014managed by The Nature Conservancy in southern Chile \u2014nine conservation targets guide that monitoring work, from ancient alerce forests and coastal dunes to three iconic animals: Darwin\u2019s fox, the g\u00fci\u00f1a wildcat and the pud\u00fa, the world\u2019s smallest deer. Tracking the health of these species and habitats has become a model for conservation across the entire country. ## Pioneers of Camera Trapping In 2007, Dr. Jim Sanderson, a North American researcher seeking new populations of Darwin\u2019s fox, visited the Universidad Austral de Chile (UACH) in Valdivia. His visit sparked the first camera trap training sessions ever held in Chile\u2014with the practical field work taking place at the VCR. Among those who attended were Eduardo Silva, now a professor at UACH\u2019s Institute of Conservation, Biodiversity and Territory, and park rangers Danilo Gonz\u00e1lez and Erwin Ovando. ## TNC in Latin America \u201cThat practical workshop was like the beginning of everything,\u201d recalls Gonz\u00e1lez, today the VCR\u2019s Coordinator of Park Rangers. \u201cWe installed the cameras. Jim showed us how to orient them, what\n\nDanilo Gonz\u00e1lez and Erwin Ovando. ## TNC in Latin America \u201cThat practical workshop was like the beginning of everything,\u201d recalls Gonz\u00e1lez, today the VCR\u2019s Coordinator of Park Rangers. \u201cWe installed the cameras. Jim showed us how to orient them, what height to place them at depending on the species we wanted to record. We understood it all through practice.\u201d \u201cThe collaborative work here was the precursor of the current National Camera Trap Program,\u201d confirms Diego Valencia, Manager of protected areas and monitoring expert at CONAF. Today, the monitoring program spans more than 35 protected units, over 2,000 cameras, and 2,000 monitoring points from Arica to Magallanes. ## A Biodiversity Hotspot in Disguise The forests of Chaihu\u00edn made headlines in the late 1990s for all the wrong reasons\u2014the logging of ancient alerce trees and the stripping of native habitat. In 2003, the Valdivian Coastal Reserve was established, and the land\u2019s story changed. Today the VCR and the adjacent Alerce Costero National Park together encompass 75,000 protected hectares, pioneering a model of integrated planning, monitoring and community engagement. \u201cThe VCR is a box of surprises,\u201d says Francisco Font\u00farbel, a professor at the Pontificia Universidad Cat\u00f3lica de Valpara\u00edso known for his research on\n\nPark together encompass 75,000 protected hectares, pioneering a model of integrated planning, monitoring and community engagement. \u201cThe VCR is a box of surprises,\u201d says Francisco Font\u00farbel, a professor at the Pontificia Universidad Cat\u00f3lica de Valpara\u00edso known for his research on the monito del monte\u2014a tiny, ancient marsupial endemic to these southern rainforests. \u201cWhen you arrive and see the eucalyptus, it doesn\u2019t seem very interesting. But with camera traps and wildlife surveys, you find an enormous diversity of species.\u201d Behind the eucalyptus trees that have been interacting with the native forest since the reserve was created, unique and vulnerable species live. In a landmark discovery in 2014, Darwin\u2019s fox (*Lycalopex fulvipes*) were confirmed in the reserve for the first time, a scientific milestone with global significance. Between 2015 and 2022, camera traps at the VCR and the Alerce Costero National Park detected the presence of the long-nosed shrew opossum (*Rhyncholestes raphanarus*)\u2014the only surviving member of the Rhyncholestes genus and a relict species\u2014in evergreen and alerce forests, as well as in eucalyptus plantations. \u201cYou can see the burned larch trees in the higher areas, and in other spots, you can see the replacement process. Twenty-five years ago, the area was the cause\n\nspecies\u2014in evergreen and alerce forests, as well as in eucalyptus plantations. \u201cYou can see the burned larch trees in the higher areas, and in other spots, you can see the replacement process. Twenty-five years ago, the area was the cause of the Chilean forest tragedy, and today, it is one of the main examples of conservation in Chile, a total change of trajectory,\u201d Silva points out. \u201cWhen you talk about unique amphibians or critically endangered populations like Darwin\u2019s fox, the relevance of this reserve becomes planetary,\u201d he says. **\u201cWe Count Life\u201d** Park ranger Jemima S\u00e1nchez, who grew up in the area and now leads the reserve\u2019s amphibian monitoring program, puts it plainly, \u201cMonitoring amphibians is fascinating\u2014it\u2019s not just about recording data on paper. It\u2019s about taking the pulse of a place, a place you come to love, care for, and protect. We don\u2019t just count individuals; we count history, persistence, and resilience. It\u2019s filled with magic. We count life.\u201d The Valdivian Coastal Reserve is home to at least 13 amphibian species, many of them endemic and highly sensitive to environmental change. Among them is Alsodes valdiviensis\u2014the Cordillera Pelada spiny-chested frog\u2014an endangered species found only in Chile\u2019s Los R\u00edos Region. Until\n\nValdivian Coastal Reserve is home to at least 13 amphibian species, many of them endemic and highly sensitive to environmental change. Among them is Alsodes valdiviensis\u2014the Cordillera Pelada spiny-chested frog\u2014an endangered species found only in Chile\u2019s Los R\u00edos Region. Until just over a decade ago, the reserve was the only place where its presence had been documented, underscoring the site\u2019s critical importance for biodiversity conservation. In April 2026, reserve rangers carried out a new amphibian monitoring campaign in the mountainous Lahual sector, adjacent to Alerce Costero National Park. Using a methodology developed by The Nature Conservancy and shared with CONAF, researchers are surveying at three monitoring sites. Despite a landscape heavily altered by forest plantations, remnant ancient alerce forests and native forest regeneration persists\u2014highlighting the long-term value of field monitoring for guiding conservation decisions. Font\u00farbel adds a thought-provoking observation, \u201cThe abandoned eucalyptus plantations with regenerating native undergrowth may be becoming what ecologists call novel ecosystems\u2014 human-altered environments that have found their own self-sustaining dynamics. \u201cI believe the VCR offers an excellent natural laboratory for studying these ecosystems and answering fundamental questions in ecology and evolution.\u201d ## Collaboration and Hope A native forest restoration project is currently underway in the Valdivian\n\ntheir own self-sustaining dynamics. \u201cI believe the VCR offers an excellent natural laboratory for studying these ecosystems and answering fundamental questions in ecology and evolution.\u201d ## Collaboration and Hope A native forest restoration project is currently underway in the Valdivian Coastal Reserve as the result of a long-standing aspiration expressed by local communities. Emerging from a participatory consultation process, the initiative seeks to restore 3,000 hectares previously planted with eucalyptus through low-impact harvesting and the replanting of native species. The restoration work will be carried out using native species, including coih\u00fce, notro, and ulmo, cultivated at the reserve\u2019s nursery. Led by local workers and reinvesting all revenues into restoration, the project reflects a shared commitment to ecological recovery, local livelihoods and the long-term care of this unique landscape. \u00a9 Paula No\u00e9 To learn more about the Valdivian Coastal Reserve and The Nature Conservancy\u2019s work in Chile, visit nature.org. ## Join the Discussion",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Valdivian Coastal Reserve hectares Alerce Costero National Park hectares"
+        },
+        "result_summary": "Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.576); Chong\u00f3n-Posorja Transmission Line: Advancing Bird-Friendly Energy Infrastructure (0.468);",
+        "prompt_tokens": 616,
+        "completion_tokens": 86,
+        "cumulative_cost_usd": 0.000144
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve"
+        },
+        "result_summary": "Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground",
+        "prompt_tokens": 1519,
+        "completion_tokens": 111,
+        "cumulative_cost_usd": 0.000438
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000438
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000438,
+    "seconds": 1133.66
+  },
+  {
+    "id": 11,
+    "question": "What method does the Northwest wolf article say biologists use to count today's wolf population, what specific cause of wolf mortality does that same article track, and how many grizzly bears live in the lower 48 according to the corpus?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch(\"Northwest wolf article biologists count today's wolf population method mortality cause\"): The Present and Future of Wolves in the Northwest (0.675); The History of Wolves in the Northwest (0.662); Mexican Gray Wolves, Born to Roam (0.568); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.469); The Swift Fox Makes a Surprise Comeback (0.428); Nepal\u2019s newest national parks drive tiger recovery, but new concerns arise (0.41)",
+    "steps": 2,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Northwest wolf article biologists count today's wolf population method mortality cause"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.675); The History of Wolves in the Northwest (0.662); Mexican Gray Wolves, Born to Roam (0.568); Bengal tigers in Cambodia? Reintroduction plan rai",
+        "prompt_tokens": 619,
+        "completion_tokens": 108,
+        "cumulative_cost_usd": 0.000158
+      },
+      {
+        "step": 2,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000158
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000158,
+    "seconds": 356.29
+  },
+  {
+    "id": 12,
+    "question": "According to the corpus, what federal agency oversees most Greater Sage-Grouse habitat, how many acres does it oversee, and in what year does the corpus say grizzly bears were listed under the Endangered Species Act?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Greater Sage-Grouse habitat overseen by federal agency acres'): What\u2019s next for the Greater Sage-Grouse? (0.746); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.555); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.527); Where Species Shape the Landscape: The Comanche National Grasslands (0.508); Advocating for Birds and Working Lands in a Conservation-Forward Farm Bill (0.491); What the House Farm Bill Means for Birds, Working Lands, and Conservation (0.481)",
+    "steps": 2,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Greater Sage-Grouse habitat overseen by federal agency acres"
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.746); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.555); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.",
+        "prompt_tokens": 617,
+        "completion_tokens": 127,
+        "cumulative_cost_usd": 0.000169
+      },
+      {
+        "step": 2,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000169
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000169,
+    "seconds": 483.43
+  }
+]

@@ -1,0 +1,840 @@
+Q 1 [FAIL] steps=6 cost=$0.00314 94.94s :: How many grizzly bears live in the lower 48 according to the corpus, a
+Q 2 [PASS] steps=5 cost=$0.00245 51.21s :: What method does the Northwest wolf article say biologists use to coun
+Q 3 [FAIL] steps=6 cost=$0.00341 79.67s :: What specific cause of wolf mortality does the Northwest wolves articl
+Q 4 [FAIL] steps=7 cost=$0.00356 110.47s :: What federal agency oversees most Greater Sage-Grouse habitat and how 
+Q 5 [PASS] steps=5 cost=$0.00219 44.63s :: Which organization investigated Cambodia's illegal wildlife trade, and
+Q 6 [PASS] steps=8 cost=$0.00527 165.20s :: Across the rice's whale, grizzly bear, and Greater Sage-Grouse article
+Q 7 [FAIL] steps=7 cost=$0.00414 111.90s :: How many acres of sagebrush habitat does the corpus say are lost annua
+Q 8 [FAIL] steps=5 cost=$0.00226 69.67s :: According to the corpus's report on Cambodia's illegal wildlife trade,
+Q 9 [FAIL] steps=3 cost=$0.00042 647.72s :: What is the world's smallest deer according to the corpus's article on
+Q10 [FAIL] steps=3 cost=$0.00043 473.05s :: How many total protected hectares do the Valdivian Coastal Reserve and
+Q11 [FAIL] steps=3 cost=$0.00043 997.62s :: What method does the Northwest wolf article say biologists use to coun
+Q12 [FAIL] steps=5 cost=$0.00136 3721.07s :: According to the corpus, what federal agency oversees most Greater Sag
+
+=== single_agent on data/multiagent_eval_set.json ===
+Correct:  3/12  (25%)
+Cost:     $0.0291 total, $0.00242/query
+Latency:  547.26 sec/query (avg)
+Steps:    5.2 avg, max 8
+Stopped:  {'duplicate_call': 2, 'finished': 6, 'rate_limited': 4}
+
+=== FULL TRANSCRIPT (JSON) ===
+[
+  {
+    "id": 1,
+    "question": "How many grizzly bears live in the lower 48 according to the corpus, and how many weeks before the last frost does it recommend starting tomato seeds indoors?",
+    "correct": false,
+    "answer": "Stopped before finishing (repeated an identical tool call). Best-effort answer based on what was found:\n\nread(https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted): When hiking a trail in the Northern Rocky Mountains, you will be advised to keep your voice loud and bear spray close. While you are far from guaranteed to see a grizzly bear saunter across your path, the chances are also not zero. The advice and odds aren\u2019t just for the Rocky Mountains, but anywhere in grizzly country. Grizzly bears in the lower 48 states once ranged from Canada to Mexico and from the California coast to the plains of Kansas. After facing near eradication at the hands of European settlers, today these bears are on the road to recovery in some areas. Their listing under the Endangered Species Act certainly helps, but grizzlies are still a ways away from full recovery in all recovery areas. There are, unfortunately, some un-bear-lievable myths and misunderstandings around these animals, including how much they have recovered and how we can best live alongside grizzly bears. So, join us in digging up the truth and learning four claw-some facts about grizzly bears in the lower 48. #### 1. Fact: There are a little over 2,000 grizzly bears in the lower 48. When grizzly bears were listed on the ESA in 1975, there were only\n\nand learning four claw-some facts about grizzly bears in the lower 48. #### 1. Fact: There are a little over 2,000 grizzly bears in the lower 48. When grizzly bears were listed on the ESA in 1975, there were only a few hundred bears in less than 2% of their original range. The ESA has been effective in giving these bears a chance to make a comeback. Grizzly bear populations have increased to a little over 2,000 bears located in four of the six recovery zones. Two recovery zones, the Bitterroot and the North Cascades, still have no viable populations of grizzly bears. #### 2. Fact: Grizzly bears use a wide variety of habitats. Grizzly bears like lots of different types of habitats. They need large landscapes that provide secure habitat with plenty of food, water and shelter. While most grizzly bears reside in our vast public lands in the west, they also use private lands to live and navigate between secure core areas. Connectivity between populations is vital to the long-term success of grizzly bears in the lower 48. It is important for communities living with grizzly bears to have resources available to help them minimize human-bear conflicts. Defenders\n\nbetween secure core areas. Connectivity between populations is vital to the long-term success of grizzly bears in the lower 48. It is important for communities living with grizzly bears to have resources available to help them minimize human-bear conflicts. Defenders is invested in helping bears and people find a way forward in our increasingly developed lands. #### 3. Fact: Grizzly Bears prefer to avoid people. Grizzly bears are often portrayed as vicious beasts who are out to get you, but in reality, these animals mostly try to avoid people. Some grizzlies, however, become used to being near people or habituated to human activity. This does not always result in a negative outcome. Grizzly bears can be aggressive when protecting young or a food resource. Bottom line, they are powerful animals who should be viewed at a safe distance. Mother bears raise their young for 2 to 3 years and female cubs often establish a home range adjacent to their moms. These animals have an excellent sense of smell, way better than a bloodhound. And their long claws are excellent for digging up food and flipping logs to eat juicy bugs underneath. Grizzly bears who receive food rewards near people, like\n\nThese animals have an excellent sense of smell, way better than a bloodhound. And their long claws are excellent for digging up food and flipping logs to eat juicy bugs underneath. Grizzly bears who receive food rewards near people, like garbage and birdseed, can become food-conditioned, resulting in escalating behavior like breaking into cabins. This is largely preventable by properly securing attractants like garbage, fruit trees and birdfeeders. #### 4. Fact: You can help grizzly bears continue their recovery! If you live, work or recreate in bear country you can take steps on your property to secure attractants like garbage and bring in birdfeeders when bears are active in your area. If you travel to places where there are bears, make sure you do not leave food unattended. Use a bear-resistant cooler or a provided food locker to store food while you are off exploring. Finally, everyone should know how to use and carry bear spray when in bear country. You can also tell your members of Congress that the ESA is important, and we would have lost many species, like grizzly bears, without it. Grizzly bears are a valuable part of the American heritage and an icon of our\n\nYou can also tell your members of Congress that the ESA is important, and we would have lost many species, like grizzly bears, without it. Grizzly bears are a valuable part of the American heritage and an icon of our western landscapes and deserve a chance to stay that way for future generations.\n---\nread(https://www.epicgardening.com/easy-beginner-seeds): # 21 Easy to Start Seeds for Beginner Gardeners As you embark on your first gardening season, there is no need to be intimidated by complex growing methods. Former organic farmer Logan Hailey shares 21 seeds that are easy to plant and quick to germinate so you can enjoy fresh food and flowers ASAP. Contents With so many plant varieties, growing methods, and seeding setups, sowing garden seeds may seem intimidating to a beginner. Rest assured, nature has been germinating seeds for millennia with nothing more than soil, water, and sunshine. There are many vegetable and flower seeds that you can start as a beginner without any garden experience. As long as you understand the proper timing, depth, and moisture requirements, these plants are eager to grow with little effort. Let\u2019s dig into **21 easy-to-grow seeds for starting in pots or outside in the garden**! ## Our Favorites: ## What Are the Easiest Seeds to Grow in a Garden? The most beginner-friendly garden seeds are **quick to germinate, easy to handle, and not too picky about temperature**. Crops like radishes, lettuce, spinach, sunflowers, beans, peas, pumpkins, corn, and garlic are all very easy to grow from seed. Under the right most beginner-friendly garden seeds are **quick to germinate, easy to handle, and not too picky about temperature**. Crops like radishes, lettuce, spinach, sunflowers, beans, peas, pumpkins, corn, and garlic are all very easy to grow from seed. Under the right conditions, these seeds sprout readily and take off growing with ease. It is helpful to record your sowing date and check the \u201cestimated days to germination\u201d on the seed packet to track your plants\u2019 expected germination date. If they don\u2019t come up within the right time frame, you may have to re-seed and adjust the soil, seed depth, light, moisture, or temperature. The main mistake beginners make when seeding is planting the seeds too deep or too shallow, too early or too late, and giving them too much or too little water. Finding a happy medium ensures happy baby plants are ready to take off growing! Whether you\u2019re starting seeds indoors in containers or outdoors in garden soil, the four most important considerations are timing, depth, spacing, and moisture. ### Proper Timing There is a proper time and season for everything in life. Seeding is no different! Different plant species are accustomed to germinating and growing at specific times of most important considerations are timing, depth, spacing, and moisture. ### Proper Timing There is a proper time and season for everything in life. Seeding is no different! Different plant species are accustomed to germinating and growing at specific times of year. Timing your seed sowing is crucial for success. Spinach won\u2019t germinate in super-hot soils, and pumpkins can\u2019t germinate in super-cold soils. Timing the planting of different types of seeds **provides a rainbow of produce throughout the seasons**. The two best tools for proper timing are: - **Soil thermometer**: Determine the soil temperature before planting seeds to ensure they\u2019ll germinate. - **Calendar**: Use past weather data in your area to estimate the best time to plant. Almost every seed packet or grow guide includes a simple statement like, \u201cPlant 4 to 6 weeks before your average last frost date.\u201d The average last frost date for your region is determined by decades of weather data to estimate when your garden will experience the last spring freeze of the year. Find your frost dates here and mark them on your calendar. This will make it easy to count backward or forward to determine the best time to plant certain seeds. ### Sowing experience the last spring freeze of the year. Find your frost dates here and mark them on your calendar. This will make it easy to count backward or forward to determine the best time to plant certain seeds. ### Sowing Depth If you plant a seed too deep, it won\u2019t have enough energy to reach the soil\u2019s surface and sprout. But if you plant it too shallow, **the seed may dry out or blow away**. Sowing seeds at the proper depth ensures they have enough food and moisture to germinate. The best rule of thumb for almost all seeds is: - Plant a seed twice as deep as its size. Seeds are like little packages with a baby plant and food inside. They only have a small amount of nutrients and genetic material to fuel their growth. One specific part of the seed is called the endosperm, which is the food storage for the growing baby plant. The endosperm includes starches, proteins, and other nutrients to fuel the seed through its initial stages of growth until it develops leaves that can photosynthesize. Large seeds like beans or pumpkins have a lot of endosperm, so they benefit from planting deeper in starches, proteins, and other nutrients to fuel the seed through its initial stages of growth until it develops leaves that can photosynthesize. Large seeds like beans or pumpkins have a lot of endosperm, so they benefit from planting deeper in the soil. It\u2019s helpful to imagine planting these seeds twice as deep as they are wide. Smaller seeds like lettuce and basil have a tiny amount of food stores, so they need to be planted shallowly to ensure they can reach up above the soil surface. It\u2019s best to press these small seeds into the soil surface and sprinkle a fine layer of vermiculite or potting mix on top. ### Spacing It\u2019s difficult to thrive in an overcrowded space. Just like people squished together on a subway train, plants have difficulty reaching their full potential when they don\u2019t have enough space. If you want to save seeds and effort, planting seeds at the proper spacing from the beginning is helpful. Otherwise, you must remove the extra seedlings (called thinning) to ensure each plant has enough space to grow to its fullest potential. Most seed packets and growing guides include spacing recommendations for different crops. The two types of spacing are: Otherwise, you must remove the extra seedlings (called thinning) to ensure each plant has enough space to grow to its fullest potential. Most seed packets and growing guides include spacing recommendations for different crops. The two types of spacing are: - **Seed/Plant Spacing**: The distance between each plant - **Row Spacing**: The distance between each row When you are first starting, it\u2019s helpful to lay out a tape measure and mark how far apart you want to plant your seeds. Measurements don\u2019t need to be as precise as a carpenter, but it\u2019s helpful to visualize how much space a grown plant will need. Young pumpkin plants may look very small when first planted, but it\u2019s important to remember that these plants can grow vines that are 12 feet long and that spread several feet in each direction. If you accidentally sow too many seeds in one pot or space, don\u2019t worry! You can always thin them using little shears or your fingers to pluck away the extras. Try not to disturb the main plant\u2019s roots that you want to leave in place. ### Moisture All seeds are dormant (asleep) until they get wet. Moisture is the key activator that encourages [...article truncated...]\n---\nsearch('tomatoes start indoors weeks before last frost epicgardening'): 21 Easy to Start Seeds for Beginner Gardeners (0.728); 9 Tips to Make Tomato Plants Grow Faster (0.669); 9 Vegetable Garden Mistakes to Avoid This Year (0.51); 13 Prize-Winning Tomatoes You Need in Your Garden (0.503); How to Sow Seeds in Cell Trays (0.446); 31 Easy-to-Grow Vegetables For Beginners (0.438)",
+    "steps": 6,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "grizzly bears lower 48 number"
+        },
+        "result_summary": "Four Myths Around Grizzly Bears in the Lower 48 Busted (0.728); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.467); Exploring Alaska\u2019s Circle of Life From Salmon to Bears to Tr",
+        "prompt_tokens": 605,
+        "completion_tokens": 77,
+        "cumulative_cost_usd": 0.000137
+      },
+      {
+        "step": 2,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "starting tomato seeds indoors weeks before last frost recommendation"
+        },
+        "result_summary": "21 Easy to Start Seeds for Beginner Gardeners (0.733); 9 Tips to Make Tomato Plants Grow Faster (0.677); 9 Vegetable Garden Mistakes to Avoid This Year (0.636); Storing Seeds: How to Preserve Seeds fo",
+        "prompt_tokens": 1401,
+        "completion_tokens": 55,
+        "cumulative_cost_usd": 0.00038
+      },
+      {
+        "step": 3,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted"
+        },
+        "result_summary": "When hiking a trail in the Northern Rocky Mountains, you will be advised to keep your voice loud and bear spray close. While you are far from guaranteed to see a grizzly bear saunter across your path,",
+        "prompt_tokens": 2161,
+        "completion_tokens": 145,
+        "cumulative_cost_usd": 0.000791
+      },
+      {
+        "step": 4,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://www.epicgardening.com/easy-beginner-seeds"
+        },
+        "result_summary": "# 21 Easy to Start Seeds for Beginner Gardeners As you embark on your first gardening season, there is no need to be intimidated by complex growing methods. Former organic farmer Logan Hailey shares 2",
+        "prompt_tokens": 3262,
+        "completion_tokens": 110,
+        "cumulative_cost_usd": 0.001347
+      },
+      {
+        "step": 5,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "tomatoes start indoors weeks before last frost epicgardening"
+        },
+        "result_summary": "21 Easy to Start Seeds for Beginner Gardeners (0.728); 9 Tips to Make Tomato Plants Grow Faster (0.669); 9 Vegetable Garden Mistakes to Avoid This Year (0.51); 13 Prize-Winning Tomatoes You Need in Yo",
+        "prompt_tokens": 4771,
+        "completion_tokens": 212,
+        "cumulative_cost_usd": 0.002189
+      },
+      {
+        "step": 6,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://www.epicgardening.com/easy-beginner-seeds"
+        },
+        "result_summary": "SKIPPED -- identical call already made this run, stuck in a loop.",
+        "prompt_tokens": 5539,
+        "completion_tokens": 198,
+        "cumulative_cost_usd": 0.003139
+      }
+    ],
+    "stopped_reason": "duplicate_call",
+    "cost_usd": 0.003139,
+    "seconds": 94.94
+  },
+  {
+    "id": 2,
+    "question": "What method does the Northwest wolf article say biologists use to count today's wolf population, and how many grizzly bears does the corpus say live in the lower 48?",
+    "correct": true,
+    "answer": "The Northwest wolf article explains that biologists count today\u2019s wolves each winter by conducting a **minimum\u2011population count** that relies on **verified, direct evidence of each animal \u2013 observations, remote\u2011camera photos and tracks**\u3010The Present and Future of Wolves in the Northwest\u3011.  \n\nThe article on grizzly bears states that there are **a little over\u202f2,000\u202fgrizzly bears living in the lower 48 states**\u3010Four Myths Around Grizzly Bears in the Lower 48 Busted\u3011.",
+    "steps": 5,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Northwest wolf article biologists count today's wolf population method"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.704); The History of Wolves in the Northwest (0.669); Mexican Gray Wolves, Born to Roam (0.554); The Swift Fox Makes a Surprise Comeback (0.425); B",
+        "prompt_tokens": 607,
+        "completion_tokens": 129,
+        "cumulative_cost_usd": 0.000168
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
+        },
+        "result_summary": "There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonizatio",
+        "prompt_tokens": 1374,
+        "completion_tokens": 85,
+        "cumulative_cost_usd": 0.000426
+      },
+      {
+        "step": 3,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "how many grizzly bears live in the lower 48"
+        },
+        "result_summary": "Four Myths Around Grizzly Bears in the Lower 48 Busted (0.781); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.514); Exploring Alaska\u2019s Circle of Life From Salmon to Bears to Tr",
+        "prompt_tokens": 2725,
+        "completion_tokens": 201,
+        "cumulative_cost_usd": 0.000955
+      },
+      {
+        "step": 4,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted"
+        },
+        "result_summary": "When hiking a trail in the Northern Rocky Mountains, you will be advised to keep your voice loud and bear spray close. While you are far from guaranteed to see a grizzly bear saunter across your path,",
+        "prompt_tokens": 3521,
+        "completion_tokens": 171,
+        "cumulative_cost_usd": 0.001586
+      },
+      {
+        "step": 5,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "(model replied with plain text instead of a tool call)",
+        "prompt_tokens": 4622,
+        "completion_tokens": 285,
+        "cumulative_cost_usd": 0.00245
+      }
+    ],
+    "stopped_reason": "finished",
+    "cost_usd": 0.00245,
+    "seconds": 51.21
+  },
+  {
+    "id": 3,
+    "question": "What specific cause of wolf mortality does the Northwest wolves article say biologists track, and what does India's tiger numbers article say is happening to forest land even as habitat connectivity improves?",
+    "correct": false,
+    "answer": "- The Northwest wolves article says biologists track **poaching (illegal killing or \u201ctake\u201d)** as a cause of wolf mortality.\u3010The Present and Future of Wolves in the Northwest\u3011\n\n- The India\u2019s tiger numbers article notes that **destruction of forested land continues** (protected forests remain under threat) even as habitat connectivity improves.\u3010India\u2019s tiger numbers are rising. Protecting their pathways is next\u3011",
+    "steps": 6,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Northwest wolves biologists track mortality cause"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.675); The History of Wolves in the Northwest (0.652); Mexican Gray Wolves, Born to Roam (0.588); Bengal tigers in Cambodia? Reintroduction plan rai",
+        "prompt_tokens": 608,
+        "completion_tokens": 159,
+        "cumulative_cost_usd": 0.000187
+      },
+      {
+        "step": 2,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "India tiger numbers forest land even as habitat connectivity improves"
+        },
+        "result_summary": "India\u2019s tiger numbers are rising. Protecting their pathways is next (0.787); Nepal\u2019s newest national parks drive tiger recovery, but new concerns arise (0.717); Bengal tigers in Cambodia? Reintroducti",
+        "prompt_tokens": 1364,
+        "completion_tokens": 120,
+        "cumulative_cost_usd": 0.000463
+      },
+      {
+        "step": 3,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
+        },
+        "result_summary": "There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonizatio",
+        "prompt_tokens": 1979,
+        "completion_tokens": 122,
+        "cumulative_cost_usd": 0.000833
+      },
+      {
+        "step": 4,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://news.mongabay.com/2026/07/indias-tiger-numbers-are-rising-protecting-their-pathways-is-next"
+        },
+        "result_summary": "- *India has made progress in conserving its Bengal tigers, but now it must accommodate growing numbers as they disperse from protected habitats into human-dominated areas \u2014 even as poaching is on the",
+        "prompt_tokens": 3330,
+        "completion_tokens": 208,
+        "cumulative_cost_usd": 0.001458
+      },
+      {
+        "step": 5,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "cause of wolf mortalities poaching Northwest wolves article"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.699); The History of Wolves in the Northwest (0.672); Mexican Gray Wolves, Born to Roam (0.577); Bengal tigers in Cambodia? Reintroduction plan rai",
+        "prompt_tokens": 4976,
+        "completion_tokens": 132,
+        "cumulative_cost_usd": 0.002283
+      },
+      {
+        "step": 6,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "(model replied with plain text instead of a tool call)",
+        "prompt_tokens": 5747,
+        "completion_tokens": 441,
+        "cumulative_cost_usd": 0.00341
+      }
+    ],
+    "stopped_reason": "finished",
+    "cost_usd": 0.00341,
+    "seconds": 79.67
+  },
+  {
+    "id": 4,
+    "question": "What federal agency oversees most Greater Sage-Grouse habitat and how many acres does it oversee? Separately, what has India built more of than any other country in Asia for wildlife?",
+    "correct": false,
+    "answer": "Stopped before finishing (repeated an identical tool call). Best-effort answer based on what was found:\n\nsearch('India built more of than any other country in Asia wildlife'): India\u2019s tiger numbers are rising. Protecting their pathways is next (0.708); Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.555); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.494); Nepal\u2019s newest national parks drive tiger recovery, but new concerns arise (0.49)\n---\nread(https://www.audubon.org/news/whats-next-greater-sage-grouse): The future of the Greater Sage-Grouse, and the health of the broader sagebrush ecosystem, has long been shaped by land-use decisions spread across millions of acres of the American West. In January 2025, the Bureau of Land Management (BLM) released finalized Resource Management Plans (RMPs) that guide how public lands in Colorado and Oregon would be managed for the grouse. At the end of last year, the BLM further released finalized RMPs for California, Idaho, Montana, Nevada, North Dakota, South Dakota, Utah, and Wyoming. These 2025 grouse plans complete a federal process initiated in 2021, allowing resources to shift from planning to action, and influencing conservation across the West for decades to come. These finalized land management plans come in the context of broader long-term pressures on the sagebrush ecosystem, captured by a multi-agency study that determined an annual loss of 1.3 million acres (an area the size of Delaware) of functioning sagebrush habitat. Over the past half-century, these iconic western lands have been steadily fragmented by energy and mineral development, transmission lines, and roads. As these arid lands are fractured by development, sprawling pathways are created for fast-spreading invasive annual grasses like cheatgrass which increase the vulnerability to fire\n\nwestern lands have been steadily fragmented by energy and mineral development, transmission lines, and roads. As these arid lands are fractured by development, sprawling pathways are created for fast-spreading invasive annual grasses like cheatgrass which increase the vulnerability to fire and further crowd out the healthy sagebrush and forbs that are needed to sustain healthy grouse populations. Sagebrush landscape declines are reflected in Greater Sage-Grouse populations, which continue to drop across much of their range. In 2020, researchers reported that Greater Sage-Grouse numbers have plummeted by 80 percent since 1965, with half of that decline happening just since 2002. In July 2025, North Dakota wildlife officials confirmed that the last known population of Greater Sage-Grouse in the state had disappeared entirely, marking the species\u2019 effective extirpation there. The Bureau of Land Management oversees the largest share of sage-grouse habitat in the United States: some 67 million acres of public land. Management decisions on those lands play a central role in determining the health of the sagebrush landscape and whether remaining sage-grouse populations stabilize or continue to decline. Federal land use plans adopted in 2015 \u2013 the product of a lengthy collaborative planning process between state and federal governments, ranchers, Tribes,\n\ndetermining the health of the sagebrush landscape and whether remaining sage-grouse populations stabilize or continue to decline. Federal land use plans adopted in 2015 \u2013 the product of a lengthy collaborative planning process between state and federal governments, ranchers, Tribes, recreational groups and conservation organizations \u2013 established a science-based framework intended to prevent listing under the Endangered Species Act. However, subsequent revisions and uneven implementation limited how those plans functioned on the ground. The finalized 2025 RMPs retain the overall structure of habitat prioritization from the original plans but revise how those principles are applied. Earlier plans sought to direct development away from the most intact habitat and to ensure timely responses to documented declines in birds. The amended RMPs reflect a move away from enforceable safeguards towards more flexibility, discretion, and alignment with state priorities. Across the plans, changes finalized in the 2025 plans include: The finalization of the 2025 plans marks a milestone in this landmark, landscape-scale conservation effort. Greater Sage-Grouse are highly sensitive to incremental habitat loss, and uncertainty around when and how management actions will occur carries ecological risk. As pressure from development, wildfire and climate-driven habitat change continue to affect sagebrush landscapes, the effectiveness of\n\neffort. Greater Sage-Grouse are highly sensitive to incremental habitat loss, and uncertainty around when and how management actions will occur carries ecological risk. As pressure from development, wildfire and climate-driven habitat change continue to affect sagebrush landscapes, the effectiveness of the amended plans will depend on how consistently standards are applied and how adaptive management is implemented in practice. These decisions have established the governing framework for millions of acres of public land, with outcomes that will shape the future of a species closely tied to the health of the entire sagebrush ecosystem and the numerous wildlife that depend on them. The following measures will be an indicator of whether the plans succeed, or fail, in implementation: Finally, last but not least, restoration of degraded habitat is essential if we want to save this ecosystem. This rehabilitation \u2013 a challenge in this fragile ecosystem - can take the form of removing invasive annual grasses, like cheatgrass, and restoring the degradation that is now widespread across the sagebrush landscape. Resources and capacity must now shift from planning to implementation. Going forward, Audubon is committed to continuing to work collaboratively with the Bureau of Land Management, state agencies, industry, ranchers and other\n\nthat is now widespread across the sagebrush landscape. Resources and capacity must now shift from planning to implementation. Going forward, Audubon is committed to continuing to work collaboratively with the Bureau of Land Management, state agencies, industry, ranchers and other private landowners, and NGO partners. Each of us can have a role in ensuring that the grouse RMPs are implemented in good faith, from careful siting of development and effective mitigation to removal of invasives and collaborative restoration of native sagebrush and forbs. As stewards of the land, it is our shared responsibility to ensure that this landscape \u2013 the backbone of the West \u2013 is passed on to future generations in good condition.\n---\nsearch('India has built more of than any other country in Asia wildlife built more of'): India\u2019s tiger numbers are rising. Protecting their pathways is next (0.697); Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.516); Nepal\u2019s newest national parks drive tiger recovery, but new concerns arise (0.486); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.481)",
+    "steps": 7,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Greater Sage-Grouse habitat federal agency oversees most acres"
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.72); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.526); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.5",
+        "prompt_tokens": 610,
+        "completion_tokens": 90,
+        "cumulative_cost_usd": 0.000145
+      },
+      {
+        "step": 2,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "\"Greater Sage-Grouse\" \"acres\" \"federal agency\""
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.688); Advocating for Birds and Working Lands in a Conservation-Forward Farm Bill (0.48); The Sagebrush Sea is Disappearing, but Science Shows a Potential Pa",
+        "prompt_tokens": 1384,
+        "completion_tokens": 79,
+        "cumulative_cost_usd": 0.0004
+      },
+      {
+        "step": 3,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "\"Greater Sage-Grouse\" \"acres\" \"U.S. Fish and Wildlife Service\""
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.71); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.597); Where Species Shape the Landscape: The Comanche National Grassla",
+        "prompt_tokens": 2164,
+        "completion_tokens": 125,
+        "cumulative_cost_usd": 0.0008
+      },
+      {
+        "step": 4,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "India built more of than any other country in Asia wildlife"
+        },
+        "result_summary": "India\u2019s tiger numbers are rising. Protecting their pathways is next (0.708); Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.555); Bengal tigers in Cambodia? Rei",
+        "prompt_tokens": 2957,
+        "completion_tokens": 102,
+        "cumulative_cost_usd": 0.001305
+      },
+      {
+        "step": 5,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://www.audubon.org/news/whats-next-greater-sage-grouse"
+        },
+        "result_summary": "The future of the Greater Sage-Grouse, and the health of the broader sagebrush ecosystem, has long been shaped by land-use decisions spread across millions of acres of the American West. In January 20",
+        "prompt_tokens": 3558,
+        "completion_tokens": 97,
+        "cumulative_cost_usd": 0.001897
+      },
+      {
+        "step": 6,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "India has built more of than any other country in Asia wildlife built more of"
+        },
+        "result_summary": "India\u2019s tiger numbers are rising. Protecting their pathways is next (0.697); Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.516); Nepal\u2019s newest national parks ",
+        "prompt_tokens": 4752,
+        "completion_tokens": 113,
+        "cumulative_cost_usd": 0.002677
+      },
+      {
+        "step": 7,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "India has built more of than any other country in Asia wildlife built more of"
+        },
+        "result_summary": "SKIPPED -- identical call already made this run, stuck in a loop.",
+        "prompt_tokens": 5357,
+        "completion_tokens": 134,
+        "cumulative_cost_usd": 0.003561
+      }
+    ],
+    "stopped_reason": "duplicate_call",
+    "cost_usd": 0.003561,
+    "seconds": 110.47
+  },
+  {
+    "id": 5,
+    "question": "Which organization investigated Cambodia's illegal wildlife trade, and what specific type of wolf mortality does the Northwest wolf article track as one of several causes?",
+    "correct": true,
+    "answer": "The investigation of Cambodia\u2019s illegal wildlife trade was carried out by **Earth League International (ELI)**, a U.S.\u2013based non\u2011governmental organization that probes environmental crime\u3010Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife\u3011.  \n\nIn the Northwest wolf article, the authors specifically track **poaching (illegal killing or \u201ctake\u201d)** as one of the causes of wolf mortality\u3010The Present and Future of Wolves in the Northwest\u3011.",
+    "steps": 5,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Cambodia illegal wildlife trade investigated organization"
+        },
+        "result_summary": "Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.843); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.567)",
+        "prompt_tokens": 601,
+        "completion_tokens": 78,
+        "cumulative_cost_usd": 0.000137
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://news.mongabay.com/2026/07/report-reveals-cambodias-appetite-for-tigers-rhinos-and-other-endangered-wildlife"
+        },
+        "result_summary": "- *Illegal wildlife trade, primarily catering to Chinese nationals, is thriving in Cambodia, according to a new undercover investigation by Earth League International, a U.S.-based NGO fighting enviro",
+        "prompt_tokens": 905,
+        "completion_tokens": 71,
+        "cumulative_cost_usd": 0.000315
+      },
+      {
+        "step": 3,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Northwest wolf article tracks mortality causes specific type of wolf mortality tracked"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.639); The History of Wolves in the Northwest (0.628); Mexican Gray Wolves, Born to Roam (0.522); Bengal tigers in Cambodia? Reintroduction plan rai",
+        "prompt_tokens": 2453,
+        "completion_tokens": 96,
+        "cumulative_cost_usd": 0.000741
+      },
+      {
+        "step": 4,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
+        },
+        "result_summary": "There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonizatio",
+        "prompt_tokens": 3211,
+        "completion_tokens": 118,
+        "cumulative_cost_usd": 0.001293
+      },
+      {
+        "step": 5,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "(model replied with plain text instead of a tool call)",
+        "prompt_tokens": 4562,
+        "completion_tokens": 356,
+        "cumulative_cost_usd": 0.002191
+      }
+    ],
+    "stopped_reason": "finished",
+    "cost_usd": 0.002191,
+    "seconds": 44.63
+  },
+  {
+    "id": 6,
+    "question": "Across the rice's whale, grizzly bear, and Greater Sage-Grouse articles, what specific numeric figure does each one give -- a population count or an acreage?",
+    "correct": true,
+    "answer": "- **Rice\u2019s whale article** \u2013 reports that there are **about\u202f51 Rice\u2019s whales** left in the world.\u3010https://defenders.org/blog/2026/05/opinion-playing-god-gulf-and-rare-whales-right-exist\u3011\n\n- **Grizzly\u2011bear article** \u2013 states that there are **a little over\u202f2,000 grizzly bears** in the lower 48 states.\u3010https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted\u3011\n\n- **Greater Sage\u2011Grouse article** \u2013 notes that the Bureau of Land Management oversees **roughly\u202f67\u202fmillion acres** of public land that constitute the core of sage\u2011grouse habitat.\u3010https://www.audubon.org/news/whats-next-greater-sage-grouse\u3011",
+    "steps": 8,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "rice's whale population count"
+        },
+        "result_summary": "Opinion: Playing God in the Gulf and a Rare Whale\u2019s Right to Exist (0.594); Opinion: Unprecedented God Squad Meeting Could Push Gulf Species Toward Extinction (0.418); The Present and Future of Wolves",
+        "prompt_tokens": 607,
+        "completion_tokens": 94,
+        "cumulative_cost_usd": 0.000147
+      },
+      {
+        "step": 2,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "grizzly bear acreage article"
+        },
+        "result_summary": "Four Myths Around Grizzly Bears in the Lower 48 Busted (0.609); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.549); The Present and Future of Wolves in the Northwest (0.505); W",
+        "prompt_tokens": 1421,
+        "completion_tokens": 87,
+        "cumulative_cost_usd": 0.000413
+      },
+      {
+        "step": 3,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Greater Sage-Grouse acreage article"
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.723); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.548); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.",
+        "prompt_tokens": 2189,
+        "completion_tokens": 63,
+        "cumulative_cost_usd": 0.000779
+      },
+      {
+        "step": 4,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://www.audubon.org/news/whats-next-greater-sage-grouse"
+        },
+        "result_summary": "The future of the Greater Sage-Grouse, and the health of the broader sagebrush ecosystem, has long been shaped by land-use decisions spread across millions of acres of the American West. In January 20",
+        "prompt_tokens": 2968,
+        "completion_tokens": 120,
+        "cumulative_cost_usd": 0.001296
+      },
+      {
+        "step": 5,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted"
+        },
+        "result_summary": "When hiking a trail in the Northern Rocky Mountains, you will be advised to keep your voice loud and bear spray close. While you are far from guaranteed to see a grizzly bear saunter across your path,",
+        "prompt_tokens": 4162,
+        "completion_tokens": 118,
+        "cumulative_cost_usd": 0.001991
+      },
+      {
+        "step": 6,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Rice's whale population count \"Rice\u2019s whales\""
+        },
+        "result_summary": "Opinion: Playing God in the Gulf and a Rare Whale\u2019s Right to Exist (0.608); Opinion: Unprecedented God Squad Meeting Could Push Gulf Species Toward Extinction (0.381); The Present and Future of Wolves",
+        "prompt_tokens": 5263,
+        "completion_tokens": 101,
+        "cumulative_cost_usd": 0.002841
+      },
+      {
+        "step": 7,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/opinion-playing-god-gulf-and-rare-whales-right-exist"
+        },
+        "result_summary": "*This blog post highlights a recent op-ed published in **USA Today** that warns how federal policy decisions expanding offshore oil and gas drilling are accelerating the decline of the critically enda",
+        "prompt_tokens": 6078,
+        "completion_tokens": 260,
+        "cumulative_cost_usd": 0.003909
+      },
+      {
+        "step": 8,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "(model replied with plain text instead of a tool call)",
+        "prompt_tokens": 7540,
+        "completion_tokens": 381,
+        "cumulative_cost_usd": 0.005269
+      }
+    ],
+    "stopped_reason": "finished",
+    "cost_usd": 0.005269,
+    "seconds": 165.2
+  },
+  {
+    "id": 7,
+    "question": "How many acres of sagebrush habitat does the corpus say are lost annually, in what year does it say grizzly bears were listed under the Endangered Species Act, and what's one benefit of a raised garden bed mentioned in the corpus?",
+    "correct": false,
+    "answer": "- The corpus states that the sagebrush ecosystem is losing **about\u202f1.3\u202fmillion acres of functioning sagebrush habitat each year**\u3010What\u2019s next for the Greater Sage\u2011Grouse\u3011.  \n- Grizzly bears were **listed under the Endangered Species Act in\u202f1975**\u3010Four Myths Around Grizzly Bears in the Lower\u202f48 Busted\u3011.  \n- One benefit of a raised garden bed mentioned in the corpus is that it **allows you to control your soil health**, letting you fill the bed with high\u2011quality soil and amendments tailored to the plants you want to grow\u301015 Benefits of Raised Bed Gardening\u3011.",
+    "steps": 7,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "sagebrush habitat lost annually acres"
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.615); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.6); Where Species Shape the Landscape: The Comanche National Grasslan",
+        "prompt_tokens": 620,
+        "completion_tokens": 87,
+        "cumulative_cost_usd": 0.000145
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://www.audubon.org/news/whats-next-greater-sage-grouse"
+        },
+        "result_summary": "The future of the Greater Sage-Grouse, and the health of the broader sagebrush ecosystem, has long been shaped by land-use decisions spread across millions of acres of the American West. In January 20",
+        "prompt_tokens": 1378,
+        "completion_tokens": 78,
+        "cumulative_cost_usd": 0.000399
+      },
+      {
+        "step": 3,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "grizzly bears listed under the Endangered Species Act year"
+        },
+        "result_summary": "Four Myths Around Grizzly Bears in the Lower 48 Busted (0.636); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.561); Opinion: U.S. Wildlife Depends on Our Elections. That's the ",
+        "prompt_tokens": 2572,
+        "completion_tokens": 67,
+        "cumulative_cost_usd": 0.000825
+      },
+      {
+        "step": 4,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/four-myths-around-grizzly-bears-lower-48-busted"
+        },
+        "result_summary": "When hiking a trail in the Northern Rocky Mountains, you will be advised to keep your voice loud and bear spray close. While you are far from guaranteed to see a grizzly bear saunter across your path,",
+        "prompt_tokens": 3359,
+        "completion_tokens": 147,
+        "cumulative_cost_usd": 0.001417
+      },
+      {
+        "step": 5,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "raised garden bed benefit"
+        },
+        "result_summary": "15 Benefits of Raised Bed Gardening (0.807); 21 Best Flowers for Growing in Raised Beds (0.593); 21 Essential Gifts for the Gardening Lover (0.567); How to Make Soil Blocks: Tools and Recipes (0.406)",
+        "prompt_tokens": 4460,
+        "completion_tokens": 135,
+        "cumulative_cost_usd": 0.002167
+      },
+      {
+        "step": 6,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://www.epicgardening.com/raised-bed-benefits"
+        },
+        "result_summary": "# 15 Benefits of Raised Bed Gardening Whether you\u2019re a newbie or a seasoned gardener, raised beds make gardening easier, increase production, and look great. If you\u2019ve been on the fence about making t",
+        "prompt_tokens": 4927,
+        "completion_tokens": 155,
+        "cumulative_cost_usd": 0.002999
+      },
+      {
+        "step": 7,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "(model replied with plain text instead of a tool call)",
+        "prompt_tokens": 6388,
+        "completion_tokens": 303,
+        "cumulative_cost_usd": 0.004139
+      }
+    ],
+    "stopped_reason": "finished",
+    "cost_usd": 0.004139,
+    "seconds": 111.9
+  },
+  {
+    "id": 8,
+    "question": "According to the corpus's report on Cambodia's illegal wildlife trade, which country's demand is described as primarily fueling it? And in what year was Chile's Valdivian Coastal Reserve established?",
+    "correct": false,
+    "answer": "The report on Cambodia\u2019s illegal wildlife trade says the market is **primarily driven by demand from China**\u3010Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife\u3011.  \n\nChile\u2019s Valdivian Coastal Reserve was **established in\u202f2003**\u3010Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve\u3011.",
+    "steps": 5,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Cambodia illegal wildlife trade report demand primarily fueling it country demand"
+        },
+        "result_summary": "Report reveals Cambodia\u2019s appetite for tigers, rhinos and other endangered wildlife (0.789); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.582)",
+        "prompt_tokens": 610,
+        "completion_tokens": 120,
+        "cumulative_cost_usd": 0.000163
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://news.mongabay.com/2026/07/report-reveals-cambodias-appetite-for-tigers-rhinos-and-other-endangered-wildlife"
+        },
+        "result_summary": "- *Illegal wildlife trade, primarily catering to Chinese nationals, is thriving in Cambodia, according to a new undercover investigation by Earth League International, a U.S.-based NGO fighting enviro",
+        "prompt_tokens": 909,
+        "completion_tokens": 87,
+        "cumulative_cost_usd": 0.000352
+      },
+      {
+        "step": 3,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Valdivian Coastal Reserve established year"
+        },
+        "result_summary": "Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.532); America\u2019s Energy Choices Will Shape the Future for Wildlife (0.367); Get to know the Coas",
+        "prompt_tokens": 2457,
+        "completion_tokens": 103,
+        "cumulative_cost_usd": 0.000782
+      },
+      {
+        "step": 4,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve"
+        },
+        "result_summary": "Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground",
+        "prompt_tokens": 3306,
+        "completion_tokens": 142,
+        "cumulative_cost_usd": 0.001364
+      },
+      {
+        "step": 5,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "(model replied with plain text instead of a tool call)",
+        "prompt_tokens": 4943,
+        "completion_tokens": 257,
+        "cumulative_cost_usd": 0.002259
+      }
+    ],
+    "stopped_reason": "finished",
+    "cost_usd": 0.002259,
+    "seconds": 69.67
+  },
+  {
+    "id": 9,
+    "question": "What is the world's smallest deer according to the corpus's article on Chile's Valdivian Coastal Reserve, and what's one flower the corpus recommends for a raised garden bed?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Valdivian Coastal Reserve Chile article'): Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.631); Ten years of Mongabay Latam (0.445); The Hunt-Fish Rule Ignores the Crisis Facing Wildlife Refuges (0.414); Get to know the Coastal Leadership Program\u2019s Inaugural Cohort! (0.407); Audubon's New Report Meets the Urgency of the Moment at Great Salt Lake (0.39); Escucha Aves: AI for Conservation and Communities (0.371)\n---\nread(https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve): Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground observation. At the Valdivian Coastal Reserve (VCR)\u2014managed by The Nature Conservancy in southern Chile \u2014nine conservation targets guide that monitoring work, from ancient alerce forests and coastal dunes to three iconic animals: Darwin\u2019s fox, the g\u00fci\u00f1a wildcat and the pud\u00fa, the world\u2019s smallest deer. Tracking the health of these species and habitats has become a model for conservation across the entire country. ## Pioneers of Camera Trapping In 2007, Dr. Jim Sanderson, a North American researcher seeking new populations of Darwin\u2019s fox, visited the Universidad Austral de Chile (UACH) in Valdivia. His visit sparked the first camera trap training sessions ever held in Chile\u2014with the practical field work taking place at the VCR. Among those who attended were Eduardo Silva, now a professor at UACH\u2019s Institute of Conservation, Biodiversity and Territory, and park rangers Danilo Gonz\u00e1lez and Erwin Ovando. ## TNC in Latin America \u201cThat practical workshop was like the beginning of everything,\u201d recalls Gonz\u00e1lez, today the VCR\u2019s Coordinator of Park Rangers. \u201cWe installed the cameras. Jim showed us how to orient them, what\n\nDanilo Gonz\u00e1lez and Erwin Ovando. ## TNC in Latin America \u201cThat practical workshop was like the beginning of everything,\u201d recalls Gonz\u00e1lez, today the VCR\u2019s Coordinator of Park Rangers. \u201cWe installed the cameras. Jim showed us how to orient them, what height to place them at depending on the species we wanted to record. We understood it all through practice.\u201d \u201cThe collaborative work here was the precursor of the current National Camera Trap Program,\u201d confirms Diego Valencia, Manager of protected areas and monitoring expert at CONAF. Today, the monitoring program spans more than 35 protected units, over 2,000 cameras, and 2,000 monitoring points from Arica to Magallanes. ## A Biodiversity Hotspot in Disguise The forests of Chaihu\u00edn made headlines in the late 1990s for all the wrong reasons\u2014the logging of ancient alerce trees and the stripping of native habitat. In 2003, the Valdivian Coastal Reserve was established, and the land\u2019s story changed. Today the VCR and the adjacent Alerce Costero National Park together encompass 75,000 protected hectares, pioneering a model of integrated planning, monitoring and community engagement. \u201cThe VCR is a box of surprises,\u201d says Francisco Font\u00farbel, a professor at the Pontificia Universidad Cat\u00f3lica de Valpara\u00edso known for his research on\n\nPark together encompass 75,000 protected hectares, pioneering a model of integrated planning, monitoring and community engagement. \u201cThe VCR is a box of surprises,\u201d says Francisco Font\u00farbel, a professor at the Pontificia Universidad Cat\u00f3lica de Valpara\u00edso known for his research on the monito del monte\u2014a tiny, ancient marsupial endemic to these southern rainforests. \u201cWhen you arrive and see the eucalyptus, it doesn\u2019t seem very interesting. But with camera traps and wildlife surveys, you find an enormous diversity of species.\u201d Behind the eucalyptus trees that have been interacting with the native forest since the reserve was created, unique and vulnerable species live. In a landmark discovery in 2014, Darwin\u2019s fox (*Lycalopex fulvipes*) were confirmed in the reserve for the first time, a scientific milestone with global significance. Between 2015 and 2022, camera traps at the VCR and the Alerce Costero National Park detected the presence of the long-nosed shrew opossum (*Rhyncholestes raphanarus*)\u2014the only surviving member of the Rhyncholestes genus and a relict species\u2014in evergreen and alerce forests, as well as in eucalyptus plantations. \u201cYou can see the burned larch trees in the higher areas, and in other spots, you can see the replacement process. Twenty-five years ago, the area was the cause\n\nspecies\u2014in evergreen and alerce forests, as well as in eucalyptus plantations. \u201cYou can see the burned larch trees in the higher areas, and in other spots, you can see the replacement process. Twenty-five years ago, the area was the cause of the Chilean forest tragedy, and today, it is one of the main examples of conservation in Chile, a total change of trajectory,\u201d Silva points out. \u201cWhen you talk about unique amphibians or critically endangered populations like Darwin\u2019s fox, the relevance of this reserve becomes planetary,\u201d he says. **\u201cWe Count Life\u201d** Park ranger Jemima S\u00e1nchez, who grew up in the area and now leads the reserve\u2019s amphibian monitoring program, puts it plainly, \u201cMonitoring amphibians is fascinating\u2014it\u2019s not just about recording data on paper. It\u2019s about taking the pulse of a place, a place you come to love, care for, and protect. We don\u2019t just count individuals; we count history, persistence, and resilience. It\u2019s filled with magic. We count life.\u201d The Valdivian Coastal Reserve is home to at least 13 amphibian species, many of them endemic and highly sensitive to environmental change. Among them is Alsodes valdiviensis\u2014the Cordillera Pelada spiny-chested frog\u2014an endangered species found only in Chile\u2019s Los R\u00edos Region. Until\n\nValdivian Coastal Reserve is home to at least 13 amphibian species, many of them endemic and highly sensitive to environmental change. Among them is Alsodes valdiviensis\u2014the Cordillera Pelada spiny-chested frog\u2014an endangered species found only in Chile\u2019s Los R\u00edos Region. Until just over a decade ago, the reserve was the only place where its presence had been documented, underscoring the site\u2019s critical importance for biodiversity conservation. In April 2026, reserve rangers carried out a new amphibian monitoring campaign in the mountainous Lahual sector, adjacent to Alerce Costero National Park. Using a methodology developed by The Nature Conservancy and shared with CONAF, researchers are surveying at three monitoring sites. Despite a landscape heavily altered by forest plantations, remnant ancient alerce forests and native forest regeneration persists\u2014highlighting the long-term value of field monitoring for guiding conservation decisions. Font\u00farbel adds a thought-provoking observation, \u201cThe abandoned eucalyptus plantations with regenerating native undergrowth may be becoming what ecologists call novel ecosystems\u2014 human-altered environments that have found their own self-sustaining dynamics. \u201cI believe the VCR offers an excellent natural laboratory for studying these ecosystems and answering fundamental questions in ecology and evolution.\u201d ## Collaboration and Hope A native forest restoration project is currently underway in the Valdivian\n\ntheir own self-sustaining dynamics. \u201cI believe the VCR offers an excellent natural laboratory for studying these ecosystems and answering fundamental questions in ecology and evolution.\u201d ## Collaboration and Hope A native forest restoration project is currently underway in the Valdivian Coastal Reserve as the result of a long-standing aspiration expressed by local communities. Emerging from a participatory consultation process, the initiative seeks to restore 3,000 hectares previously planted with eucalyptus through low-impact harvesting and the replanting of native species. The restoration work will be carried out using native species, including coih\u00fce, notro, and ulmo, cultivated at the reserve\u2019s nursery. Led by local workers and reinvesting all revenues into restoration, the project reflects a shared commitment to ecological recovery, local livelihoods and the long-term care of this unique landscape. \u00a9 Paula No\u00e9 To learn more about the Valdivian Coastal Reserve and The Nature Conservancy\u2019s work in Chile, visit nature.org. ## Join the Discussion",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Valdivian Coastal Reserve Chile article"
+        },
+        "result_summary": "Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.631); Ten years of Mongabay Latam (0.445); The Hunt-Fish Rule Ignores the Crisis Facing Wildlif",
+        "prompt_tokens": 607,
+        "completion_tokens": 115,
+        "cumulative_cost_usd": 0.00016
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve"
+        },
+        "result_summary": "Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground",
+        "prompt_tokens": 1411,
+        "completion_tokens": 89,
+        "cumulative_cost_usd": 0.000425
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000425
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000425,
+    "seconds": 647.72
+  },
+  {
+    "id": 10,
+    "question": "How many total protected hectares do the Valdivian Coastal Reserve and the adjacent Alerce Costero National Park in Chile encompass together, and what's the maximum length given for a cookiecutter shark, in inches?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('Valdivian Coastal Reserve hectares Alerce Costero National Park hectares'): Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.576); Chong\u00f3n-Posorja Transmission Line: Advancing Bird-Friendly Energy Infrastructure (0.468); Mining threat persists in Raja Ampat, Indonesia\u2019s \u2018Amazon of the Seas\u2019 (0.441); Birding the Outer Banks' Hidden Gem: Nags Head Woods Preserve (0.427); The Hunt-Fish Rule Ignores the Crisis Facing Wildlife Refuges (0.419); Nepal\u2019s newest national parks drive tiger recovery, but new concerns arise (0.401)\n---\nread(https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve): Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground observation. At the Valdivian Coastal Reserve (VCR)\u2014managed by The Nature Conservancy in southern Chile \u2014nine conservation targets guide that monitoring work, from ancient alerce forests and coastal dunes to three iconic animals: Darwin\u2019s fox, the g\u00fci\u00f1a wildcat and the pud\u00fa, the world\u2019s smallest deer. Tracking the health of these species and habitats has become a model for conservation across the entire country. ## Pioneers of Camera Trapping In 2007, Dr. Jim Sanderson, a North American researcher seeking new populations of Darwin\u2019s fox, visited the Universidad Austral de Chile (UACH) in Valdivia. His visit sparked the first camera trap training sessions ever held in Chile\u2014with the practical field work taking place at the VCR. Among those who attended were Eduardo Silva, now a professor at UACH\u2019s Institute of Conservation, Biodiversity and Territory, and park rangers Danilo Gonz\u00e1lez and Erwin Ovando. ## TNC in Latin America \u201cThat practical workshop was like the beginning of everything,\u201d recalls Gonz\u00e1lez, today the VCR\u2019s Coordinator of Park Rangers. \u201cWe installed the cameras. Jim showed us how to orient them, what\n\nDanilo Gonz\u00e1lez and Erwin Ovando. ## TNC in Latin America \u201cThat practical workshop was like the beginning of everything,\u201d recalls Gonz\u00e1lez, today the VCR\u2019s Coordinator of Park Rangers. \u201cWe installed the cameras. Jim showed us how to orient them, what height to place them at depending on the species we wanted to record. We understood it all through practice.\u201d \u201cThe collaborative work here was the precursor of the current National Camera Trap Program,\u201d confirms Diego Valencia, Manager of protected areas and monitoring expert at CONAF. Today, the monitoring program spans more than 35 protected units, over 2,000 cameras, and 2,000 monitoring points from Arica to Magallanes. ## A Biodiversity Hotspot in Disguise The forests of Chaihu\u00edn made headlines in the late 1990s for all the wrong reasons\u2014the logging of ancient alerce trees and the stripping of native habitat. In 2003, the Valdivian Coastal Reserve was established, and the land\u2019s story changed. Today the VCR and the adjacent Alerce Costero National Park together encompass 75,000 protected hectares, pioneering a model of integrated planning, monitoring and community engagement. \u201cThe VCR is a box of surprises,\u201d says Francisco Font\u00farbel, a professor at the Pontificia Universidad Cat\u00f3lica de Valpara\u00edso known for his research on\n\nPark together encompass 75,000 protected hectares, pioneering a model of integrated planning, monitoring and community engagement. \u201cThe VCR is a box of surprises,\u201d says Francisco Font\u00farbel, a professor at the Pontificia Universidad Cat\u00f3lica de Valpara\u00edso known for his research on the monito del monte\u2014a tiny, ancient marsupial endemic to these southern rainforests. \u201cWhen you arrive and see the eucalyptus, it doesn\u2019t seem very interesting. But with camera traps and wildlife surveys, you find an enormous diversity of species.\u201d Behind the eucalyptus trees that have been interacting with the native forest since the reserve was created, unique and vulnerable species live. In a landmark discovery in 2014, Darwin\u2019s fox (*Lycalopex fulvipes*) were confirmed in the reserve for the first time, a scientific milestone with global significance. Between 2015 and 2022, camera traps at the VCR and the Alerce Costero National Park detected the presence of the long-nosed shrew opossum (*Rhyncholestes raphanarus*)\u2014the only surviving member of the Rhyncholestes genus and a relict species\u2014in evergreen and alerce forests, as well as in eucalyptus plantations. \u201cYou can see the burned larch trees in the higher areas, and in other spots, you can see the replacement process. Twenty-five years ago, the area was the cause\n\nspecies\u2014in evergreen and alerce forests, as well as in eucalyptus plantations. \u201cYou can see the burned larch trees in the higher areas, and in other spots, you can see the replacement process. Twenty-five years ago, the area was the cause of the Chilean forest tragedy, and today, it is one of the main examples of conservation in Chile, a total change of trajectory,\u201d Silva points out. \u201cWhen you talk about unique amphibians or critically endangered populations like Darwin\u2019s fox, the relevance of this reserve becomes planetary,\u201d he says. **\u201cWe Count Life\u201d** Park ranger Jemima S\u00e1nchez, who grew up in the area and now leads the reserve\u2019s amphibian monitoring program, puts it plainly, \u201cMonitoring amphibians is fascinating\u2014it\u2019s not just about recording data on paper. It\u2019s about taking the pulse of a place, a place you come to love, care for, and protect. We don\u2019t just count individuals; we count history, persistence, and resilience. It\u2019s filled with magic. We count life.\u201d The Valdivian Coastal Reserve is home to at least 13 amphibian species, many of them endemic and highly sensitive to environmental change. Among them is Alsodes valdiviensis\u2014the Cordillera Pelada spiny-chested frog\u2014an endangered species found only in Chile\u2019s Los R\u00edos Region. Until\n\nValdivian Coastal Reserve is home to at least 13 amphibian species, many of them endemic and highly sensitive to environmental change. Among them is Alsodes valdiviensis\u2014the Cordillera Pelada spiny-chested frog\u2014an endangered species found only in Chile\u2019s Los R\u00edos Region. Until just over a decade ago, the reserve was the only place where its presence had been documented, underscoring the site\u2019s critical importance for biodiversity conservation. In April 2026, reserve rangers carried out a new amphibian monitoring campaign in the mountainous Lahual sector, adjacent to Alerce Costero National Park. Using a methodology developed by The Nature Conservancy and shared with CONAF, researchers are surveying at three monitoring sites. Despite a landscape heavily altered by forest plantations, remnant ancient alerce forests and native forest regeneration persists\u2014highlighting the long-term value of field monitoring for guiding conservation decisions. Font\u00farbel adds a thought-provoking observation, \u201cThe abandoned eucalyptus plantations with regenerating native undergrowth may be becoming what ecologists call novel ecosystems\u2014 human-altered environments that have found their own self-sustaining dynamics. \u201cI believe the VCR offers an excellent natural laboratory for studying these ecosystems and answering fundamental questions in ecology and evolution.\u201d ## Collaboration and Hope A native forest restoration project is currently underway in the Valdivian\n\ntheir own self-sustaining dynamics. \u201cI believe the VCR offers an excellent natural laboratory for studying these ecosystems and answering fundamental questions in ecology and evolution.\u201d ## Collaboration and Hope A native forest restoration project is currently underway in the Valdivian Coastal Reserve as the result of a long-standing aspiration expressed by local communities. Emerging from a participatory consultation process, the initiative seeks to restore 3,000 hectares previously planted with eucalyptus through low-impact harvesting and the replanting of native species. The restoration work will be carried out using native species, including coih\u00fce, notro, and ulmo, cultivated at the reserve\u2019s nursery. Led by local workers and reinvesting all revenues into restoration, the project reflects a shared commitment to ecological recovery, local livelihoods and the long-term care of this unique landscape. \u00a9 Paula No\u00e9 To learn more about the Valdivian Coastal Reserve and The Nature Conservancy\u2019s work in Chile, visit nature.org. ## Join the Discussion",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Valdivian Coastal Reserve hectares Alerce Costero National Park hectares"
+        },
+        "result_summary": "Beyond the Eucalyptus: Discovering Biodiversity and Conservation at Chile's Valdivian Coastal Reserve (0.576); Chong\u00f3n-Posorja Transmission Line: Advancing Bird-Friendly Energy Infrastructure (0.468);",
+        "prompt_tokens": 616,
+        "completion_tokens": 77,
+        "cumulative_cost_usd": 0.000139
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://blog.nature.org/2026/04/21/beyond-the-eucalyptus-discovering-biodiversity-and-conservation-at-chiles-valdivian-coastal-reserve"
+        },
+        "result_summary": "Biodiversity\u2014the variability of living organisms across every ecosystem on Earth \u2014 can only be protected once it\u2019s understood. And understanding it takes monitoring: careful, consistent, on-the-ground",
+        "prompt_tokens": 1519,
+        "completion_tokens": 110,
+        "cumulative_cost_usd": 0.000432
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000432
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000432,
+    "seconds": 473.05
+  },
+  {
+    "id": 11,
+    "question": "What method does the Northwest wolf article say biologists use to count today's wolf population, what specific cause of wolf mortality does that same article track, and how many grizzly bears live in the lower 48 according to the corpus?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch(\"Northwest wolf article biologists count today's wolf population method mortality cause\"): The Present and Future of Wolves in the Northwest (0.675); The History of Wolves in the Northwest (0.662); Mexican Gray Wolves, Born to Roam (0.568); Bengal tigers in Cambodia? Reintroduction plan raises questions (0.469); The Swift Fox Makes a Surprise Comeback (0.428); Nepal\u2019s newest national parks drive tiger recovery, but new concerns arise (0.41)\n---\nread(https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest): There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonization, these animals are making remarkable progress on their road to recovery in Oregon and Washington. Long-term restoration, however, will take more than increasing numbers of wolves on the landscape. It will take a lot of hard work from everyone to find solutions to reduce wolf-livestock conflict and ensure wolves have the habitat and sufficient human tolerance needed to thrive. #### Counting Today\u2019s Northwest Wolves Every winter, biologists from Oregon and Washington\u2019s departments of fish and wildlife conduct their annual wolf count surveys. Both states track their wolf populations through a minimum population count, which is based on verified, direct evidence of each wolf. This includes observations, remote cameras and tracks. Winter is the ideal time because wolf pups born in the spring are considered to have a good chance of surviving into adulthood if they reach the cold season. Animals are additionally easier to spot with less foliage and tracks are more easily identifiable in the snow. Biologists also track the number of\n\nconsidered to have a good chance of surviving into adulthood if they reach the cold season. Animals are additionally easier to spot with less foliage and tracks are more easily identifiable in the snow. Biologists also track the number of breeding pairs in each state. This is an important indicator of population growth and a core metric for recovery. Additionally, they monitor the number and cause of wolf mortalities. Determining the cause of death within populations is important because it provides insight into types of human-caused mortalities which we can work to reduce, such as poaching (illegal killing or 'take'). Finally, the number of reported livestock depredations are summarized, which reflects the continued efforts needed to support suitable habitat for wolves and help ranchers deter wolves from predating on their cows and other livestock. All this information is then brought together into each state\u2019s Annal Wolf Report, which is released to the public in April. Both Oregon and Washington\u2019s 2025 Wolf Counts paint the same picture we have seen since initial recolonization: populations are growing and expanding west. Conflicts between wolves and livestock producers are not significant statewide in terms of overall livestock losses but are very important in areas\n\nWolf Counts paint the same picture we have seen since initial recolonization: populations are growing and expanding west. Conflicts between wolves and livestock producers are not significant statewide in terms of overall livestock losses but are very important in areas where it is occurring. This conflict can impact certain producers and communities more than others. Wolves have filled out much of the available habitat in the eastern portions of both states. There does remain unoccupied, yet suitable habitat, however, in the central and western portions of Washington and Oregon (as well as further south into California). If recovery trends continue, within the next several years, we should expect wolves to meet recovery goals in both states. But this won\u2019t be the end of the story. Much has changed since both plans were written, so both are in need of updating during a future Wolf Plan revision process. New science and species modeling may also bring new considerations to future management discussions. Regardless of future management decisions, Defenders of Wildlife will remain focused on these animals\u2019 long-term recovery and looks forward to the day when wolf populations are playing out their ecological role throughout the Pacific Northwest. The question is, how\n\ndiscussions. Regardless of future management decisions, Defenders of Wildlife will remain focused on these animals\u2019 long-term recovery and looks forward to the day when wolf populations are playing out their ecological role throughout the Pacific Northwest. The question is, how do we get there? #### A Look Towards the Future What does wolf recovery look like biologically and socially? And how many wolves can Oregon and Washington support to help achieve that recovery? Wolves can live in a variety of habitats as long as they have adequate prey and sufficient human tolerance. In the past 200 years, the amount of available habitat has decreased as human presence has increased. Wolves natural prey \u2014 such as deer, elk and moose \u2014 have also been affected by human presence. Many of these populations have fallen due to habitat loss and fragmentation inhibiting connectivity across the landscape and disrupting migration corridors. Scientists have attempted to make estimates for how many wolves each state could support. Washington is estimated around 76 packs, or just over 450 individuals, while Oregon is estimated around 1,500 individuals. Looking at each state in isolation, however, is probably not the best approach as dispersing wolves move across the landscape\n\ncould support. Washington is estimated around 76 packs, or just over 450 individuals, while Oregon is estimated around 1,500 individuals. Looking at each state in isolation, however, is probably not the best approach as dispersing wolves move across the landscape and cross borders \u2013 into neighboring states and Canadian Provinces \u2013 in search of food or mates. Working towards, and hopefully achieving, target wolf population goals is important, but not sufficient to ensure long-term recovery. We need to make sure wolves have the habitat they need to hunt, mate, raise pups and live out their lives as adults. The habitat needs to be sufficiently connected to allow dispersing wolves to move to new areas and establish new breeding pairs and packs. Local, state and federal authorities need the capacity and tools to minimize negative wolf-livestock interactions. We need to work with landowners and producers to help them implement methods and strategies to address wolf-livestock conflicts. And we need to help educate people of all ages about these fascinating animals and how to live alongside them. Luckily, Defenders is already working alongside partners and with producers to do and support all these efforts. We can find solutions that work for both\n\neducate people of all ages about these fascinating animals and how to live alongside them. Luckily, Defenders is already working alongside partners and with producers to do and support all these efforts. We can find solutions that work for both wolves and those sharing the landscape with them. And who knows? Maybe one day we will find ourselves in a world where humans and wolves coexist. Where people and animals are once again seen as equals, or kin, on the landscape. *In case you missed it, check out the **history of Pacific Northwest wolves**. Curious about wolves in other parts of the country? Read other gray wolf recovery and efforts **here**.*",
+    "steps": 3,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Northwest wolf article biologists count today's wolf population method mortality cause"
+        },
+        "result_summary": "The Present and Future of Wolves in the Northwest (0.675); The History of Wolves in the Northwest (0.662); Mexican Gray Wolves, Born to Roam (0.568); Bengal tigers in Cambodia? Reintroduction plan rai",
+        "prompt_tokens": 619,
+        "completion_tokens": 108,
+        "cumulative_cost_usd": 0.000158
+      },
+      {
+        "step": 2,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://defenders.org/blog/2026/05/present-and-future-of-wolves-northwest"
+        },
+        "result_summary": "There was a time when wolves were numerous in the Northwest and a period of when they were wiped off this part of the map (missed the history lesson? Read it here). Today, 15 years after recolonizatio",
+        "prompt_tokens": 1385,
+        "completion_tokens": 106,
+        "cumulative_cost_usd": 0.000429
+      },
+      {
+        "step": 3,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.000429
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.000429,
+    "seconds": 997.62
+  },
+  {
+    "id": 12,
+    "question": "According to the corpus, what federal agency oversees most Greater Sage-Grouse habitat, how many acres does it oversee, and in what year does the corpus say grizzly bears were listed under the Endangered Species Act?",
+    "correct": false,
+    "answer": "Stopped before finishing (the API stayed rate-limited through every retry). Best-effort answer based on what was found:\n\nsearch('grizzly bears listed Endangered Species Act year'): Four Myths Around Grizzly Bears in the Lower 48 Busted (0.619); Opinion: U.S. Wildlife Depends on Our Elections. That's the Problem. (0.573); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.564); Conserving Habitat Has Always Been Central to the Endangered Species Act (0.487); The History of Wolves in the Northwest (0.472); Mexican Gray Wolves, Born to Roam (0.469)\n---\nread(https://www.audubon.org/news/whats-next-greater-sage-grouse): The future of the Greater Sage-Grouse, and the health of the broader sagebrush ecosystem, has long been shaped by land-use decisions spread across millions of acres of the American West. In January 2025, the Bureau of Land Management (BLM) released finalized Resource Management Plans (RMPs) that guide how public lands in Colorado and Oregon would be managed for the grouse. At the end of last year, the BLM further released finalized RMPs for California, Idaho, Montana, Nevada, North Dakota, South Dakota, Utah, and Wyoming. These 2025 grouse plans complete a federal process initiated in 2021, allowing resources to shift from planning to action, and influencing conservation across the West for decades to come. These finalized land management plans come in the context of broader long-term pressures on the sagebrush ecosystem, captured by a multi-agency study that determined an annual loss of 1.3 million acres (an area the size of Delaware) of functioning sagebrush habitat. Over the past half-century, these iconic western lands have been steadily fragmented by energy and mineral development, transmission lines, and roads. As these arid lands are fractured by development, sprawling pathways are created for fast-spreading invasive annual grasses like cheatgrass which increase the vulnerability to fire\n\nwestern lands have been steadily fragmented by energy and mineral development, transmission lines, and roads. As these arid lands are fractured by development, sprawling pathways are created for fast-spreading invasive annual grasses like cheatgrass which increase the vulnerability to fire and further crowd out the healthy sagebrush and forbs that are needed to sustain healthy grouse populations. Sagebrush landscape declines are reflected in Greater Sage-Grouse populations, which continue to drop across much of their range. In 2020, researchers reported that Greater Sage-Grouse numbers have plummeted by 80 percent since 1965, with half of that decline happening just since 2002. In July 2025, North Dakota wildlife officials confirmed that the last known population of Greater Sage-Grouse in the state had disappeared entirely, marking the species\u2019 effective extirpation there. The Bureau of Land Management oversees the largest share of sage-grouse habitat in the United States: some 67 million acres of public land. Management decisions on those lands play a central role in determining the health of the sagebrush landscape and whether remaining sage-grouse populations stabilize or continue to decline. Federal land use plans adopted in 2015 \u2013 the product of a lengthy collaborative planning process between state and federal governments, ranchers, Tribes,\n\ndetermining the health of the sagebrush landscape and whether remaining sage-grouse populations stabilize or continue to decline. Federal land use plans adopted in 2015 \u2013 the product of a lengthy collaborative planning process between state and federal governments, ranchers, Tribes, recreational groups and conservation organizations \u2013 established a science-based framework intended to prevent listing under the Endangered Species Act. However, subsequent revisions and uneven implementation limited how those plans functioned on the ground. The finalized 2025 RMPs retain the overall structure of habitat prioritization from the original plans but revise how those principles are applied. Earlier plans sought to direct development away from the most intact habitat and to ensure timely responses to documented declines in birds. The amended RMPs reflect a move away from enforceable safeguards towards more flexibility, discretion, and alignment with state priorities. Across the plans, changes finalized in the 2025 plans include: The finalization of the 2025 plans marks a milestone in this landmark, landscape-scale conservation effort. Greater Sage-Grouse are highly sensitive to incremental habitat loss, and uncertainty around when and how management actions will occur carries ecological risk. As pressure from development, wildfire and climate-driven habitat change continue to affect sagebrush landscapes, the effectiveness of\n\neffort. Greater Sage-Grouse are highly sensitive to incremental habitat loss, and uncertainty around when and how management actions will occur carries ecological risk. As pressure from development, wildfire and climate-driven habitat change continue to affect sagebrush landscapes, the effectiveness of the amended plans will depend on how consistently standards are applied and how adaptive management is implemented in practice. These decisions have established the governing framework for millions of acres of public land, with outcomes that will shape the future of a species closely tied to the health of the entire sagebrush ecosystem and the numerous wildlife that depend on them. The following measures will be an indicator of whether the plans succeed, or fail, in implementation: Finally, last but not least, restoration of degraded habitat is essential if we want to save this ecosystem. This rehabilitation \u2013 a challenge in this fragile ecosystem - can take the form of removing invasive annual grasses, like cheatgrass, and restoring the degradation that is now widespread across the sagebrush landscape. Resources and capacity must now shift from planning to implementation. Going forward, Audubon is committed to continuing to work collaboratively with the Bureau of Land Management, state agencies, industry, ranchers and other\n\nthat is now widespread across the sagebrush landscape. Resources and capacity must now shift from planning to implementation. Going forward, Audubon is committed to continuing to work collaboratively with the Bureau of Land Management, state agencies, industry, ranchers and other private landowners, and NGO partners. Each of us can have a role in ensuring that the grouse RMPs are implemented in good faith, from careful siting of development and effective mitigation to removal of invasives and collaborative restoration of native sagebrush and forbs. As stewards of the land, it is our shared responsibility to ensure that this landscape \u2013 the backbone of the West \u2013 is passed on to future generations in good condition.\n---\nsearch('grizzly bears listed under the Endangered Species Act year listed'): Four Myths Around Grizzly Bears in the Lower 48 Busted (0.632); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.547); Opinion: U.S. Wildlife Depends on Our Elections. That's the Problem. (0.535); Mexican Gray Wolves, Born to Roam (0.467); The History of Wolves in the Northwest (0.464); Find a National Wildlife Refuge Near You! (0.462)",
+    "steps": 5,
+    "step_log": [
+      {
+        "step": 1,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "Greater Sage-Grouse habitat overseen by federal agency acres"
+        },
+        "result_summary": "What\u2019s next for the Greater Sage-Grouse? (0.746); The Sagebrush Sea is Disappearing, but Science Shows a Potential Path Forward (0.555); With Wilderness Rollbacks, Wildlife Stands to Lose the Most (0.",
+        "prompt_tokens": 617,
+        "completion_tokens": 127,
+        "cumulative_cost_usd": 0.000169
+      },
+      {
+        "step": 2,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "grizzly bears listed Endangered Species Act year"
+        },
+        "result_summary": "Four Myths Around Grizzly Bears in the Lower 48 Busted (0.619); Opinion: U.S. Wildlife Depends on Our Elections. That's the Problem. (0.573); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe Thi",
+        "prompt_tokens": 1392,
+        "completion_tokens": 72,
+        "cumulative_cost_usd": 0.000421
+      },
+      {
+        "step": 3,
+        "tool": "read_article",
+        "arguments": {
+          "article_id": "https://www.audubon.org/news/whats-next-greater-sage-grouse"
+        },
+        "result_summary": "The future of the Greater Sage-Grouse, and the health of the broader sagebrush ecosystem, has long been shaped by land-use decisions spread across millions of acres of the American West. In January 20",
+        "prompt_tokens": 2166,
+        "completion_tokens": 94,
+        "cumulative_cost_usd": 0.000802
+      },
+      {
+        "step": 4,
+        "tool": "search_articles",
+        "arguments": {
+          "query": "grizzly bears listed under the Endangered Species Act year listed"
+        },
+        "result_summary": "Four Myths Around Grizzly Bears in the Lower 48 Busted (0.632); Opinion: Tools to Keep Yourself \u2014 and the Bears \u2014 Safe This Spring (0.547); Opinion: U.S. Wildlife Depends on Our Elections. That's the ",
+        "prompt_tokens": 3360,
+        "completion_tokens": 95,
+        "cumulative_cost_usd": 0.001363
+      },
+      {
+        "step": 5,
+        "tool": null,
+        "arguments": null,
+        "result_summary": "LLM call failed: 429 Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kypbjthze2jaes9mzehhnxqh` service t",
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "cumulative_cost_usd": 0.001363
+      }
+    ],
+    "stopped_reason": "rate_limited",
+    "cost_usd": 0.001363,
+    "seconds": 3721.07
+  }
+]
